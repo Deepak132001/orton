@@ -15,10 +15,17 @@ dotenv.config();
 const app = express();
 
 // Middleware
+// app.use(cors({
+//   origin: process.env.CLIENT_URL || 'http://localhost:3000',
+//   credentials: true
+// }));
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:3000',
+  origin: process.env.NODE_ENV === 'production' 
+    ? 'https://ortonai.com'
+    : 'http://localhost:3000',
   credentials: true
 }));
+
 app.use(express.json());
 
 // Health check route
@@ -41,25 +48,32 @@ app.use('*', (req, res) => {
   res.status(404).json({ message: 'Route not found' });
 });
 
-// Database connection with retry logic
-const connectDB = async (retries = 5) => {
-  try {
-    await mongoose.connect(process.env.MONGODB_URI);
-    console.log('Connected to MongoDB');
-  } catch (error) {
-    if (retries > 0) {
-      console.log(`MongoDB connection failed. Retrying... (${retries} attempts left)`);
-      setTimeout(() => connectDB(retries - 1), 5000);
-    } else {
-      console.error('MongoDB connection failed after all retries:', error);
-      process.exit(1);
-    }
-  }
-};
+// // Database connection with retry logic
+// const connectDB = async (retries = 5) => {
+//   try {
+//     await mongoose.connect(process.env.MONGODB_URI);
+//     console.log('Connected to MongoDB');
+//   } catch (error) {
+//     if (retries > 0) {
+//       console.log(`MongoDB connection failed. Retrying... (${retries} attempts left)`);
+//       setTimeout(() => connectDB(retries - 1), 5000);
+//     } else {
+//       console.error('MongoDB connection failed after all retries:', error);
+//       process.exit(1);
+//     }
+//   }
+// };
 
-connectDB();
+// connectDB();
 
+// const PORT = process.env.PORT || 5000;
 const PORT = process.env.PORT || 5000;
+const MONGODB_URI = process.env.NODE_ENV === 'production'
+  ? process.env.MONGODB_PRODUCTION_URI
+  : process.env.MONGODB_URI;
+
+mongoose.connect(MONGODB_URI);
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

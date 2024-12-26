@@ -146,6 +146,8 @@ const connectDB = async (retries = 5) => {
     await mongoose.connect(process.env.MONGODB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      socketTimeoutMS: 45000,
+  serverSelectionTimeoutMS: 5000,
     });
     console.log('Connected to MongoDB');
   } catch (error) {

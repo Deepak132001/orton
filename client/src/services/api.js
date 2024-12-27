@@ -1,8 +1,17 @@
 // client/src/services/api.js
 import axios from 'axios';
 
+// const api = axios.create({
+//   baseURL: import.meta.env.VITE_API_URL,
+//   withCredentials: true,
+//   headers: {
+//     'Content-Type': 'application/json',
+//   },
+// });
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: window.location.hostname === 'localhost' 
+    ? import.meta.env.VITE_API_URL  // Use full URL in development
+    : '/api',  // Use relative path in production
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',

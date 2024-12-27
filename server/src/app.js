@@ -176,8 +176,6 @@ const connectDB = async (retries = 5) => {
       useUnifiedTopology: true,
       socketTimeoutMS: 45000,
       serverSelectionTimeoutMS: 60000,
-      keepAlive: true,
-      keepAliveInitialDelay: 300000
     };
 
     await mongoose.connect(process.env.MONGODB_URI, mongooseOpts);

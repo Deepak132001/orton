@@ -103,7 +103,6 @@ const MainLayout = ({ children }) => {
               Logout
             </button>
             <button
-              onClick={logout}
               className="ml-4 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 rounded-md"
             >
               <Link to={'/privacy'}>Privacy Policy</Link>

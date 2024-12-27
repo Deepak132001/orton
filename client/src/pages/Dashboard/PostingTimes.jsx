@@ -57,6 +57,16 @@ const PostingTimes = () => {
     return `${formattedHour}:00 ${ampm}`;
   };
 
+  const calculateAverageEngagement = (data) => {
+    if (!data?.hourlyBreakdown?.length) return 0;
+    
+    const totalEngagement = data.hourlyBreakdown.reduce((sum, hour) => {
+      return sum + (hour.engagement || 0);
+    }, 0);
+    
+    return (totalEngagement / data.hourlyBreakdown.length).toFixed(2);
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
@@ -130,7 +140,21 @@ const PostingTimes = () => {
           </div>
         </Card>
 
+        {/* averageEngagement */}
         <Card className="p-6">
+        <div className="flex items-center">
+          <TrendingUp className="h-8 w-8 text-indigo-600" />
+          <div className="ml-4">
+            <p className="text-sm font-medium text-gray-500">Avg. Engagement</p>
+            <p className="mt-1 text-xl font-semibold text-gray-900">
+              {calculateAverageEngagement(data)}%
+            </p>
+            <p className="mt-1 text-sm text-gray-500">across all posts</p>
+          </div>
+        </div>
+      </Card>
+
+        {/* <Card className="p-6">
           <div className="flex items-center">
             <TrendingUp className="h-8 w-8 text-indigo-600" />
             <div className="ml-4">
@@ -143,7 +167,7 @@ const PostingTimes = () => {
               <p className="mt-1 text-sm text-gray-500">across all posts</p>
             </div>
           </div>
-        </Card>
+        </Card> */}
       </div>
 
       {/* Hourly Engagement Chart */}

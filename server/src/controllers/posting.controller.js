@@ -3,7 +3,7 @@
 import { User } from '../models/user.model.js';
 import axios from 'axios';
 
-// server/src/controllers/posting.controller.js
+
 
 export const getBestPostingTimes = async (req, res) => {
   try {
@@ -100,61 +100,3 @@ export const getBestPostingTimes = async (req, res) => {
     });
   }
 };
-// export const getBestPostingTimes = async (req, res) => {
-//   try {
-//     const user = await User.findById(req.user._id);
-    
-//     if (!user.instagramBusinessId || !user.facebookAccessToken) {
-//       return res.status(400).json({
-//         message: 'Instagram account not connected'
-//       });
-//     }
-
-//     // Default data for new/small accounts
-//     const defaultData = {
-//       hourlyBreakdown: Array(24).fill(0).map((_, hour) => ({
-//         hour,
-//         engagement: 2.0,
-//         postsCount: 0
-//       })),
-//       dailyBreakdown: Array(7).fill(0).map((_, day) => ({
-//         day,
-//         engagement: 2.0,
-//         postsCount: 0
-//       })),
-//       bestHours: [
-//         { hour: 9, engagement: 2.5, postsCount: 0 },
-//         { hour: 12, engagement: 2.0, postsCount: 0 },
-//         { hour: 17, engagement: 2.2, postsCount: 0 }
-//       ],
-//       bestDays: [
-//         { day: 1, engagement: 2.5, postsCount: 0 },
-//         { day: 3, engagement: 2.3, postsCount: 0 },
-//         { day: 5, engagement: 2.1, postsCount: 0 }
-//       ],
-//       peakActivityTimes: [
-//         { day: 1, hour: 9, count: 0 },
-//         { day: 3, hour: 12, count: 0 },
-//         { day: 5, hour: 17, count: 0 }
-//       ],
-//       totalPosts: 0,
-//       averageEngagement: 2.0,
-//       analysisStartDate: new Date().toISOString(),
-//       analysisEndDate: new Date().toISOString(),
-//       isLimitedData: true,
-//       recommendedTimes: [
-//         "Monday 9:00 AM",
-//         "Wednesday 12:00 PM",
-//         "Friday 5:00 PM"
-//       ]
-//     };
-
-//     res.json(defaultData);
-//   } catch (error) {
-//     console.error('Error getting best posting times:', error);
-//     res.status(500).json({
-//       message: 'Failed to analyze posting times',
-//       error: error.message
-//     });
-//   }
-// };

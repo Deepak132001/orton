@@ -10,6 +10,8 @@ import Dashboard from './pages/Dashboard';
 import NotFound from './pages/NotFound';
 import useAuth from './hooks/useAuth';
 import PrivacyPolicy from './pages/PrivacyPolicy/PrivacyPolicy';
+import TermsAndConditions from './pages/PrivacyPolicy/TermsAndCondition';
+import DataDeletion from './pages/PrivacyPolicy/DataDeletion';
 
 const RedirectBasedOnAuth = () => {
   const { user, isNewUser } = useAuth();
@@ -27,6 +29,8 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<TermsAndConditions />} />
+          <Route path="/data" element={<DataDeletion />} />
           <Route path="/onboarding" element={
             <PrivateRoute>
               <Onboarding />

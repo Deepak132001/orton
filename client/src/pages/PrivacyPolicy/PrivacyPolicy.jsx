@@ -94,7 +94,7 @@ const PrivacyPolicy = () => {
           </section>
 
           {/* Contact Information */}
-          <section>
+          {/* <section>
             <h2 className="text-2xl font-semibold text-gray-900 mb-4">Contact Us</h2>
             <p className="text-gray-700">
               If you have questions about this Privacy Policy or our privacy practices, please contact us at:
@@ -103,7 +103,7 @@ const PrivacyPolicy = () => {
               <p>Email: [Contact Email]</p>
               <p>Address: [Physical Address]</p>
             </div>
-          </section>
+          </section> */}
         </div>
       </main>
 

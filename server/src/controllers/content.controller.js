@@ -146,87 +146,6 @@ Make each idea concise, engaging, and easy to implement.
 Include only trending and highly relevant hashtags.
 Keep each idea's total length under 100 words.`;
 };
-// const createDetailedPrompt = (contentType, profileData, recentPosts) => {
-//   const accountContext = profileData ? 
-//     `This account (@${profileData.username}) has ${profileData.followers_count} followers and focuses on: ${profileData.biography}. ` : '';
-
-//   const recentPostsContext = recentPosts.length > 0 ? 
-//     `Recent posts include topics like: ${recentPosts.map(post => post.caption?.slice(0, 50)).join(', ')}. ` : '';
-
-//   // Use the predefined content type prompt or default to 'all'
-//   const contentPrompt = CONTENT_TYPE_PROMPTS[contentType] || CONTENT_TYPE_PROMPTS['all'];
-
-//   return `${accountContext}${recentPostsContext}
-
-// ${contentPrompt}
-
-// Additional Requirements:
-// - Match the account's established voice and style
-// - Focus on providing actionable value to the audience
-// - Include multiple engagement triggers
-// - Optimize for both reach and retention
-// - Include SEO-friendly elements
-// - Suggest timing and posting strategy
-// - Include performance prediction and metrics to track
-// - Provide variations for testing
-
-// Please structure your response clearly with headers and sections.
-// Include a mix of trending and niche hashtags.
-// Make sure all content is detailed and actionable.`;
-// };
-
-// export const generateContent = async (req, res) => {
-//   try {
-//     const { contentType } = req.body;
-//     console.log('Generating content for type:', contentType);
-
-//     const user = await User.findById(req.user._id);
-//     if (!user.instagramBusinessId || !user.facebookAccessToken) {
-//       return res.status(400).json({
-//         message: 'Instagram account not connected'
-//       });
-//     }
-
-//     const profileData = await getInstagramProfile(user);
-//     const recentPosts = await getRecentPosts(user);
-//     const prompt = createDetailedPrompt(contentType, profileData, recentPosts);
-
-//     const completion = await openai.chat.completions.create({
-//       model: "gpt-4",
-//       messages: [
-//         {
-//           role: "system",
-//           content: `You are an expert Instagram content creator specializing in ${contentType}. 
-//                    Create detailed, engaging content that delivers value while maintaining
-//                    the account's voice and optimizing for reach and engagement.`
-//         },
-//         {
-//           role: "user",
-//           content: prompt
-//         }
-//       ],
-//       temperature: 0.8,
-//       max_tokens: 2000
-//     });
-
-//     const generatedContent = {
-//       id: Date.now().toString(),
-//       type: contentType,
-//       title: "Generated Content Idea",
-//       content: completion.choices[0].message.content,
-//       hashtags: extractHashtags(completion.choices[0].message.content),
-//       timestamp: new Date().toISOString()
-//     };
-
-//     res.json(generatedContent);
-//   } catch (error) {
-//     console.error('Content generation error:', error);
-//     res.status(500).json({
-//       message: 'Failed to generate content',
-//       error: error.message
-//     });
-//   }
-// };
 
 export const generateContent = async (req, res) => {
   try {
@@ -339,7 +258,6 @@ const parseSuggestions = (content) => {
   }));
 };
 
-// new
 const parseContentIdeas = (content) => {
   const ideas = content.split(/\d+\.\s+/).filter(Boolean);
   return ideas.map((idea, index) => {
@@ -354,4 +272,48 @@ const parseContentIdeas = (content) => {
       hashtags: hashtags.map(tag => tag.slice(1))
     };
   });
+};
+
+export const generateCustomContent = async (req, res) => {
+  try {
+    const { prompt } = req.body;
+    console.log('Generating custom content for prompt:', prompt);
+
+    const user = await User.findById(req.user._id);
+    if (!user.instagramBusinessId || !user.facebookAccessToken) {
+      return res.status(400).json({
+        message: 'Instagram account not connected'
+      });
+    }
+
+    const profileData = await getInstagramProfile(user);
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4",
+      messages: [
+        {
+          role: "system",
+          content: `You are an expert Instagram content creator. Create content that matches the user's specific requirements while maintaining engagement and value.`
+        },
+        {
+          role: "user",
+          content: `For an Instagram account with ${profileData?.followers_count || 0} followers, create content based on this request: ${prompt}`
+        }
+      ],
+      temperature: 0.8,
+      max_tokens: 1000
+    });
+
+    const generatedContent = {
+      id: Date.now().toString(),
+      ideas: parseContentIdeas(completion.choices[0].message.content)
+    };
+
+    res.json(generatedContent);
+  } catch (error) {
+    console.error('Custom content generation error:', error);
+    res.status(500).json({
+      message: 'Failed to generate custom content',
+      error: error.message
+    });
+  }
 };

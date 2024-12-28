@@ -29,3 +29,16 @@ export const submitFeedback = async (suggestionId, isPositive) => {
   });
   return response.data;
 };
+
+export const generateCustomContent = async (prompt) => {
+  const response = await api.post('/content/generate-custom', {
+    prompt,
+    additionalContext: {
+      tone: 'engaging',
+      length: 'detailed',
+      includeHashtags: true,
+      includeCallToAction: true
+    }
+  });
+  return response.data;
+};

@@ -131,9 +131,6 @@ const ContentIdeas = () => {
         </p>
       </div>
 
-      {/* Best Posting Times */}
-      <BestTimesCard loading={timeLoading} postingTimes={postingTimes} />
-
       {/* Controls Section */}
       <div className="flex flex-col sm:flex-row justify-between gap-4">
         <select
@@ -210,6 +207,9 @@ const ContentIdeas = () => {
           ))
         ))}
       </div>
+
+      {/* Best Posting Times */}
+      <BestTimesCard loading={timeLoading} postingTimes={postingTimes} />
 
       {/* Empty State */}
       {!loading && suggestions.length === 0 && (

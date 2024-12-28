@@ -9,6 +9,7 @@ import ContentIdeas from "./ContentIdeas";
 import ConnectInstagram from "../../components/instagram/ConnectInstagram";
 import InstagramConnection from "./InstagramConnection";
 import * as instagramService from "../../services/instagram.service";
+import ContentChat from "./ContentChat";
 
 const Dashboard = () => {
   const [profile, setProfile] = useState(null);
@@ -58,6 +59,7 @@ const Dashboard = () => {
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/posting-times" element={<PostingTimes />} />
         <Route path="/content-ideas" element={<ContentIdeas />} />
+        <Route path="/content-chat" element={<ContentChat />} />
       </Routes>
     </MainLayout>
   );

@@ -29,7 +29,7 @@ const SetupGuide = () => {
           </h4>
           <div className="ml-4 space-y-2 text-sm text-gray-600">
             <p>a. Open Instagram app and go to your profile</p>
-            <p>b. Tap Menu (≡) > Settings and privacy</p>
+            <p>b. Tap Menu (≡) `{'>'}` Settings and privacy</p>
             <p>c. Select 'Account'</p>
             <p>d. Tap 'Switch to Professional Account'</p>
             <p>e. Choose 'Business' as your account type</p>
@@ -74,7 +74,7 @@ const SetupGuide = () => {
               want to connect
             </p>
             <p>c. Click on the Page's profile picture in the top right</p>
-            <p>d. Go to "Settings and privacy" > "Settings"</p>
+            <p>d. Go to "Settings and privacy" `{'>'}` "Settings"</p>
             <p>
               e. In the left menu under "Permissions", click on "Connected
               accounts"

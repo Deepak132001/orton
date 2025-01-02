@@ -56,6 +56,34 @@ const Analytics = () => {
     return date.toLocaleDateString();
   };
 
+  // const calculateMetrics = (insights) => {
+  //   if (!insights?.recent_posts?.length)
+  //     return {
+  //       reach: 0,
+  //       engagement: 0,
+  //       impressions: 0,
+  //     };
+
+  //   const totalReach = insights.recent_posts.reduce(
+  //     (sum, post) => sum + (post.reach || 0),
+  //     0
+  //   );
+  //   const totalEngagement = insights.recent_posts.reduce(
+  //     (sum, post) => sum + (post.likes || 0) + (post.comments || 0),
+  //     0
+  //   );
+  //   const totalImpressions = insights.recent_posts.reduce(
+  //     (sum, post) => sum + (post.impressions || 0),
+  //     0
+  //   );
+
+  //   return {
+  //     reach: totalReach,
+  //     engagement: totalEngagement,
+  //     impressions: totalImpressions,
+  //     engagementRate: ((totalEngagement / totalReach) * 100).toFixed(2),
+  //   };
+  // };
   const calculateMetrics = (insights) => {
     if (!insights?.recent_posts?.length)
       return {
@@ -85,6 +113,7 @@ const Analytics = () => {
     };
   };
 
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
@@ -105,6 +134,8 @@ const Analytics = () => {
   const topPosts = [...(insights?.recent_posts || [])]
     .sort((a, b) => b.likes + b.comments - (a.likes + a.comments))
     .slice(0, 4);
+
+    const metrics = calculateMetrics(insights);
 
   return (
     <div className="space-y-6">
@@ -164,8 +195,22 @@ const Analytics = () => {
             </div>
           </div>
         </Card>
-
+        
         <Card className="p-6">
+  <div className="flex items-center">
+    <MessageCircle className="h-8 w-8 text-indigo-600" />
+    <div className="ml-4">
+      <p className="text-sm font-medium text-gray-500">Total Interactions</p>
+      <p className="mt-1 text-xl font-semibold text-gray-900">
+        {formatNumber(metrics.totalLikes + metrics.totalComments)}
+      </p>
+      {/* <p className="mt-1 text-sm text-gray-500">
+        {formatNumber(metrics.totalLikes)} likes • {formatNumber(metrics.totalComments)} comments
+      </p> */}
+    </div>
+  </div>
+</Card>
+        {/* <Card className="p-6">
           <div className="flex items-center">
             <MessageCircle className="h-8 w-8 text-indigo-600" />
             <div className="ml-4">
@@ -177,7 +222,7 @@ const Analytics = () => {
               </p>
             </div>
           </div>
-        </Card>
+        </Card> */}
       </div>
 
       {/* Top Performing Posts */}

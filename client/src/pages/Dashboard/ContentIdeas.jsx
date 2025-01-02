@@ -234,6 +234,7 @@ import { Wand2, Loader2, Copy, AlertCircle, Clock, Send } from 'lucide-react';
 import * as contentService from '../../services/content.service';
 import * as instagramService from '../../services/instagram.service';
 
+
 const ContentCard = ({ idea, onCopy }) => {
   return (
     <Card className="p-6">
@@ -421,6 +422,9 @@ const ContentIdeas = () => {
           ))
         ))}
       </div>
+
+      {/* Best Posting Times */}
+       {/* <BestTimesCard loading={timeLoading} postingTimes={postingTimes} /> */}
 
       {/* Empty State */}
       {!loading && suggestions.length === 0 && (

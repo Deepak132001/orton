@@ -9,18 +9,18 @@ import {
   RefreshCw,
   LogOut,
   Youtube,
-  ArrowRight,
 } from "lucide-react";
 import * as instagramService from "../../services/instagram.service";
 import { useNavigate } from "react-router-dom";
+
 
 const SetupGuide = () => {
   return (
     <Card className="p-6 mt-6">
       <h3 className="text-lg font-medium text-gray-900 mb-4">
-        How to Set Up Instagram Business Account
+        How to Connect Instagram Business Account
       </h3>
-
+      
       <div className="space-y-6">
         {/* Convert Personal to Business Account */}
         <div className="space-y-3">
@@ -46,82 +46,38 @@ const SetupGuide = () => {
             <p>b. Choose a Page name related to your Instagram account</p>
             <p>c. Select a business category</p>
             <p>d. Add a profile picture and cover photo</p>
-            <div className="mt-2">
-              <a
-                href="https://www.facebook.com/pages/create"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center text-indigo-600 hover:text-indigo-500"
-              >
-                Create Facebook Page <ArrowRight className="ml-1 h-4 w-4" />
-              </a>
-            </div>
           </div>
         </div>
 
-        {/* Connect Instagram to Facebook */}
+        {/* Connect Facebook to Instagram */}
         <div className="space-y-3">
           <h4 className="font-medium text-gray-800">
             3. Connect Instagram to Facebook Page
           </h4>
           <div className="ml-4 space-y-2 text-sm text-gray-600">
-            <p>
-              a. Log in to Facebook and click on your profile picture in the top
-              right
-            </p>
-            <p>
-              b. Click on "See all profiles" and select the Facebook Page you
-              want to connect
-            </p>
-            <p>c. Click on the Page's profile picture in the top right</p>
-            <p>d. Go to "Settings and privacy" `{'>'}` "Settings"</p>
-            <p>
-              e. In the left menu under "Permissions", click on "Connected
-              accounts"
-            </p>
-            <p>f. Find Instagram and click "View"</p>
-            <p>
-              g. Click "Connect account" and follow the prompts to connect your
-              Instagram Business account
-            </p>
-            <div className="mt-4 bg-blue-50 p-3 rounded-md">
-              <p className="text-blue-800 font-medium">Note:</p>
-              <ul className="list-disc ml-4 mt-2 text-blue-700">
-                <li>Make sure you have admin access to the Facebook Page</li>
-                <li>
-                  Your Instagram account must be converted to a Business account
-                  first
-                </li>
-                <li>
-                  You can manage comments and messages from both platforms after
-                  connecting
-                </li>
-              </ul>
-            </div>
+            <p>a. Go to your Instagram profile</p>
+            <p>b. Select 'Edit Profile'</p>
+            <p>c. Under 'Public Business Information', select 'Page'</p>
+            <p>d. Tap 'Continue' in the 'Connect or Create Facebook Page' popup</p>
+            <p>e. Log in to Facebook and choose your Page from the available options</p>
+            <p>f. Tap 'Connect' after selecting a Page or 'Create' after making a new Page</p>
           </div>
         </div>
 
         {/* Additional Resources */}
         <div className="mt-6 border-t pt-6">
-          <h4 className="font-medium text-gray-800 mb-3">Need More Help?</h4>
+          <h4 className="font-medium text-gray-800 mb-3">
+            Need More Help?
+          </h4>
           <div className="space-y-3">
-            <a
-              href="https://www.facebook.com/business/help/898752960195806"
-              target="_blank"
+            <a 
+              href="https://www.facebook.com/business/help/898752960195806" 
+              target="_blank" 
               rel="noopener noreferrer"
               className="flex items-center text-sm text-indigo-600 hover:text-indigo-500"
             >
               <Youtube className="h-4 w-4 mr-2" />
               Watch Tutorial: How to Set Up Instagram Business Account
-            </a>
-            <a
-              href="https://help.instagram.com/502981923235522"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center text-sm text-indigo-600 hover:text-indigo-500"
-            >
-              <AlertCircle className="h-4 w-4 mr-2" />
-              Official Instagram Business Account Guide
             </a>
           </div>
         </div>
@@ -129,6 +85,121 @@ const SetupGuide = () => {
     </Card>
   );
 };
+// const SetupGuide = () => {
+//   return (
+//     <Card className="p-6 mt-6">
+//       <h3 className="text-lg font-medium text-gray-900 mb-4">
+//         How to Set Up Instagram Business Account
+//       </h3>
+
+//       <div className="space-y-6">
+//         {/* Convert Personal to Business Account */}
+//         <div className="space-y-3">
+//           <h4 className="font-medium text-gray-800">
+//             1. Convert to Business Account
+//           </h4>
+//           <div className="ml-4 space-y-2 text-sm text-gray-600">
+//             <p>a. Open Instagram app and go to your profile</p>
+//             <p>b. Tap Menu (≡) `{'>'}` Settings and privacy</p>
+//             <p>c. Select 'Account'</p>
+//             <p>d. Tap 'Switch to Professional Account'</p>
+//             <p>e. Choose 'Business' as your account type</p>
+//           </div>
+//         </div>
+
+//         {/* Create Facebook Page */}
+//         <div className="space-y-3">
+//           <h4 className="font-medium text-gray-800">
+//             2. Create a Facebook Page
+//           </h4>
+//           <div className="ml-4 space-y-2 text-sm text-gray-600">
+//             <p>a. Go to Facebook and create a new Page</p>
+//             <p>b. Choose a Page name related to your Instagram account</p>
+//             <p>c. Select a business category</p>
+//             <p>d. Add a profile picture and cover photo</p>
+//             <div className="mt-2">
+//               <a
+//                 href="https://www.facebook.com/pages/create"
+//                 target="_blank"
+//                 rel="noopener noreferrer"
+//                 className="inline-flex items-center text-indigo-600 hover:text-indigo-500"
+//               >
+//                 Create Facebook Page <ArrowRight className="ml-1 h-4 w-4" />
+//               </a>
+//             </div>
+//           </div>
+//         </div>
+
+//         {/* Connect Instagram to Facebook */}
+//         <div className="space-y-3">
+//           <h4 className="font-medium text-gray-800">
+//             3. Connect Instagram to Facebook Page
+//           </h4>
+//           <div className="ml-4 space-y-2 text-sm text-gray-600">
+//             <p>
+//               a. Log in to Facebook and click on your profile picture in the top
+//               right
+//             </p>
+//             <p>
+//               b. Click on "See all profiles" and select the Facebook Page you
+//               want to connect
+//             </p>
+//             <p>c. Click on the Page's profile picture in the top right</p>
+//             <p>d. Go to "Settings and privacy" `{'>'}` "Settings"</p>
+//             <p>
+//               e. In the left menu under "Permissions", click on "Connected
+//               accounts"
+//             </p>
+//             <p>f. Find Instagram and click "View"</p>
+//             <p>
+//               g. Click "Connect account" and follow the prompts to connect your
+//               Instagram Business account
+//             </p>
+//             <div className="mt-4 bg-blue-50 p-3 rounded-md">
+//               <p className="text-blue-800 font-medium">Note:</p>
+//               <ul className="list-disc ml-4 mt-2 text-blue-700">
+//                 <li>Make sure you have admin access to the Facebook Page</li>
+//                 <li>
+//                   Your Instagram account must be converted to a Business account
+//                   first
+//                 </li>
+//                 <li>
+//                   You can manage comments and messages from both platforms after
+//                   connecting
+//                 </li>
+//               </ul>
+//             </div>
+//           </div>
+//         </div>
+
+//         {/* Additional Resources */}
+//         <div className="mt-6 border-t pt-6">
+//           <h4 className="font-medium text-gray-800 mb-3">Need More Help?</h4>
+//           <div className="space-y-3">
+//             <a
+//               href="https://www.facebook.com/business/help/898752960195806"
+//               target="_blank"
+//               rel="noopener noreferrer"
+//               className="flex items-center text-sm text-indigo-600 hover:text-indigo-500"
+//             >
+//               <Youtube className="h-4 w-4 mr-2" />
+//               Watch Tutorial: How to Set Up Instagram Business Account
+//             </a>
+//             <a
+//               href="https://help.instagram.com/502981923235522"
+//               target="_blank"
+//               rel="noopener noreferrer"
+//               className="flex items-center text-sm text-indigo-600 hover:text-indigo-500"
+//             >
+//               <AlertCircle className="h-4 w-4 mr-2" />
+//               Official Instagram Business Account Guide
+//             </a>
+//           </div>
+//         </div>
+//       </div>
+//     </Card>
+//   );
+// };
 
 const InstagramConnection = () => {
   const [status, setStatus] = useState({

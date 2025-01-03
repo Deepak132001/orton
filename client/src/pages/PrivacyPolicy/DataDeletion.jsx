@@ -1,143 +1,133 @@
-// frontend/src/pages/DataDeletion/index.jsx
-
+//frontend/src/pages/Legal/DataDeletion.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Trash2, AlertTriangle, ArrowRight, Mail, Phone } from 'lucide-react';
+import { ArrowLeft, Trash2, Shield, Clock, ExternalLink } from 'lucide-react';
 
 const DataDeletion = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white shadow">
-        <div className="max-w-5xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center">
-            <h1 className="text-3xl font-bold text-gray-900">Data Deletion Instructions</h1>
-            <Link 
-              to="/"
-              className="text-indigo-600 hover:text-indigo-500 font-medium"
-            >
-              Return to Home
-            </Link>
+      <header className="bg-white border-b">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <Link to="/" className="text-gray-500 hover:text-gray-700 mr-4">
+                <ArrowLeft className="w-6 h-6" />
+              </Link>
+              <h1 className="text-2xl font-bold text-gray-900">Data Deletion Instructions</h1>
+            </div>
+            <p className="text-sm text-gray-500">Last Updated: January 2024</p>
           </div>
-          <p className="mt-2 text-sm text-gray-600">Last Updated: December 28, 2024</p>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="max-w-5xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-        <div className="bg-white shadow rounded-lg p-6 space-y-8">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="bg-white shadow rounded-lg overflow-hidden">
           {/* Introduction */}
-          <section>
-            <h2 className="text-2xl font-semibold text-gray-900 mb-4">How to Delete Your Data</h2>
-            <p className="text-gray-700">
-              We respect your privacy and make it easy to delete your account and associated data from Orton AI. 
-              Follow the instructions below to remove your data from our systems.
-            </p>
-          </section>
+          <div className="p-6 border-b">
+            <div className="flex items-start">
+              <Shield className="w-6 h-6 text-blue-500 mt-1" />
+              <div className="ml-4">
+                <h2 className="text-lg font-medium text-gray-900">Your Data Privacy Matters</h2>
+                <p className="mt-1 text-gray-600">
+                  We respect your right to control your data. This guide explains how to delete your account 
+                  and associated data from Orton AI.
+                </p>
+              </div>
+            </div>
+          </div>
 
-          {/* Methods to Delete */}
-          <section>
-            <h3 className="text-xl font-semibold text-gray-900 mb-4">Methods to Request Deletion</h3>
+          {/* Deletion Methods */}
+          <div className="p-6 border-b bg-gray-50">
+            <h3 className="text-lg font-medium text-gray-900 mb-4">How to Delete Your Data</h3>
             
-            {/* Method 1: Self-Service */}
-            <div className="bg-gray-50 p-4 rounded-lg mb-4">
-              <h4 className="font-medium text-gray-900 mb-2">Method 1: Through Your Account (Recommended)</h4>
-              <ol className="list-decimal ml-6 space-y-2 text-gray-700">
-                <li>Log in to your account at ortonai.com</li>
-                <li>Navigate to Account Settings</li>
-                <li>Click on "Delete Account"</li>
-                <li>Follow the confirmation steps</li>
-              </ol>
-            </div>
+            <div className="space-y-6">
+              {/* Method 1 */}
+              <div className="bg-white rounded-lg p-4 shadow-sm">
+                <h4 className="font-medium text-gray-900 mb-2">1. Through Your Account (Recommended)</h4>
+                <ol className="list-decimal ml-5 space-y-2 text-gray-600">
+                  <li>Log in to your account</li>
+                  <li>Go to Settings {'>'} Account</li>
+                  <li>Click on "Delete My Account"</li>
+                  <li>Confirm your decision</li>
+                </ol>
+              </div>
 
-            {/* Method 2: Email */}
-            <div className="bg-gray-50 p-4 rounded-lg mb-4">
-              <h4 className="font-medium text-gray-900 mb-2">Method 2: Via Email</h4>
-              <p className="text-gray-700 mb-2">Send an email to support@ortonai.com with:</p>
-              <ul className="list-disc ml-6 space-y-2 text-gray-700">
-                <li>Subject: "Data Deletion Request"</li>
-                <li>Your registered email address</li>
-                <li>Account username</li>
-                <li>Brief reason for deletion (optional)</li>
-              </ul>
+              {/* Method 2 */}
+              <div className="bg-white rounded-lg p-4 shadow-sm">
+                <h4 className="font-medium text-gray-900 mb-2">2. Via Email Request</h4>
+                <div className="text-gray-600">
+                  <p>Send an email to support@ortonai.com with:</p>
+                  <ul className="list-disc ml-5 mt-2 space-y-1">
+                    <li>Subject: "Data Deletion Request"</li>
+                    <li>Your registered email</li>
+                    <li>Account username</li>
+                  </ul>
+                </div>
+              </div>
             </div>
-
-            {/* Method 3: Contact Form */}
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <h4 className="font-medium text-gray-900 mb-2">Method 3: Contact Form</h4>
-              <p className="text-gray-700 mb-2">Visit our contact page and submit a deletion request:</p>
-              <Link 
-                to="/contact" 
-                className="inline-flex items-center text-indigo-600 hover:text-indigo-500"
-              >
-                Go to Contact Form <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </div>
-          </section>
+          </div>
 
           {/* What Gets Deleted */}
-          <section>
-            <h3 className="text-xl font-semibold text-gray-900 mb-4">What Gets Deleted</h3>
-            <div className="space-y-3 text-gray-700">
-              <p>When you request deletion, we will remove:</p>
-              <ul className="list-disc ml-6 space-y-2">
-                <li>Your account information and profile data</li>
-                <li>Your social media connections and integration data</li>
-                <li>Analytics and insights data associated with your account</li>
-                <li>Content generated through our platform</li>
-                <li>Usage history and preferences</li>
-              </ul>
+          <div className="p-6 border-b">
+            <div className="flex items-start">
+              <Trash2 className="w-6 h-6 text-red-500 mt-1" />
+              <div className="ml-4">
+                <h3 className="text-lg font-medium text-gray-900">What Gets Deleted</h3>
+                <ul className="mt-2 space-y-2 text-gray-600">
+                  <li>✓ Account information and profile data</li>
+                  <li>✓ Generated content and analytics</li>
+                  <li>✓ Social media connections</li>
+                  <li>✓ Usage history and preferences</li>
+                  <li>✓ All stored media files</li>
+                </ul>
+              </div>
             </div>
-          </section>
+          </div>
 
           {/* Deletion Timeline */}
-          <section>
-            <h3 className="text-xl font-semibold text-gray-900 mb-4">Deletion Timeline</h3>
-            <div className="bg-blue-50 p-4 rounded-lg">
-              <ul className="space-y-2 text-blue-800">
-                <li>Account deactivation: Immediate</li>
-                <li>Personal data deletion: Within 30 days</li>
-                <li>Backup data removal: Within 90 days</li>
-              </ul>
-            </div>
-          </section>
-
-          {/* Important Notes */}
-          <section>
-            <h3 className="text-xl font-semibold text-gray-900 mb-4">Important Notes</h3>
-            <div className="bg-yellow-50 p-4 rounded-lg space-y-3 text-yellow-800">
-              <div className="flex items-start">
-                <AlertTriangle className="h-5 w-5 mt-0.5 mr-2 flex-shrink-0" />
-                <p>Account deletion is permanent and cannot be undone.</p>
-              </div>
-              <div className="flex items-start">
-                <AlertTriangle className="h-5 w-5 mt-0.5 mr-2 flex-shrink-0" />
-                <p>Download any important data before requesting deletion.</p>
-              </div>
-              <div className="flex items-start">
-                <AlertTriangle className="h-5 w-5 mt-0.5 mr-2 flex-shrink-0" />
-                <p>Content shared on social media platforms remains subject to those platforms' policies.</p>
-              </div>
-            </div>
-          </section>
-
-          {/* Contact Information */}
-          <section>
-            <h3 className="text-xl font-semibold text-gray-900 mb-4">Need Help?</h3>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <p className="text-gray-700 mb-4">If you need assistance with data deletion, contact us:</p>
-              <div className="space-y-2">
-                <div className="flex items-center">
-                  <Mail className="h-5 w-5 mr-2 text-gray-500" />
-                  <span className="text-gray-700">support@ortonai.com</span>
-                </div>
-                <div className="flex items-center">
-                  <Phone className="h-5 w-5 mr-2 text-gray-500" />
-                  <span className="text-gray-700">[Your Support Phone Number]</span>
+          <div className="p-6 border-b bg-gray-50">
+            <div className="flex items-start">
+              <Clock className="w-6 h-6 text-green-500 mt-1" />
+              <div className="ml-4">
+                <h3 className="text-lg font-medium text-gray-900">Deletion Timeline</h3>
+                <div className="mt-2 space-y-2 text-gray-600">
+                  <div className="flex items-center">
+                    <div className="w-24">Immediate:</div>
+                    <div>Account deactivation</div>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="w-24">30 days:</div>
+                    <div>Permanent data deletion</div>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="w-24">90 days:</div>
+                    <div>Backup data removal</div>
+                  </div>
                 </div>
               </div>
             </div>
-          </section>
+          </div>
+
+          {/* Additional Information */}
+          <div className="p-6">
+            <h3 className="text-lg font-medium text-gray-900 mb-4">Important Notes</h3>
+            <div className="space-y-4 text-gray-600">
+              <p>• Account deletion is permanent and cannot be undone</p>
+              <p>• Download any important data before requesting deletion</p>
+              <p>• Content shared on social media platforms remains subject to their policies</p>
+              <p>• Certain data may be retained for legal compliance</p>
+            </div>
+
+            <div className="mt-8 p-4 bg-blue-50 rounded-lg">
+              <h4 className="font-medium text-blue-900 mb-2">Need Help?</h4>
+              <p className="text-blue-700">
+                If you need assistance with data deletion, contact our support team at{' '}
+                <a href="mailto:support@ortonai.com" className="underline">support@ortonai.com</a>
+              </p>
+            </div>
+          </div>
         </div>
       </main>
     </div>

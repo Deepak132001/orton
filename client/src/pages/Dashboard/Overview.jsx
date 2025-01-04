@@ -1,14 +1,156 @@
 import { useState, useEffect } from "react";
 import { Card } from "../../components/ui/card";
-import {
-  RefreshCw,
-  AlertCircle,
+import { 
+  Instagram, 
+  Clock, 
+  Wand2, 
+  ArrowRight, 
+  BarChart,
+  MessageSquare,
   Users,
   Eye,
   Heart,
+  RefreshCw,
   MessageCircle,
-} from "lucide-react";
+} from 'lucide-react';
+import {Link} from 'react-router-dom'
 import * as instagramService from "../../services/instagram.service";
+
+const TutorialStep = ({ number, title, description, icon: Icon, link, linkText }) => (
+  <div className="relative pb-12 last:pb-0">
+    <div className="absolute left-8 top-8 -bottom-4 w-0.5 bg-indigo-100 last:hidden"></div>
+    
+    <div className="relative flex items-start group">
+      <div className="flex items-center justify-center flex-shrink-0 w-16 h-16 rounded-full bg-indigo-100 text-indigo-600 group-hover:bg-indigo-200 transition-colors">
+        {Icon && <Icon className="w-8 h-8" />}
+      </div>
+      
+      <div className="ml-6">
+        <h3 className="text-lg font-medium text-gray-900 mb-2">{title}</h3>
+        <div className="prose text-gray-600 mb-4">
+          {description}
+        </div>
+        {link && (
+          <Link
+            to={link}
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            {linkText} <ArrowRight className="ml-2 w-4 h-4" />
+          </Link>
+        )}
+      </div>
+    </div>
+  </div>
+);
+
+const TutorialView = () => (
+  <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="text-center mb-12">
+      <h1 className="text-3xl font-extrabold text-gray-900 mb-4">
+        Welcome to Orton AI
+      </h1>
+      <p className="text-lg text-gray-600">
+        Follow these steps to optimize your Instagram content
+      </p>
+    </div>
+
+    <Card className="p-8">
+      {/* Step 1: Instagram Connection */}
+      <TutorialStep
+        icon={Instagram}
+        title="1. Connect Your Instagram Business Account"
+        description={
+          <div className="space-y-2">
+            <p>First, let's connect your Instagram. You'll need:</p>
+            <ul className="list-disc pl-5 space-y-1">
+              <li>An Instagram Business or Creator account</li>
+              <li>A Facebook Page connected to your Instagram</li>
+              <li>Admin access to the Facebook Page</li>
+            </ul>
+          </div>
+        }
+        link="/dashboard/instagram-connection"
+        linkText="Connect Instagram"
+      />
+
+      {/* Step 2: Best Times */}
+      <TutorialStep
+        icon={Clock}
+        title="2. Check Your Best Posting Times"
+        description={
+          <div className="space-y-2">
+            <p>After connecting, visit the Posting Times page to:</p>
+            <ul className="list-disc pl-5 space-y-1">
+              <li>Find when your audience is most active</li>
+              <li>Get optimal posting time recommendations</li>
+              <li>View engagement patterns by day and hour</li>
+            </ul>
+          </div>
+        }
+        link="/dashboard/posting-times"
+        linkText="View Best Times"
+      />
+
+      {/* Step 3: Content Generation */}
+      <TutorialStep
+        icon={Wand2}
+        title="3. Generate Engaging Content"
+        description={
+          <div className="space-y-2">
+            <p>Create content tailored to your brand:</p>
+            <ol className="list-decimal pl-5 space-y-1">
+              <li>Go to Content Ideas</li>
+              <li>Select your content type (Reel, Story, or Post)</li>
+              <li>Click "Generate Ideas"</li>
+              <li>Get captions and hashtags automatically</li>
+            </ol>
+          </div>
+        }
+        link="/dashboard/content-ideas"
+        linkText="Create Content"
+      />
+
+      {/* Step 4: Analytics */}
+      <TutorialStep
+        icon={BarChart}
+        title="4. Track Your Performance"
+        description={
+          <div className="space-y-2">
+            <p>Monitor your growth and engagement:</p>
+            <ul className="list-disc pl-5 space-y-1">
+              <li>See follower growth trends</li>
+              <li>Track engagement rates</li>
+              <li>Identify your best content</li>
+              <li>Analyze audience behavior</li>
+            </ul>
+          </div>
+        }
+        link="/dashboard/analytics"
+        linkText="View Analytics"
+      />
+
+      {/* Step 5: Content Chat */}
+      <TutorialStep
+        icon={MessageSquare}
+        title="5. Customize Your Content"
+        description={
+          <div className="space-y-2">
+            <p>Use our AI chat assistant to:</p>
+            <ul className="list-disc pl-5 space-y-1">
+              <li>Get personalized content ideas</li>
+              <li>Refine generated content</li>
+              <li>Request specific content types</li>
+              <li>Get creative inspiration</li>
+            </ul>
+          </div>
+        }
+        link="/dashboard/content-chat"
+        linkText="Start Chat"
+      />
+    </Card>
+  </div>
+);
+
 
 const Overview = ({ profile }) => {
   const [insights, setInsights] = useState(null);
@@ -51,17 +193,20 @@ const Overview = ({ profile }) => {
     return `${Math.floor(seconds / 86400)}d ago`;
   };
 
+  // if (!profile) {
+  //   return (
+  //     <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+  //       <div className="flex">
+  //         <AlertCircle className="h-5 w-5 text-yellow-400" />
+  //         <p className="ml-3 text-sm text-yellow-700">
+  //           Please connect your Instagram account to view insights
+  //         </p>
+  //       </div>
+  //     </div>
+  //   );
+  // }
   if (!profile) {
-    return (
-      <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4">
-        <div className="flex">
-          <AlertCircle className="h-5 w-5 text-yellow-400" />
-          <p className="ml-3 text-sm text-yellow-700">
-            Please connect your Instagram account to view insights
-          </p>
-        </div>
-      </div>
-    );
+    return <TutorialView />;
   }
 
   if (loading) {

@@ -139,6 +139,7 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline';
 import { Instagram, } from 'lucide-react';
+import Footer from './Footer';
 
 const MainLayout = ({ children }) => {
   const { logout } = useAuth();
@@ -234,16 +235,16 @@ const MainLayout = ({ children }) => {
             <Bars3Icon className="h-6 w-6" />
           </button>
           <div className="flex-1 px-4 flex justify-end">
+          <button
+              className="ml-4 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 rounded-md"
+            >
+              <Link to={'/privacy'}>Privacy Policy</Link>
+            </button>
             <button
               onClick={logout}
               className="ml-4 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 rounded-md"
             >
               Logout
-            </button>
-            <button
-              className="ml-4 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 rounded-md"
-            >
-              <Link to={'/privacy'}>Privacy Policy</Link>
             </button>
           </div>
         </div>
@@ -254,6 +255,7 @@ const MainLayout = ({ children }) => {
               {children}
             </div>
           </div>
+          <Footer />
         </main>
       </div>
     </div>

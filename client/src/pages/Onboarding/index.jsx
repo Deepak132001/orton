@@ -13,7 +13,7 @@ const Onboarding = () => {
           <Instagram className="w-16 h-16 text-pink-600" />
         </div>
         <h2 className="mt-6 text-center text-3xl font-bold text-gray-900">
-          Welcome to Instagram Twin
+          Welcome to Orton AI
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600">
           Let's get you started by connecting your Instagram account

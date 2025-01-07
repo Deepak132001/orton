@@ -7,23 +7,23 @@ export const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isNewUser, setIsNewUser] = useState(false);
+  // const [isNewUser, setIsNewUser] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     const userData = localStorage.getItem('user');
-    const newUser = localStorage.getItem('isNewUser');
+    // const newUser = localStorage.getItem('isNewUser');
     
     if (token && userData) {
       setUser(JSON.parse(userData));
-      setIsNewUser(newUser === 'true');
+      // setIsNewUser(newUser === 'true');
     }
     setLoading(false);
   }, []);
 
   const login = (userData, token) => {
     setUser(userData);
-    setIsNewUser(false);
+    // setIsNewUser(false);
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(userData));
     localStorage.setItem('isNewUser', 'false');
@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = (userData, token) => {
     setUser(userData);
-    setIsNewUser(true);
+    // setIsNewUser(true);
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(userData));
     localStorage.setItem('isNewUser', 'true');
@@ -39,14 +39,14 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     setUser(null);
-    setIsNewUser(false);
+    // setIsNewUser(false);
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     localStorage.removeItem('isNewUser');
   };
 
   const clearNewUserFlag = () => {
-    setIsNewUser(false);
+    // setIsNewUser(false);
     localStorage.setItem('isNewUser', 'false');
   };
 
@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }) => {
         logout, 
         register,
         loading,
-        isNewUser,
+        // isNewUser,
         clearNewUserFlag
       }}
     >

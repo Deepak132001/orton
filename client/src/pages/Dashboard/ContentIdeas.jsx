@@ -230,7 +230,7 @@
 //frontend/src/pages/Dashboard/ContentIdeas.jsx
 import { useState, useEffect } from 'react';
 import { Card } from '../../components/ui/card';
-import { Wand2, Loader2, Copy, AlertCircle, Clock, Send } from 'lucide-react';
+import { Wand2, Loader2, Copy, AlertCircle, } from 'lucide-react';
 import * as contentService from '../../services/content.service';
 import * as instagramService from '../../services/instagram.service';
 

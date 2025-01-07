@@ -17,7 +17,7 @@ const RedirectBasedOnAuth = () => {
   const { user, isNewUser } = useAuth();
   
   if (!user) return <Navigate to="/login" />;
-  if (isNewUser) return <Navigate to="/onboarding" />;
+  // if (isNewUser) return <Navigate to="/onboarding" />;
   return <Navigate to="/dashboard" />;
 };
 
@@ -31,11 +31,11 @@ function App() {
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<TermsAndConditions />} />
           <Route path="/data" element={<DataDeletion />} />
-          <Route path="/onboarding" element={
+          {/* <Route path="/onboarding" element={
             <PrivateRoute>
               <Onboarding />
             </PrivateRoute>
-          } />
+          } /> */}
           <Route path="/dashboard/*" element={
             <PrivateRoute>
               <Dashboard />

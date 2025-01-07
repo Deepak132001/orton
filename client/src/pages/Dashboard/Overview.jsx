@@ -12,6 +12,7 @@ import {
   Heart,
   RefreshCw,
   MessageCircle,
+  AlertCircle
 } from 'lucide-react';
 import {Link} from 'react-router-dom'
 import * as instagramService from "../../services/instagram.service";
@@ -193,18 +194,6 @@ const Overview = ({ profile }) => {
     return `${Math.floor(seconds / 86400)}d ago`;
   };
 
-  // if (!profile) {
-  //   return (
-  //     <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4">
-  //       <div className="flex">
-  //         <AlertCircle className="h-5 w-5 text-yellow-400" />
-  //         <p className="ml-3 text-sm text-yellow-700">
-  //           Please connect your Instagram account to view insights
-  //         </p>
-  //       </div>
-  //     </div>
-  //   );
-  // }
   if (!profile) {
     return <TutorialView />;
   }

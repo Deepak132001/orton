@@ -347,7 +347,7 @@ const ContentIdeas = () => {
       setSuggestions([newIdea]);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to generate new content');
-      console.error('Failed to generate idea:', err);
+      // console.error('Failed to generate idea:', err);
     } finally {
       setLoading(false);
     }
@@ -358,7 +358,7 @@ const ContentIdeas = () => {
       await navigator.clipboard.writeText(text);
       // Optionally add a toast notification here
     } catch (err) {
-      console.error('Failed to copy:', err);
+      // console.error('Failed to copy:', err);
     }
   };
 

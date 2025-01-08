@@ -1,79 +1,104 @@
 import api from './api';
 
 export const connectInstagramAccount = async (accessToken) => {
-  try {
-    const response = await api.post('/instagram/connect', { accessToken });
-    return response.data;
-  } catch (error) {
-    console.error('Instagram Connect Error:', {
-      message: error.response?.data?.message,
-      details: error.response?.data?.details,
-      error: error.response?.data
-    });
-    throw error;
-  }
+  const response = await api.post('/instagram/connect', { accessToken });
+  return response.data;
 };
+// export const connectInstagramAccount = async (accessToken) => {
+//   try {
+//     const response = await api.post('/instagram/connect', { accessToken });
+//     return response.data;
+//   } catch (error) {
+//     console.error('Instagram Connect Error:'
+//     //   {
+//     //   message: error.response?.data?.message,
+//     //   details: error.response?.data?.details,
+//     //   error: error.response?.data
+//     // });
+//     )
+//     throw error;
+//   }
+// };
 
 export const getInstagramProfile = async () => {
-  try {
-    console.log('Fetching Instagram profile...');
-    const response = await api.get('/instagram/profile');
-    console.log('Profile response:', response.data);
-    return response.data;
-  } catch (error) {
-    console.error('Get Profile Error:', {
-      message: error.response?.data?.message,
-      details: error.response?.data?.details,
-      error: error.response?.data
-    });
-    throw error;
-  }
+  const response = await api.get('/instagram/profile');
+  return response.data;
 };
+// export const getInstagramProfile = async () => {
+//   try {
+//     // console.log('Fetching Instagram profile...');
+//     const response = await api.get('/instagram/profile');
+//     // console.log('Profile response:', response.data);
+//     return response.data;
+//   } catch (error) {
+//     console.error('Get Profile Error:'
+//     //   {
+//     //   message: error.response?.data?.message,
+//     //   details: error.response?.data?.details,
+//     //   error: error.response?.data
+//     // }
+//   );
+//     throw error;
+//   }
+// };
 
 export const getInstagramInsights = async () => {
-  try {
-    console.log('Fetching Instagram insights...');
-    const response = await api.get('/instagram/insights');
-    console.log('Insights response:', response.data);
-    return response.data;
-  } catch (error) {
-    console.error('Get Insights Error:', {
-      message: error.response?.data?.message,
-      details: error.response?.data?.details,
-      error: error.response?.data
-    });
-    throw error;
-  }
+  const response = await api.get('/instagram/insights');
+  return response.data;
 };
+// export const getInstagramInsights = async () => {
+//   try {
+//     // console.log('Fetching Instagram insights...');
+//     const response = await api.get('/instagram/insights');
+//     // console.log('Insights response:', response.data);
+//     return response.data;
+//   } catch (error) {
+//     console.error('Get Insights Error:', {
+//       message: error.response?.data?.message,
+//       details: error.response?.data?.details,
+      
+//     });
+//     throw error;
+//   }
+// };
 
 export const disconnectInstagramAccount = async () => {
-  try {
-    const response = await api.post('/instagram/disconnect');
-    console.log('Disconnect response:', response.data);
-    return response.data;
-  } catch (error) {
-    console.error('Disconnect Error:', error.response?.data);
-    throw error;
-  }
+  const response = await api.post('/instagram/disconnect');
+  return response.data;
 };
+// export const disconnectInstagramAccount = async () => {
+//   try {
+//     const response = await api.post('/instagram/disconnect');
+//     // console.log('Disconnect response:', response.data);
+//     return response.data;
+//   } catch (error) {
+//     console.error('Disconnect Error:', error.response?.data)
+//     throw error;
+//   }
+// };
 
 export const getBestPostingTimes = async () => {
-  try {
-    console.log('Fetching best posting times...');
-    const response = await api.get('/posting/best-times');
-    console.log('Best posting times response:', response.data);
-    return response.data;
-  } catch (error) {
-    console.error('Get Best Posting Times Error:', {
-      message: error.response?.data?.message,
-      details: error.response?.data?.details,
-      error: error.response?.data
-    });
-    throw error;
-  }
+  const response = await api.get('/posting/best-times');
+  return response.data;
 };
+// export const getBestPostingTimes = async () => {
+//   try {
+//     console.log('Fetching best posting times...');
+//     const response = await api.get('/posting/best-times');
+//     console.log('Best posting times response:', response.data);
+//     return response.data;
+//   } catch (error) {
+//     console.error('Get Best Posting Times Error:', {
+//       message: error.response?.data?.message,
+//       details: error.response?.data?.details,
+//       error: error.response?.data
+//     });
+//     throw error;
+//   }
+// };
 
 // Additional helper functions for data formatting
+
 export const formatEngagementRate = (rate) => {
   return typeof rate === 'number' ? `${rate.toFixed(2)}%` : '0%';
 };

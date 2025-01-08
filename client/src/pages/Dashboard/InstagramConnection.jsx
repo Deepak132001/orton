@@ -11,7 +11,6 @@ import {
   Youtube,
 } from "lucide-react";
 import * as instagramService from "../../services/instagram.service";
-import { useNavigate } from "react-router-dom";
 
 
 const SetupGuide = () => {
@@ -93,7 +92,6 @@ const InstagramConnection = () => {
     error: null,
     details: null,
   });
-  const navigate = useNavigate();
 
   useEffect(() => {
     checkConnectionStatus();
@@ -109,10 +107,10 @@ const InstagramConnection = () => {
         details: data,
       });
     } catch (error) {
-      console.log("Connection status error:", {
-        message: error.response?.data?.message,
-        details: error.response?.data?.details,
-      });
+      // console.log("Connection status error:", {
+      //   message: error.response?.data?.message,
+      //   details: error.response?.data?.details,
+      // });
 
       setStatus({
         loading: false,
@@ -141,7 +139,7 @@ const InstagramConnection = () => {
           instagramService
             .connectInstagramAccount(response.authResponse.accessToken)
             .then((result) => {
-              console.log("Connection result:", result);
+              // console.log("Connection result:", result);
               setStatus({
                 loading: false,
                 connected: true,
@@ -154,7 +152,7 @@ const InstagramConnection = () => {
               }, 1000);
             })
             .catch((error) => {
-              console.error("Connection error:", error.response?.data);
+              // console.error("Connection error:", error.response?.data);
               setStatus({
                 loading: false,
                 connected: false,

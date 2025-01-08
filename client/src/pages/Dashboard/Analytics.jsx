@@ -33,10 +33,10 @@ const Analytics = () => {
     try {
       setLoading(true);
       const data = await instagramService.getInstagramInsights();
-      console.log("Fetched insights:", data);
+      // console.log("Fetched insights:", data);
       setInsights(data);
     } catch (error) {
-      console.error("Failed to fetch analytics:", error);
+      // console.error("Failed to fetch analytics:", error);
       setError(error.response?.data?.message || "Failed to load analytics");
     } finally {
       setLoading(false);
@@ -56,34 +56,6 @@ const Analytics = () => {
     return date.toLocaleDateString();
   };
 
-  // const calculateMetrics = (insights) => {
-  //   if (!insights?.recent_posts?.length)
-  //     return {
-  //       reach: 0,
-  //       engagement: 0,
-  //       impressions: 0,
-  //     };
-
-  //   const totalReach = insights.recent_posts.reduce(
-  //     (sum, post) => sum + (post.reach || 0),
-  //     0
-  //   );
-  //   const totalEngagement = insights.recent_posts.reduce(
-  //     (sum, post) => sum + (post.likes || 0) + (post.comments || 0),
-  //     0
-  //   );
-  //   const totalImpressions = insights.recent_posts.reduce(
-  //     (sum, post) => sum + (post.impressions || 0),
-  //     0
-  //   );
-
-  //   return {
-  //     reach: totalReach,
-  //     engagement: totalEngagement,
-  //     impressions: totalImpressions,
-  //     engagementRate: ((totalEngagement / totalReach) * 100).toFixed(2),
-  //   };
-  // };
   const calculateMetrics = (insights) => {
     if (!insights?.recent_posts?.length)
       return {
@@ -142,15 +114,6 @@ const Analytics = () => {
       {/* Header with Date Range Selector */}
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-gray-900">Analytics Overview</h1>
-        {/* <select
-          value={dateRange}
-          onChange={(e) => setDateRange(e.value)}
-          className="block w-32 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-        >
-          <option value="7d">Last 7 days</option>
-          <option value="30d">Last 30 days</option>
-          <option value="90d">Last 90 days</option>
-        </select> */}
       </div>
 
       {/* Key Metrics */}

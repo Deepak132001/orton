@@ -5,7 +5,6 @@ import { AuthProvider } from './contexts/AuthContext';
 import PrivateRoute from './components/common/PrivateRoute';
 import LoginPage from './pages/Auth/Login';
 import RegisterPage from './pages/Auth/Register';
-import Onboarding from './pages/Onboarding';
 import Dashboard from './pages/Dashboard';
 import NotFound from './pages/NotFound';
 import useAuth from './hooks/useAuth';

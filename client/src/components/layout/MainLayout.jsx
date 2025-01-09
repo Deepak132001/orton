@@ -11,7 +11,7 @@ import {
 } from "@heroicons/react/24/outline";
 import Footer from "./Footer";
 import { Instagram } from "lucide-react";
-import NotificationCenter from "../notifications/NotificationCenter";
+// import NotificationCenter from "../notifications/NotificationCenter";
 import logo from "../../assets/logo.png";
 
 const MainLayout = ({ children }) => {
@@ -116,7 +116,7 @@ const MainLayout = ({ children }) => {
           </Link>
 
           {/* Add notification center to header */}
-          <div className="flex-1 px-4 flex items-center justify-end">
+          {/* <div className="flex-1 px-4 flex items-center justify-end">
             <div className="ml-4 flex items-center md:ml-6">
               <NotificationCenter />
 
@@ -127,7 +127,7 @@ const MainLayout = ({ children }) => {
                 Logout
               </button>
             </div>
-          </div>
+          </div> */}
         </div>
 
         <main className="flex-1 relative overflow-y-auto focus:outline-none">

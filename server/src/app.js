@@ -12,8 +12,8 @@ import instagramRoutes from './routes/instagram.routes.js';
 import userRoutes from './routes/user.routes.js';
 import postingRoutes from './routes/posting.routes.js';
 import contentRoutes from './routes/content.routes.js';
-import initializeCronJobs from './services/cron.service.js';
-import notificationRoutes from './routes/notification.routes.js';
+// import initializeCronJobs from './services/cron.service.js';
+// import notificationRoutes from './routes/notification.routes.js';
 
 import { errorHandler } from './middleware/error.middleware.js';
 
@@ -76,7 +76,7 @@ app.use('/api/instagram', instagramRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/posting', postingRoutes);
 app.use('/api/content', contentRoutes);
-app.use('/api/notifications', notificationRoutes);
+// app.use('/api/notifications', notificationRoutes);
 
 // Error handling middleware
 app.use(errorHandler);
@@ -153,7 +153,7 @@ const startServer = async () => {
   try {
     await connectDB();
 
-    initializeCronJobs();
+    // initializeCronJobs();
     await dropOldIndexes();
     
     const PORT = process.env.PORT || 5000;

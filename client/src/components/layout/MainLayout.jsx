@@ -2,10 +2,10 @@
 // import { useState } from 'react';
 // import { Link, useNavigate } from 'react-router-dom';
 // import useAuth from '../../hooks/useAuth';
-// import { 
-//   HomeIcon, 
-//   ChartBarIcon, 
-//   ClockIcon, 
+// import {
+//   HomeIcon,
+//   ChartBarIcon,
+//   ClockIcon,
 //   LightBulbIcon,
 //   Bars3Icon,
 //   XMarkIcon,
@@ -37,7 +37,7 @@
 //     <div className="h-screen flex overflow-hidden bg-gray-100">
 //       {/* Mobile sidebar backdrop */}
 //       {sidebarOpen && (
-//         <div 
+//         <div
 //           className="fixed inset-0 z-40 bg-gray-600 bg-opacity-75 lg:hidden"
 //           onClick={() => setSidebarOpen(false)}
 //         />
@@ -45,14 +45,14 @@
 
 //       {/* Mobile sidebar */}
 //       <div className={`
-//         fixed inset-y-0 left-0 z-50 w-64 
-//         transition duration-300 ease-in-out transform 
+//         fixed inset-y-0 left-0 z-50 w-64
+//         transition duration-300 ease-in-out transform
 //         lg:hidden ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
 //         bg-white
 //       `}>
 //         <div className="flex items-center justify-between h-16 px-4 border-b">
 //           <h1 className="text-xl font-semibold">Orton AI</h1>
-//           <button 
+//           <button
 //             onClick={() => setSidebarOpen(false)}
 //             className="p-2 rounded-md hover:bg-gray-100"
 //           >
@@ -138,50 +138,65 @@
 // export default MainLayout;
 
 // frontend/src/components/layout/MainLayout.jsx
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import useAuth from '../../hooks/useAuth';
-import { 
-  HomeIcon, 
-  ChartBarIcon, 
-  ClockIcon, 
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
+import {
+  HomeIcon,
+  ChartBarIcon,
+  ClockIcon,
   LightBulbIcon,
   Bars3Icon,
   XMarkIcon,
-} from '@heroicons/react/24/outline';
-import Footer from './Footer';
-import { Instagram, Bell } from 'lucide-react';
-import NotificationCenter from '../notifications/NotificationCenter';
+} from "@heroicons/react/24/outline";
+import Footer from "./Footer";
+import { Instagram } from "lucide-react";
+import NotificationCenter from "../notifications/NotificationCenter";
+import logo from "../../assets/logo.png";
 
 const MainLayout = ({ children }) => {
   const { logout } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const navigation = [
-    { name: 'Overview', href: '/dashboard', icon: HomeIcon },
-    { name: 'Instagram Connection', href: '/dashboard/instagram-connection', icon: Instagram },
-    { name: 'Analytics', href: '/dashboard/analytics', icon: ChartBarIcon },
-    { name: 'Posting Times', href: '/dashboard/posting-times', icon: ClockIcon },
-    { name: 'Content Ideas', href: '/dashboard/content-ideas', icon: LightBulbIcon },
+    { name: "Overview", href: "/dashboard", icon: HomeIcon },
+    {
+      name: "Instagram Connection",
+      href: "/dashboard/instagram-connection",
+      icon: Instagram,
+    },
+    { name: "Analytics", href: "/dashboard/analytics", icon: ChartBarIcon },
+    {
+      name: "Posting Times",
+      href: "/dashboard/posting-times",
+      icon: ClockIcon,
+    },
+    {
+      name: "Content Ideas",
+      href: "/dashboard/content-ideas",
+      icon: LightBulbIcon,
+    },
   ];
 
   return (
     <div className="h-screen flex overflow-hidden bg-gray-100">
       {/* Mobile sidebar backdrop */}
       {sidebarOpen && (
-        <div 
+        <div
           className="fixed inset-0 z-40 bg-gray-600 bg-opacity-75 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
       {/* Mobile sidebar */}
-      <div className={`
+      <div
+        className={`
         fixed inset-y-0 left-0 z-50 w-64 
         transition duration-300 ease-in-out transform 
-        lg:hidden ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
+        lg:hidden ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
         bg-white
-      `}>
+      `}
+      >
         <div className="flex items-center justify-between h-16 px-4 border-b">
           <h1 className="text-xl font-semibold">Orton AI</h1>
           <button onClick={() => setSidebarOpen(false)}>
@@ -236,25 +251,21 @@ const MainLayout = ({ children }) => {
           >
             <Bars3Icon className="h-6 w-6" />
           </button>
-          
+          <Link to={"/dashboard"}>
+            <img src={logo} alt="Logo" className="h-10 w-10 mt-3 ml-3" />
+          </Link>
+
           {/* Add notification center to header */}
           <div className="flex-1 px-4 flex items-center justify-end">
             <div className="ml-4 flex items-center md:ml-6">
               <NotificationCenter />
-              
+
               <button
                 onClick={logout}
                 className="ml-4 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 rounded-md"
               >
                 Logout
               </button>
-              
-              {/* <Link
-                to="/privacy"
-                className="ml-4 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 rounded-md"
-              >
-                Privacy Policy
-              </Link> */}
             </div>
           </div>
         </div>
@@ -265,7 +276,7 @@ const MainLayout = ({ children }) => {
               {children}
             </div>
           </div>
-            <Footer />
+          <Footer />
         </main>
       </div>
     </div>

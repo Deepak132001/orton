@@ -71,7 +71,7 @@ const Footer = () => {
             </h3>
             <ul className="mt-4 space-y-3">
               <li>
-                <Link to="/privacy-policy" className="text-base text-gray-600 hover:text-gray-900">
+                <Link to="/privacy" className="text-base text-gray-600 hover:text-gray-900">
                   Privacy Policy
                 </Link>
               </li>
@@ -81,7 +81,7 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/data-deletion" className="text-base text-gray-600 hover:text-gray-900">
+                <Link to="/data" className="text-base text-gray-600 hover:text-gray-900">
                   Data Deletion
                 </Link>
               </li>
@@ -145,10 +145,10 @@ const Footer = () => {
               <Link to="/terms" className="text-sm text-gray-500 hover:text-gray-900">
                 Terms
               </Link>
-              <Link to="/privacy-policy" className="text-sm text-gray-500 hover:text-gray-900">
+              <Link to="/privacy" className="text-sm text-gray-500 hover:text-gray-900">
                 Privacy
               </Link>
-              <Link to="/data-deletion" className="text-sm text-gray-500 hover:text-gray-900">
+              <Link to="/data" className="text-sm text-gray-500 hover:text-gray-900">
                 Data Deletion
               </Link>
             </div>

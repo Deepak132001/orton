@@ -1,6 +1,6 @@
-// // client/src/components/layout/MainLayout.jsx
+// // frontend/src/components/layout/MainLayout.jsx
 // import { useState } from 'react';
-// import { Link } from 'react-router-dom';
+// import { Link, useNavigate } from 'react-router-dom';
 // import useAuth from '../../hooks/useAuth';
 // import { 
 //   HomeIcon, 
@@ -8,13 +8,16 @@
 //   ClockIcon, 
 //   LightBulbIcon,
 //   Bars3Icon,
-//   XMarkIcon
+//   XMarkIcon,
 // } from '@heroicons/react/24/outline';
-// import { Instagram, MessageSquare } from 'lucide-react';
+// import { Instagram, Bell } from 'lucide-react';
+// import Footer from './Footer';
+// import NotificationCenter from '../notifications/NotificationCenter';
 
 // const MainLayout = ({ children }) => {
 //   const { logout } = useAuth();
 //   const [sidebarOpen, setSidebarOpen] = useState(false);
+//   const navigate = useNavigate();
 
 //   const navigation = [
 //     { name: 'Overview', href: '/dashboard', icon: HomeIcon },
@@ -24,6 +27,11 @@
 //     { name: 'Content Ideas', href: '/dashboard/content-ideas', icon: LightBulbIcon },
 //     // { name: 'Content Chat', href: '/dashboard/content-chat', icon: MessageSquare },
 //   ];
+
+//   const handleNavigation = (href) => {
+//     setSidebarOpen(false); // Close sidebar
+//     navigate(href);
+//   };
 
 //   return (
 //     <div className="h-screen flex overflow-hidden bg-gray-100">
@@ -44,20 +52,23 @@
 //       `}>
 //         <div className="flex items-center justify-between h-16 px-4 border-b">
 //           <h1 className="text-xl font-semibold">Orton AI</h1>
-//           <button onClick={() => setSidebarOpen(false)}>
+//           <button 
+//             onClick={() => setSidebarOpen(false)}
+//             className="p-2 rounded-md hover:bg-gray-100"
+//           >
 //             <XMarkIcon className="w-6 h-6" />
 //           </button>
 //         </div>
 //         <nav className="mt-5 px-2 space-y-1">
 //           {navigation.map((item) => (
-//             <Link
+//             <button
 //               key={item.name}
-//               to={item.href}
-//               className="group flex items-center px-2 py-2 text-base font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+//               onClick={() => handleNavigation(item.href)}
+//               className="group flex items-center w-full px-2 py-2 text-base font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900"
 //             >
 //               <item.icon className="mr-4 h-6 w-6" />
 //               {item.name}
-//             </Link>
+//             </button>
 //           ))}
 //         </nav>
 //       </div>
@@ -97,18 +108,17 @@
 //             <Bars3Icon className="h-6 w-6" />
 //           </button>
 //           <div className="flex-1 px-4 flex justify-end">
+//           <button
+//               className="ml-4 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 rounded-md"
+//             >
+//               <Link to={'/privacy'}>Privacy Policy</Link>
+//             </button>
 //             <button
 //               onClick={logout}
 //               className="ml-4 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 rounded-md"
 //             >
 //               Logout
 //             </button>
-//             <button
-//               className="ml-4 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 rounded-md"
-//             >
-//               <Link to={'/privacy'}>Privacy Policy</Link>
-//             </button>
-            
 //           </div>
 //         </div>
 
@@ -118,6 +128,7 @@
 //               {children}
 //             </div>
 //           </div>
+//           <Footer />
 //         </main>
 //       </div>
 //     </div>
@@ -127,8 +138,8 @@
 // export default MainLayout;
 
 // frontend/src/components/layout/MainLayout.jsx
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import { 
   HomeIcon, 
@@ -138,13 +149,13 @@ import {
   Bars3Icon,
   XMarkIcon,
 } from '@heroicons/react/24/outline';
-import { Instagram, } from 'lucide-react';
 import Footer from './Footer';
+import { Instagram, Bell } from 'lucide-react';
+import NotificationCenter from '../notifications/NotificationCenter';
 
 const MainLayout = ({ children }) => {
   const { logout } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const navigate = useNavigate();
 
   const navigation = [
     { name: 'Overview', href: '/dashboard', icon: HomeIcon },
@@ -152,13 +163,7 @@ const MainLayout = ({ children }) => {
     { name: 'Analytics', href: '/dashboard/analytics', icon: ChartBarIcon },
     { name: 'Posting Times', href: '/dashboard/posting-times', icon: ClockIcon },
     { name: 'Content Ideas', href: '/dashboard/content-ideas', icon: LightBulbIcon },
-    // { name: 'Content Chat', href: '/dashboard/content-chat', icon: MessageSquare },
   ];
-
-  const handleNavigation = (href) => {
-    setSidebarOpen(false); // Close sidebar
-    navigate(href);
-  };
 
   return (
     <div className="h-screen flex overflow-hidden bg-gray-100">
@@ -179,23 +184,20 @@ const MainLayout = ({ children }) => {
       `}>
         <div className="flex items-center justify-between h-16 px-4 border-b">
           <h1 className="text-xl font-semibold">Orton AI</h1>
-          <button 
-            onClick={() => setSidebarOpen(false)}
-            className="p-2 rounded-md hover:bg-gray-100"
-          >
+          <button onClick={() => setSidebarOpen(false)}>
             <XMarkIcon className="w-6 h-6" />
           </button>
         </div>
         <nav className="mt-5 px-2 space-y-1">
           {navigation.map((item) => (
-            <button
+            <Link
               key={item.name}
-              onClick={() => handleNavigation(item.href)}
-              className="group flex items-center w-full px-2 py-2 text-base font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+              to={item.href}
+              className="group flex items-center px-2 py-2 text-base font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900"
             >
               <item.icon className="mr-4 h-6 w-6" />
               {item.name}
-            </button>
+            </Link>
           ))}
         </nav>
       </div>
@@ -234,18 +236,26 @@ const MainLayout = ({ children }) => {
           >
             <Bars3Icon className="h-6 w-6" />
           </button>
-          <div className="flex-1 px-4 flex justify-end">
-          <button
-              className="ml-4 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 rounded-md"
-            >
-              <Link to={'/privacy'}>Privacy Policy</Link>
-            </button>
-            <button
-              onClick={logout}
-              className="ml-4 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 rounded-md"
-            >
-              Logout
-            </button>
+          
+          {/* Add notification center to header */}
+          <div className="flex-1 px-4 flex items-center justify-end">
+            <div className="ml-4 flex items-center md:ml-6">
+              <NotificationCenter />
+              
+              <button
+                onClick={logout}
+                className="ml-4 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 rounded-md"
+              >
+                Logout
+              </button>
+              
+              {/* <Link
+                to="/privacy"
+                className="ml-4 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 rounded-md"
+              >
+                Privacy Policy
+              </Link> */}
+            </div>
           </div>
         </div>
 
@@ -255,7 +265,7 @@ const MainLayout = ({ children }) => {
               {children}
             </div>
           </div>
-          <Footer />
+            <Footer />
         </main>
       </div>
     </div>

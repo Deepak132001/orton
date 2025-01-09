@@ -15,34 +15,29 @@ export const getNotifications = async (req, res, next) => {
   }
 };
 
-// Mark single notification as read
 export const markAsRead = async (req, res, next) => {
   try {
-    const notification = await Notification.findOneAndUpdate(
-      { _id: req.params.notificationId, userId: req.user._id },
-      { read: true },
-      { new: true }
-    );
+    // Instead of updating, we'll delete the notification
+    const notification = await Notification.findOneAndDelete({
+      _id: req.params.notificationId,
+      userId: req.user._id
+    });
 
     if (!notification) {
       return res.status(404).json({ message: 'Notification not found' });
     }
 
-    res.json(notification);
+    res.json({ message: 'Notification deleted successfully' });
   } catch (error) {
     next(error);
   }
 };
 
-// Mark all notifications as read
 export const markAllAsRead = async (req, res, next) => {
   try {
-    await Notification.updateMany(
-      { userId: req.user._id, read: false },
-      { read: true }
-    );
-
-    res.json({ message: 'All notifications marked as read' });
+    // Delete all notifications for the user
+    await Notification.deleteMany({ userId: req.user._id });
+    res.json({ message: 'All notifications deleted' });
   } catch (error) {
     next(error);
   }

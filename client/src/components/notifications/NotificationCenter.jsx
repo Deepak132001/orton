@@ -55,9 +55,8 @@ const NotificationCenter = () => {
   const handleMarkAsRead = async (notificationId) => {
     try {
       await notificationService.markAsRead(notificationId);
-      setNotifications(notifications.map(n => 
-        n._id === notificationId ? { ...n, read: true } : n
-      ));
+      // Remove the notification from state
+      setNotifications(notifications.filter(n => n._id !== notificationId));
       setUnreadCount(prev => Math.max(0, prev - 1));
     } catch (err) {
       console.error('Failed to mark notification as read:', err);
@@ -67,7 +66,8 @@ const NotificationCenter = () => {
   const handleMarkAllAsRead = async () => {
     try {
       await notificationService.markAllAsRead();
-      setNotifications(notifications.map(n => ({ ...n, read: true })));
+      // Clear all notifications from state
+      setNotifications([]);
       setUnreadCount(0);
     } catch (err) {
       console.error('Failed to mark all notifications as read:', err);

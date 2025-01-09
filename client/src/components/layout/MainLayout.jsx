@@ -116,9 +116,8 @@ const MainLayout = ({ children }) => {
           </Link>
 
           {/* Add notification center to header */}
-          {/* <div className="flex-1 px-4 flex items-center justify-end">
+          <div className="flex-1 px-4 flex items-center justify-end">
             <div className="ml-4 flex items-center md:ml-6">
-              <NotificationCenter />
 
               <button
                 onClick={logout}
@@ -127,7 +126,7 @@ const MainLayout = ({ children }) => {
                 Logout
               </button>
             </div>
-          </div> */}
+          </div>
         </div>
 
         <main className="flex-1 relative overflow-y-auto focus:outline-none">

@@ -45,6 +45,7 @@ app.use(helmet({
 // CORS configuration
 const allowedOrigins = [
   'https://ortonai.com',
+  'https://www.ortonai.com',
   'http://localhost:3000',
   'http://localhost:5173'
 ];

@@ -2,6 +2,7 @@
 
 import jwt from 'jsonwebtoken';
 import { User } from '../models/user.model.js';
+// import { createTestNotifications } from '../services/notification.service.js';
 
 export const register = async (req, res, next) => {
   try {
@@ -42,6 +43,15 @@ export const register = async (req, res, next) => {
       process.env.JWT_SECRET,
       { expiresIn: '90d' }
     );
+
+    // Create test notifications for new user
+    // try {
+    //   await createTestNotifications(user._id);
+    // } catch (notificationError) {
+    //   console.error('Error creating test notifications:', notificationError);
+    //   // Continue with registration even if notifications fail
+    // }
+
 
     res.status(201).json({
       message: 'User registered successfully',
@@ -106,6 +116,15 @@ export const login = async (req, res, next) => {
       process.env.JWT_SECRET,
       { expiresIn: '90d' }
     );
+
+    // Create test notifications after successful login
+    // try {
+    //   await createTestNotifications(user._id);
+    // } catch (notificationError) {
+    //   console.error('Error creating test notifications:', notificationError);
+    //   // Continue with login even if notifications fail
+    // }
+
 
     res.json({
       message: 'Login successful',

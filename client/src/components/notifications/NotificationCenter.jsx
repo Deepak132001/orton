@@ -88,7 +88,7 @@ const NotificationCenter = () => {
       {isOpen && (
         <div
           ref={dropdownRef}
-          className="absolute right-0 mt-2 w-80 sm:w-96 origin-top-right rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white"
+          className="absolute right-[-80px] mt-2 w-80 sm:w-96 origin-top-right rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white"
           style={{ 
             maxWidth: 'calc(100vw - 2rem)',
             maxHeight: 'calc(100vh - 200px)',

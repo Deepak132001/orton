@@ -235,38 +235,100 @@ import * as contentService from '../../services/content.service';
 import * as instagramService from '../../services/instagram.service';
 
 
+// const ContentCard = ({ idea, onCopy }) => {
+//   return (
+//     <Card className="p-6">
+//       <div className="space-y-4">
+//         {/* Title */}
+//         <div className="flex justify-between items-start">
+//           <h3 className="text-lg font-medium text-gray-900">{idea.title}</h3>
+//           <div className="flex gap-2">
+//             <button
+//               onClick={() => onCopy(idea.content)}
+//               className="p-1 text-gray-400 hover:text-gray-600"
+//               title="Copy content"
+//             >
+//               <Copy className="h-5 w-5" />
+//             </button>
+//           </div>
+//         </div>
+
+//         {/* Content */}
+//         <div className="space-y-4">
+//           {/* Main Content */}
+//           <div>
+//             <h4 className="text-sm font-medium text-gray-900 mb-2">Content</h4>
+//             <div className="bg-gray-50 rounded-lg p-4">
+//               <p className="text-gray-600 whitespace-pre-line">{idea.content}</p>
+//             </div>
+//           </div>
+
+//           {/* Caption */}
+//           <div>
+//             <div className="flex justify-between items-center mb-2">
+//               <h4 className="text-sm font-medium text-gray-900">Caption</h4>
+//               <button
+//                 onClick={() => onCopy(idea.caption)}
+//                 className="text-sm text-indigo-600 hover:text-indigo-500 flex items-center"
+//               >
+//                 <Copy className="h-4 w-4 mr-1" /> Copy Caption
+//               </button>
+//             </div>
+//             <div className="bg-white border border-gray-200 rounded-lg p-4">
+//               <p className="text-gray-600 whitespace-pre-line">{idea.caption}</p>
+//             </div>
+//           </div>
+
+//           {/* Hashtags */}
+//           <div>
+//             <div className="flex justify-between items-center mb-2">
+//               <h4 className="text-sm font-medium text-gray-900">Hashtags</h4>
+//               <button
+//                 onClick={() => onCopy(idea.hashtags.map(tag => `#${tag}`).join(' '))}
+//                 className="text-sm text-indigo-600 hover:text-indigo-500 flex items-center"
+//               >
+//                 <Copy className="h-4 w-4 mr-1" /> Copy Hashtags
+//               </button>
+//             </div>
+//             <div className="flex flex-wrap gap-2">
+//               {idea.hashtags?.map((tag, tagIndex) => (
+//                 <span
+//                   key={tagIndex}
+//                   className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800"
+//                 >
+//                   #{tag}
+//                 </span>
+//               ))}
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </Card>
+//   );
+// };
 const ContentCard = ({ idea, onCopy }) => {
   return (
     <Card className="p-6">
-      <div className="space-y-4">
+      <div className="space-y-6">
         {/* Title */}
-        <div className="flex justify-between items-start">
-          <h3 className="text-lg font-medium text-gray-900">{idea.title}</h3>
-          <div className="flex gap-2">
-            <button
-              onClick={() => onCopy(idea.content)}
-              className="p-1 text-gray-400 hover:text-gray-600"
-              title="Copy content"
-            >
-              <Copy className="h-5 w-5" />
-            </button>
-          </div>
+        <div className="border-b pb-4">
+          <h3 className="text-xl font-bold text-gray-900">{idea.title}</h3>
         </div>
 
-        {/* Content */}
-        <div className="space-y-4">
-          {/* Main Content */}
+        {/* Strategy Content */}
+        <div className="space-y-6">
+          {/* Trading Strategy */}
           <div>
-            <h4 className="text-sm font-medium text-gray-900 mb-2">Content</h4>
+            {/* <h4 className="text-lg font-semibold text-gray-900 mb-3">Trading Strategy Details:</h4> */}
             <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-gray-600 whitespace-pre-line">{idea.content}</p>
+              <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: idea.content }} />
             </div>
           </div>
 
-          {/* Caption */}
-          <div>
+          {/* Caption Box */}
+          <div className="border rounded-lg p-4">
             <div className="flex justify-between items-center mb-2">
-              <h4 className="text-sm font-medium text-gray-900">Caption</h4>
+              <h4 className="text-lg font-semibold text-gray-900">Caption:</h4>
               <button
                 onClick={() => onCopy(idea.caption)}
                 className="text-sm text-indigo-600 hover:text-indigo-500 flex items-center"
@@ -274,15 +336,13 @@ const ContentCard = ({ idea, onCopy }) => {
                 <Copy className="h-4 w-4 mr-1" /> Copy Caption
               </button>
             </div>
-            <div className="bg-white border border-gray-200 rounded-lg p-4">
-              <p className="text-gray-600 whitespace-pre-line">{idea.caption}</p>
-            </div>
+            <p className="text-gray-600 whitespace-pre-line">{idea.caption}</p>
           </div>
 
           {/* Hashtags */}
-          <div>
+          <div className="border rounded-lg p-4">
             <div className="flex justify-between items-center mb-2">
-              <h4 className="text-sm font-medium text-gray-900">Hashtags</h4>
+              <h4 className="text-lg font-semibold text-gray-900">Hashtags:</h4>
               <button
                 onClick={() => onCopy(idea.hashtags.map(tag => `#${tag}`).join(' '))}
                 className="text-sm text-indigo-600 hover:text-indigo-500 flex items-center"

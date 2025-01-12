@@ -1,67 +1,136 @@
-// // client/src/pages/Dashboard/ContentIdeas.jsx
-
 // import { useState, useEffect } from 'react';
-// import { Card } from '../../components/ui/card';
-// import { Wand2, Loader2, Copy, AlertCircle, Clock } from 'lucide-react';
+// import { Card } from '@/components/ui/card';
+// import { Wand2, Loader2, Copy, AlertCircle } from 'lucide-react';
 // import * as contentService from '../../services/content.service';
 // import * as instagramService from '../../services/instagram.service';
 
-// const BestTimesCard = ({ loading, postingTimes }) => {
-//   const getDayName = (day) => {
-//     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-//     return days[day];
+// // ContentCard component embedded within ContentIdeas
+// const ContentCard = ({ idea, onCopy }) => {
+//   // Helper function to format content sections
+//   const formatContentSection = (content) => {
+//     if (!content) return [];
+//     try {
+//       return content
+//         .split('\n')
+//         .filter(line => line.trim().length > 0)
+//         .map(line => line.trim());
+//     } catch (error) {
+//       console.error('Error formatting content:', error);
+//       return [];
+//     }
 //   };
 
-//   const formatTime = (hour) => {
-//     const ampm = hour >= 12 ? 'PM' : 'AM';
-//     const formattedHour = hour % 12 || 12;
-//     return `${formattedHour}:00 ${ampm}`;
+//   // Safely access and format sections
+//   const sections = {
+//     mainContent: formatContentSection(idea?.mainContent || idea?.content),
+//     visualGuide: formatContentSection(idea?.visualGuide),
+//     caption: idea?.caption ? (
+//       Array.isArray(idea.caption) ? idea.caption : idea.caption.split('\n\n')
+//     ) : [],
+//     hashtags: Array.isArray(idea?.hashtags) ? idea.hashtags : []
 //   };
-
-//   if (loading) {
-//     return (
-//       <Card className="p-6">
-//         <div className="animate-pulse space-y-4">
-//           <div className="h-4 bg-gray-200 rounded w-1/4"></div>
-//           <div className="space-y-2">
-//             <div className="h-4 bg-gray-200 rounded"></div>
-//             <div className="h-4 bg-gray-200 rounded"></div>
-//             <div className="h-4 bg-gray-200 rounded"></div>
-//           </div>
-//         </div>
-//       </Card>
-//     );
-//   }
 
 //   return (
-//     <Card className="p-6">
-//       <div className="flex items-center gap-2 mb-4">
-//         <Clock className="h-5 w-5 text-indigo-600" />
-//         <h3 className="text-lg font-medium text-gray-900">Best Times to Post</h3>
-//       </div>
-//       <div className="space-y-4">
-//         {postingTimes?.bestHours?.slice(0, 3).map((time, index) => (
-//           <div 
-//             key={index}
-//             className="flex justify-between items-center p-3 bg-indigo-50 rounded-lg"
-//           >
-//             <div>
-//               <span className="text-indigo-900 font-medium">
-//                 {formatTime(time.hour)}
-//               </span>
-//               <p className="text-sm text-indigo-600">
-//                 {`${time.engagement.toFixed(1)}% engagement`}
-//               </p>
+//     <Card className="p-6 bg-white shadow-sm">
+//       <div className="space-y-6">
+//         {/* Title */}
+//         <div className="border-b pb-4">
+//           <h3 className="text-xl font-bold text-gray-900">
+//             {idea?.title ? idea.title.split(':').pop().trim() : 'Content Idea'}
+//           </h3>
+//         </div>
+
+//         {/* Main Content Section */}
+//         <div className="space-y-6">
+//           {/* Content Details */}
+//           {sections.mainContent.length > 0 && (
+//             <div className="bg-gray-50 rounded-lg p-4">
+//               <h4 className="text-lg font-semibold text-gray-900 mb-3">Content Details</h4>
+//               <div className="space-y-4">
+//                 {sections.mainContent.map((point, index) => (
+//                   <div key={index} className="ml-4">
+//                     {point.startsWith('•') || point.startsWith('-') ? (
+//                       <p className="text-gray-700">{point}</p>
+//                     ) : (
+//                       <h5 className="font-medium text-gray-800 mt-3">{point}</h5>
+//                     )}
+//                   </div>
+//                 ))}
+//               </div>
 //             </div>
-//             <div className="text-sm text-indigo-600">
-//               {postingTimes?.bestDays?.[index] && 
-//                 `Best on ${getDayName(postingTimes.bestDays[index].day)}`}
+//           )}
+
+//           {/* Visual Guidelines */}
+//           {sections.visualGuide.length > 0 && (
+//             <div className="bg-gray-50 rounded-lg p-4">
+//               <h4 className="text-lg font-semibold text-gray-900 mb-3">Visual Guidelines</h4>
+//               <div className="space-y-2">
+//                 {sections.visualGuide.map((point, index) => (
+//                   <p key={index} className="text-gray-700 ml-4">{point}</p>
+//                 ))}
+//               </div>
 //             </div>
-//           </div>
-//         ))}
-//         <p className="text-sm text-gray-500 mt-2">
-//           Based on your audience engagement patterns
-//         </p>
+//           )}
+
+//           {/* Caption Blocks */}
+//           {sections.caption.length > 0 && (
+//             <div className="border rounded-lg p-4 bg-white">
+//               <div className="flex justify-between items-center mb-3">
+//                 <h4 className="text-lg font-semibold text-gray-900">Captions</h4>
+//                 <button
+//                   onClick={() => onCopy(sections.caption.join('\n\n'))}
+//                   className="text-sm text-indigo-600 hover:text-indigo-500 flex items-center gap-1 px-2 py-1 rounded hover:bg-indigo-50 transition-colors"
+//                 >
+//                   <Copy className="h-4 w-4" />
+//                   <span>Copy All</span>
+//                 </button>
+//               </div>
+//               <div className="space-y-4">
+//                 {sections.caption.map((caption, index) => (
+//                   <div key={index} className="border rounded p-3 bg-gray-50">
+//                     <div className="flex justify-between items-start mb-2">
+//                       <span className="text-sm font-medium text-gray-600">Version {index + 1}</span>
+//                       <button
+//                         onClick={() => onCopy(caption)}
+//                         className="text-sm text-indigo-600 hover:text-indigo-500 flex items-center gap-1"
+//                       >
+//                         <Copy className="h-3 w-3" />
+//                         <span>Copy</span>
+//                       </button>
+//                     </div>
+//                     <p className="text-gray-700 whitespace-pre-line">{caption}</p>
+//                   </div>
+//                 ))}
+//               </div>
+//             </div>
+//           )}
+
+//           {/* Hashtags */}
+//           {sections.hashtags.length > 0 && (
+//             <div className="border rounded-lg p-4 bg-white">
+//               <div className="flex justify-between items-center mb-2">
+//                 <h4 className="text-lg font-semibold text-gray-900">Hashtags</h4>
+//                 <button
+//                   onClick={() => onCopy(sections.hashtags.map(tag => `#${tag}`).join(' '))}
+//                   className="text-sm text-indigo-600 hover:text-indigo-500 flex items-center gap-1 px-2 py-1 rounded hover:bg-indigo-50 transition-colors"
+//                 >
+//                   <Copy className="h-4 w-4" />
+//                   <span>Copy</span>
+//                 </button>
+//               </div>
+//               <div className="flex flex-wrap gap-2">
+//                 {sections.hashtags.map((tag, tagIndex) => (
+//                   <span
+//                     key={tagIndex}
+//                     className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800 hover:bg-indigo-200 transition-colors"
+//                   >
+//                     #{tag}
+//                   </span>
+//                 ))}
+//               </div>
+//             </div>
+//           )}
+//         </div>
 //       </div>
 //     </Card>
 //   );
@@ -104,10 +173,10 @@
 //       setLoading(true);
 //       setError('');
 //       const newIdea = await contentService.generateContentIdea(contentType);
+//       console.log('Generated idea:', newIdea); // Debug log
 //       setSuggestions([newIdea]);
 //     } catch (err) {
 //       setError(err.response?.data?.message || 'Failed to generate new content');
-//       console.error('Failed to generate idea:', err);
 //     } finally {
 //       setLoading(false);
 //     }
@@ -116,6 +185,7 @@
 //   const handleCopy = async (text) => {
 //     try {
 //       await navigator.clipboard.writeText(text);
+//       // Optionally add a toast notification here
 //     } catch (err) {
 //       console.error('Failed to copy:', err);
 //     }
@@ -123,15 +193,15 @@
 
 //   return (
 //     <div className="space-y-6">
-//       {/* Header Section */}
+//       {/* Header */}
 //       <div className="bg-white rounded-lg shadow-sm p-6">
 //         <h1 className="text-2xl font-bold text-gray-900">Content Ideas</h1>
 //         <p className="mt-2 text-gray-600">
-//           Generate AI-powered content ideas with optimal posting times
+//           Generate AI-powered content ideas with captions and hashtags
 //         </p>
 //       </div>
 
-//       {/* Controls Section */}
+//       {/* Controls */}
 //       <div className="flex flex-col sm:flex-row justify-between gap-4">
 //         <select
 //           value={contentType}
@@ -171,45 +241,23 @@
 
 //       {/* Content Ideas */}
 //       <div className="space-y-6">
-//         {suggestions.map((suggestion) => (
-//           suggestion.ideas?.map((idea, index) => (
-//             <Card key={idea.id || index} className="p-6">
-//               <div className="space-y-4">
-//                 <div className="flex justify-between items-start">
-//                   <h3 className="text-lg font-medium text-gray-900">{idea.title}</h3>
-//                   <button
-//                     onClick={() => handleCopy(idea.content)}
-//                     className="p-1 text-gray-400 hover:text-gray-600"
-//                     title="Copy content"
-//                   >
-//                     <Copy className="h-5 w-5" />
-//                   </button>
-//                 </div>
+//         {suggestions.map((suggestion, index) => {
+//           // Handle both array and single object responses
+//           const ideas = Array.isArray(suggestion?.ideas) 
+//             ? suggestion.ideas 
+//             : Array.isArray(suggestion) 
+//               ? suggestion 
+//               : [suggestion];
 
-//                 <p className="text-gray-600 whitespace-pre-line">{idea.content}</p>
-
-//                 {/* Hashtags */}
-//                 <div className="space-y-2">
-//                   <h4 className="text-sm font-medium text-gray-900">Trending Hashtags</h4>
-//                   <div className="flex flex-wrap gap-2">
-//                     {idea.hashtags?.map((tag, tagIndex) => (
-//                       <span
-//                         key={tagIndex}
-//                         className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800"
-//                       >
-//                         #{tag}
-//                       </span>
-//                     ))}
-//                   </div>
-//                 </div>
-//               </div>
-//             </Card>
-//           ))
-//         ))}
+//           return ideas.map((idea, ideaIndex) => (
+//             <ContentCard 
+//               key={idea.id || `${index}-${ideaIndex}`} 
+//               idea={idea} 
+//               onCopy={handleCopy}
+//             />
+//           ));
+//         })}
 //       </div>
-
-//       {/* Best Posting Times */}
-//       <BestTimesCard loading={timeLoading} postingTimes={postingTimes} />
 
 //       {/* Empty State */}
 //       {!loading && suggestions.length === 0 && (
@@ -227,122 +275,141 @@
 
 // export default ContentIdeas;
 
-//frontend/src/pages/Dashboard/ContentIdeas.jsx
 import { useState, useEffect } from 'react';
-import { Card } from '../../components/ui/card';
-import { Wand2, Loader2, Copy, AlertCircle, } from 'lucide-react';
+import { Card } from '@/components/ui/card';
+import { Wand2, Loader2, Copy, AlertCircle } from 'lucide-react';
 import * as contentService from '../../services/content.service';
 import * as instagramService from '../../services/instagram.service';
 
+// Helper function to format content sections
+const formatContentSection = (content) => {
+  if (!content) return [];
+  try {
+    return content
+      .split('\n')
+      .filter(line => line.trim().length > 0)
+      .map(line => line.trim());
+  } catch (error) {
+    console.error('Error formatting content:', error);
+    return [];
+  }
+};
 
-// const ContentCard = ({ idea, onCopy }) => {
-//   return (
-//     <Card className="p-6">
-//       <div className="space-y-4">
-//         {/* Title */}
-//         <div className="flex justify-between items-start">
-//           <h3 className="text-lg font-medium text-gray-900">{idea.title}</h3>
-//           <div className="flex gap-2">
-//             <button
-//               onClick={() => onCopy(idea.content)}
-//               className="p-1 text-gray-400 hover:text-gray-600"
-//               title="Copy content"
-//             >
-//               <Copy className="h-5 w-5" />
-//             </button>
-//           </div>
-//         </div>
+// Helper function to format captions
+const formatCaptions = (caption) => {
+  if (!caption) return [];
+  if (Array.isArray(caption)) return caption;
+  if (typeof caption === 'string') {
+    // Try to split by double newlines first
+    const splitByDoubleNewline = caption.split('\n\n').filter(c => c.trim());
+    if (splitByDoubleNewline.length > 1) return splitByDoubleNewline;
+    
+    // If no double newlines, try single newlines
+    const splitByNewline = caption.split('\n').filter(c => c.trim());
+    if (splitByNewline.length > 1) return splitByNewline;
+    
+    // If still no splits, return as single caption
+    return [caption];
+  }
+  return [];
+};
 
-//         {/* Content */}
-//         <div className="space-y-4">
-//           {/* Main Content */}
-//           <div>
-//             <h4 className="text-sm font-medium text-gray-900 mb-2">Content</h4>
-//             <div className="bg-gray-50 rounded-lg p-4">
-//               <p className="text-gray-600 whitespace-pre-line">{idea.content}</p>
-//             </div>
-//           </div>
-
-//           {/* Caption */}
-//           <div>
-//             <div className="flex justify-between items-center mb-2">
-//               <h4 className="text-sm font-medium text-gray-900">Caption</h4>
-//               <button
-//                 onClick={() => onCopy(idea.caption)}
-//                 className="text-sm text-indigo-600 hover:text-indigo-500 flex items-center"
-//               >
-//                 <Copy className="h-4 w-4 mr-1" /> Copy Caption
-//               </button>
-//             </div>
-//             <div className="bg-white border border-gray-200 rounded-lg p-4">
-//               <p className="text-gray-600 whitespace-pre-line">{idea.caption}</p>
-//             </div>
-//           </div>
-
-//           {/* Hashtags */}
-//           <div>
-//             <div className="flex justify-between items-center mb-2">
-//               <h4 className="text-sm font-medium text-gray-900">Hashtags</h4>
-//               <button
-//                 onClick={() => onCopy(idea.hashtags.map(tag => `#${tag}`).join(' '))}
-//                 className="text-sm text-indigo-600 hover:text-indigo-500 flex items-center"
-//               >
-//                 <Copy className="h-4 w-4 mr-1" /> Copy Hashtags
-//               </button>
-//             </div>
-//             <div className="flex flex-wrap gap-2">
-//               {idea.hashtags?.map((tag, tagIndex) => (
-//                 <span
-//                   key={tagIndex}
-//                   className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800"
-//                 >
-//                   #{tag}
-//                 </span>
-//               ))}
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </Card>
-//   );
-// };
 const ContentCard = ({ idea, onCopy }) => {
+  // Debug log to see what data we're receiving
+  console.log('Received idea:', idea);
+
+  // Helper function to format content sections
+  const formatContentSection = (content) => {
+    if (!content) return [];
+    try {
+      return content
+        .split('\n')
+        .filter(line => line.trim().length > 0)
+        .map(line => line.trim());
+    } catch (error) {
+      console.error('Error formatting content:', error);
+      return [];
+    }
+  };
+
+  // Helper function to ensure captions is always an array
+  const formatCaptions = (captions) => {
+    if (!captions) return [];
+    if (Array.isArray(captions)) return captions;
+    if (typeof captions === 'string') return [captions];
+    return [];
+  };
+
+  const sections = {
+    mainContent: formatContentSection(idea?.content),
+    captions: formatCaptions(idea?.caption)
+  };
+
   return (
-    <Card className="p-6">
+    <Card className="p-6 bg-white shadow-sm">
       <div className="space-y-6">
         {/* Title */}
         <div className="border-b pb-4">
-          <h3 className="text-xl font-bold text-gray-900">{idea.title}</h3>
+          <h3 className="text-xl font-bold text-gray-900">
+            {idea?.title ? idea.title.split(':').pop().trim() : 'Content Idea'}
+          </h3>
         </div>
 
-        {/* Strategy Content */}
+        {/* Main Content Section */}
         <div className="space-y-6">
-          {/* Trading Strategy */}
-          <div>
-            {/* <h4 className="text-lg font-semibold text-gray-900 mb-3">Trading Strategy Details:</h4> */}
+          {/* Content Details */}
+          {sections.mainContent.length > 0 && (
             <div className="bg-gray-50 rounded-lg p-4">
-              <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: idea.content }} />
+              <h4 className="text-lg font-semibold text-gray-900 mb-3">Content Details</h4>
+              <div className="space-y-4">
+                {sections.mainContent.map((point, index) => (
+                  <div key={index} className="ml-4">
+                    {point.startsWith('•') || point.startsWith('-') ? (
+                      <p className="text-gray-700">{point}</p>
+                    ) : (
+                      <h5 className="font-medium text-gray-800 mt-3">{point}</h5>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
-          {/* Caption Box */}
+          {/* Captions */}
           <div className="border rounded-lg p-4">
-            <div className="flex justify-between items-center mb-2">
-              <h4 className="text-lg font-semibold text-gray-900">Caption:</h4>
+            <div className="flex justify-between items-center mb-3">
+              <h4 className="text-lg font-semibold text-gray-900">Captions</h4>
               <button
-                onClick={() => onCopy(idea.caption)}
-                className="text-sm text-indigo-600 hover:text-indigo-500 flex items-center"
+                onClick={() => onCopy(sections.captions.join('\n\n'))}
+                className="text-sm text-indigo-600 hover:text-indigo-500 flex items-center gap-1 px-2 py-1 rounded hover:bg-indigo-50 transition-colors"
               >
-                <Copy className="h-4 w-4 mr-1" /> Copy Caption
+                <Copy className="h-4 w-4" />
+                <span>Copy All</span>
               </button>
             </div>
-            <p className="text-gray-600 whitespace-pre-line">{idea.caption}</p>
+            <div className="space-y-4">
+              {sections.captions.map((caption, index) => (
+                <div key={index} className="bg-gray-50 rounded p-4">
+                  <div className="flex justify-between items-start mb-2">
+                    <span className="text-sm font-medium text-gray-600">Version {index + 1}</span>
+                    <button
+                      onClick={() => onCopy(caption)}
+                      className="text-sm text-indigo-600 hover:text-indigo-500 flex items-center gap-1"
+                    >
+                      <Copy className="h-3 w-3" />
+                      <span>Copy</span>
+                    </button>
+                  </div>
+                  <p className="text-gray-700 whitespace-pre-line">{caption}</p>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Hashtags */}
           <div className="border rounded-lg p-4">
             <div className="flex justify-between items-center mb-2">
-              <h4 className="text-lg font-semibold text-gray-900">Hashtags:</h4>
+              <h4 className="text-lg font-semibold text-gray-900">Hashtags</h4>
               <button
                 onClick={() => onCopy(idea.hashtags.map(tag => `#${tag}`).join(' '))}
                 className="text-sm text-indigo-600 hover:text-indigo-500 flex items-center"
@@ -404,10 +471,10 @@ const ContentIdeas = () => {
       setLoading(true);
       setError('');
       const newIdea = await contentService.generateContentIdea(contentType);
+      console.log('Generated idea:', newIdea);
       setSuggestions([newIdea]);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to generate new content');
-      // console.error('Failed to generate idea:', err);
     } finally {
       setLoading(false);
     }
@@ -418,7 +485,7 @@ const ContentIdeas = () => {
       await navigator.clipboard.writeText(text);
       // Optionally add a toast notification here
     } catch (err) {
-      // console.error('Failed to copy:', err);
+      console.error('Failed to copy:', err);
     }
   };
 
@@ -472,19 +539,23 @@ const ContentIdeas = () => {
 
       {/* Content Ideas */}
       <div className="space-y-6">
-        {suggestions.map((suggestion) => (
-          suggestion.ideas?.map((idea, index) => (
+        {suggestions.map((suggestion, index) => {
+          // Handle both array and single object responses
+          const ideas = Array.isArray(suggestion?.ideas) 
+            ? suggestion.ideas 
+            : Array.isArray(suggestion) 
+              ? suggestion 
+              : [suggestion];
+
+          return ideas.map((idea, ideaIndex) => (
             <ContentCard 
-              key={idea.id || index} 
+              key={idea.id || `${index}-${ideaIndex}`} 
               idea={idea} 
               onCopy={handleCopy}
             />
-          ))
-        ))}
+          ));
+        })}
       </div>
-
-      {/* Best Posting Times */}
-       {/* <BestTimesCard loading={timeLoading} postingTimes={postingTimes} /> */}
 
       {/* Empty State */}
       {!loading && suggestions.length === 0 && (

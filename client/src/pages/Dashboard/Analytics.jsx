@@ -17,6 +17,7 @@ import {
   MessageCircle,
   Heart,
 } from "lucide-react";
+import GrowthRateCalculator from '../../components/analytics/GrowthRateCalculator';
 import * as instagramService from "../../services/instagram.service";
 
 const Analytics = () => {
@@ -173,19 +174,6 @@ const Analytics = () => {
     </div>
   </div>
 </Card>
-        {/* <Card className="p-6">
-          <div className="flex items-center">
-            <MessageCircle className="h-8 w-8 text-indigo-600" />
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-500">
-                Total Interactions
-              </p>
-              <p className="mt-1 text-xl font-semibold text-gray-900">
-                {formatNumber(insights?.metrics?.impressions || 0)}
-              </p>
-            </div>
-          </div>
-        </Card> */}
       </div>
 
       {/* Top Performing Posts */}
@@ -259,6 +247,12 @@ const Analytics = () => {
           </ResponsiveContainer>
         </div>
       </Card>
+
+      {/* Add Growth Rate Calculator */}
+      <div className="mt-8">
+        <h2 className="text-xl font-bold text-gray-900 mb-4">Growth Analysis</h2>
+        <GrowthRateCalculator insights={insights} />
+      </div>
     </div>
   );
 };

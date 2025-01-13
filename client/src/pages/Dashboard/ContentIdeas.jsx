@@ -280,6 +280,7 @@ import { Card } from '@/components/ui/card';
 import { Wand2, Loader2, Copy, AlertCircle } from 'lucide-react';
 import * as contentService from '../../services/content.service';
 import * as instagramService from '../../services/instagram.service';
+import { Link } from 'react-router-dom';
 
 // Helper function to format content sections
 const formatContentSection = (content) => {
@@ -441,6 +442,7 @@ const ContentIdeas = () => {
   const [contentType, setContentType] = useState('all');
   const [postingTimes, setPostingTimes] = useState(null);
   const [timeLoading, setTimeLoading] = useState(true);
+  const [isGenerationComplete, setIsGenerationComplete] = useState(false);
 
   useEffect(() => {
     fetchPostingTimes();
@@ -466,13 +468,27 @@ const ContentIdeas = () => {
     { id: 'story', label: 'Stories' }
   ];
 
+  // const generateNewIdea = async () => {
+  //   try {
+  //     setLoading(true);
+  //     setError('');
+  //     const newIdea = await contentService.generateContentIdea(contentType);
+  //     console.log('Generated idea:', newIdea);
+  //     setSuggestions([newIdea]);
+  //   } catch (err) {
+  //     setError(err.response?.data?.message || 'Failed to generate new content');
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
   const generateNewIdea = async () => {
     try {
       setLoading(true);
       setError('');
+      setIsGenerationComplete(false); // Reset generation state
       const newIdea = await contentService.generateContentIdea(contentType);
-      console.log('Generated idea:', newIdea);
       setSuggestions([newIdea]);
+      setIsGenerationComplete(true); // Set to true when generation is complete
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to generate new content');
     } finally {
@@ -539,6 +555,35 @@ const ContentIdeas = () => {
 
       {/* Content Ideas */}
       <div className="space-y-6">
+      {/* Your existing content */}
+      <div className="space-y-6">
+        {suggestions.map((suggestion) => (
+          suggestion.ideas?.map((idea, index) => (
+            <ContentCard
+              key={idea.id || index}
+              idea={idea}
+              onCopy={handleCopy}
+            />
+          ))
+        ))}
+
+        {/* Show message only after content generation is complete */}
+        {isGenerationComplete && (
+          <div className="mt-6 bg-gray-50 rounded-lg p-4 text-center">
+            <p className="text-gray-600 mb-3">
+              Want more personalized content? Get real-time AI assistance to craft your perfect post!
+            </p>
+            <Link
+              to="/dashboard/content-chat"
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
+            >
+              Chat with AI for Tailored Content Creation →
+            </Link>
+          </div>
+        )}
+      </div>
+    </div>
+      {/* <div className="space-y-6">
         {suggestions.map((suggestion, index) => {
           // Handle both array and single object responses
           const ideas = Array.isArray(suggestion?.ideas) 
@@ -555,7 +600,20 @@ const ContentIdeas = () => {
             />
           ));
         })}
-      </div>
+      </div> */}
+
+        {/* Not getting the desired results link to content page */}
+      {/* <div className="mt-6 bg-gray-50 rounded-lg p-4 text-center">
+        <p className="text-gray-600 mb-3">
+          Not getting the exact content you're looking for?
+        </p>
+        <Link
+          to="/dashboard/content-chat"
+          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
+        >
+          Chat with AI for Tailored Content Creation →
+        </Link>
+      </div> */}
 
       {/* Empty State */}
       {!loading && suggestions.length === 0 && (

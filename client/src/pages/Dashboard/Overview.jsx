@@ -38,38 +38,50 @@ const Overview = () => {
   // useEffect(() => {
   //   checkConnectionAndFetchData();
   // }, [currentPlatform]);
-  useEffect(() => {
-    const fetchInsights = async () => {
-      try {
-        setLocalLoading(true);
-        const data = await instagramService.getInstagramInsights();
-        setInsights(data);
-      } catch (err) {
-        setError(err.response?.data?.message || "Failed to load insights");
-      } finally {
-        setLocalLoading(false);
-      }
-    };
-
-    // Only fetch insights if platform is connected
-    const isInstagramConnected = platformData?.instagram && !platformData.instagram.message;
-    if (currentPlatform === 'instagram' && isInstagramConnected) {
-      fetchInsights();
+ // At the start of the component, after the useState declarations
+ useEffect(() => {
+  const fetchInsights = async () => {
+    try {
+      setLocalLoading(true);
+      const data = await instagramService.getInstagramInsights();
+      setInsights(data);
+    } catch (err) {
+      setError(err.response?.data?.message || "Failed to load insights");
+    } finally {
+      setLocalLoading(false);
     }
-  }, [currentPlatform, platformData]);
+  };
 
-    // Show Instagram tutorial only if explicitly not connected
-    if (currentPlatform === 'instagram' && platformData?.instagram?.message === 'Instagram not connected') {
-      return <InstagramTutorial />;
-    }
-    
-      // Show YouTube tutorial only if explicitly not connected
-  if (currentPlatform === 'youtube' && platformData?.youtube?.message === 'YouTube not connected') {
+  // Check if Instagram is properly connected before fetching insights
+  const isInstagramConnected = platformData?.instagram && !platformData.instagram.message;
+  if (currentPlatform === 'instagram' && isInstagramConnected) {
+    fetchInsights();
+  }
+}, [currentPlatform, platformData]);
+
+// After your useEffect hooks and before the loading check
+if (currentPlatform === 'instagram' && platformData?.instagram?.message === 'Instagram not connected') {
+  return <InstagramTutorial />;
+}
+
+if (currentPlatform === 'youtube' && !platformData?.youtube?.connected) {
+  return <YouTubeTutorial />;
+}
+
+  if (currentPlatform === 'instagram' && 
+    (!platformData?.instagram?.username || platformData?.instagram?.message === 'Instagram not connected')) {
+    return <InstagramTutorial />;
+  }
+  
+  // Show YouTube tutorial if we're on YouTube and it's not connected
+  if (currentPlatform === 'youtube' && (!platformData?.youtube?.connected)) {
     return <YouTubeTutorial />;
   }
-
-
-
+  
+  // Show tutorial only if platform is not connected
+  if (!isConnected) {
+    return currentPlatform === 'instagram' ? <InstagramTutorial /> : <YouTubeTutorial />;
+  }
 
   const checkConnectionAndFetchData = async () => {
     try {
@@ -469,7 +481,7 @@ const Overview = () => {
     );
   };
 
-  if (loading || localLoading) {
+  if ( localLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <RefreshCw className="w-8 h-8 animate-spin text-indigo-600" />
@@ -487,12 +499,6 @@ const Overview = () => {
         </div>
       </div>
     );
-  }
-
-  // Show tutorial only if platform is not connected
-
-  if (!isConnected) {
-    return currentPlatform === 'instagram' ? <InstagramTutorial /> : <YouTubeTutorial />;
   }
 
   // Show platform overview if connected and we have insights

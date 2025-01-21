@@ -28,44 +28,19 @@ import * as youtubeService from "../../services/youtube.service";
 import { InstagramTutorial, YouTubeTutorial } from '../../components/tutorials/PlatformTutorial';
 
 const Overview = () => {
-  const { currentPlatform, platformData, loading } = usePlatform();
+  const { currentPlatform } = usePlatform();
   const [insights, setInsights] = useState(null);
-  // const [loading, setLoading] = useState(true);
-  const [localLoading, setLocalLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
 
-  // useEffect(() => {
-  //   checkConnectionAndFetchData();
-  // }, [currentPlatform]);
- // At the start of the component, after the useState declarations
- // At the start of the component, after the useState declarations
-useEffect(() => {
-  // Update isConnected based on platform data
-  if (currentPlatform === 'instagram') {
-    setIsConnected(platformData?.instagram && !platformData.instagram.message);
-  } else {
-    setIsConnected(platformData?.youtube?.connected);
-  }
-}, [currentPlatform, platformData]);
-
-// After your useEffect hooks and before the loading check
-if (currentPlatform === 'instagram' && platformData?.instagram?.message === 'Instagram not connected') {
-  return <InstagramTutorial />;
-}
-
-if (currentPlatform === 'youtube' && !platformData?.youtube?.connected) {
-  return <YouTubeTutorial />;
-}
-  
-  // Show tutorial only if platform is not connected
-  if (!isConnected) {
-    return currentPlatform === 'instagram' ? <InstagramTutorial /> : <YouTubeTutorial />;
-  }
+  useEffect(() => {
+    checkConnectionAndFetchData();
+  }, [currentPlatform]);
 
   const checkConnectionAndFetchData = async () => {
     try {
-      // setLoading(true);
+      setLoading(true);
       setError(null);
 
       if (currentPlatform === 'instagram') {
@@ -461,7 +436,7 @@ if (currentPlatform === 'youtube' && !platformData?.youtube?.connected) {
     );
   };
 
-  if ( localLoading) {
+  if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <RefreshCw className="w-8 h-8 animate-spin text-indigo-600" />
@@ -479,6 +454,12 @@ if (currentPlatform === 'youtube' && !platformData?.youtube?.connected) {
         </div>
       </div>
     );
+  }
+
+  // Show tutorial only if platform is not connected
+
+  if (!isConnected) {
+    return currentPlatform === 'instagram' ? <InstagramTutorial /> : <YouTubeTutorial />;
   }
 
   // Show platform overview if connected and we have insights

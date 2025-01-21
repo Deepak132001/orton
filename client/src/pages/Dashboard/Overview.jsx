@@ -495,26 +495,12 @@ const Overview = () => {
       : renderYouTubeOverview();
   }
 
+  // Show loading state if connected but insights aren't loaded yet
   return (
-    <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-      {loading && <div>Loading...</div>}
-      {error && <div className="text-red-500">{error}</div>}
-
-      {!isConnected ? (
-        <div className="p-4 bg-yellow-100 text-yellow-700">
-          Please connect to Instagram or YouTube to see your insights.
-        </div>
-      ) : (
-        currentPlatform === "instagram" ? renderInstagramOverview() : <YouTubeTutorial />
-      )}
+    <div className="flex items-center justify-center min-h-[400px]">
+      <RefreshCw className="w-8 h-8 animate-spin text-indigo-600" />
     </div>
   );
-  // Show loading state if connected but insights aren't loaded yet
-  // return (
-  //   <div className="flex items-center justify-center min-h-[400px]">
-  //     <RefreshCw className="w-8 h-8 animate-spin text-indigo-600" />
-  //   </div>
-  // );
 };
 
 export default Overview;

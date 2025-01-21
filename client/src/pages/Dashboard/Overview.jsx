@@ -20,12 +20,15 @@ import {
   TrendingUp,
   AlertCircle,
   ArrowRight,
-} from 'lucide-react';
-import { Link } from 'react-router-dom';
+} from "lucide-react";
+import { Link } from "react-router-dom";
 import { usePlatform } from "../../contexts/PlatformContext";
 import * as instagramService from "../../services/instagram.service";
 import * as youtubeService from "../../services/youtube.service";
-import { InstagramTutorial, YouTubeTutorial } from '../../components/tutorials/PlatformTutorial';
+import {
+  InstagramTutorial,
+  YouTubeTutorial,
+} from "../../components/tutorials/PlatformTutorial";
 
 const Overview = () => {
   const { currentPlatform } = usePlatform();
@@ -43,7 +46,7 @@ const Overview = () => {
       setLoading(true);
       setError(null);
 
-      if (currentPlatform === 'instagram') {
+      if (currentPlatform === "instagram") {
         // First check if Instagram is connected
         const profile = await instagramService.getInstagramProfile();
         setIsConnected(!!profile);
@@ -59,16 +62,18 @@ const Overview = () => {
         setIsConnected(!!profile?.data?.channelId);
 
         if (profile?.data?.channelId) {
-          const channelData = await youtubeService.getChannelInfo(profile.data.channelId);
+          const channelData = await youtubeService.getChannelInfo(
+            profile.data.channelId
+          );
           setInsights(channelData);
         }
       }
     } catch (error) {
-      console.error('Error fetching platform data:', error);
+      // console.error("Error fetching platform data:", error);
       if (error.response?.status === 400) {
         setIsConnected(false);
       } else {
-        setError(error.response?.data?.message || 'Failed to load insights');
+        setError(error.response?.data?.message || "Failed to load insights");
       }
     } finally {
       setLoading(false);
@@ -98,19 +103,23 @@ const Overview = () => {
     if (!insights) return null;
 
     const calculateMetrics = () => {
-      if (!insights?.recent_posts?.length) return { totalReach: 0, avgLikes: 0 };
-      
-      const total = insights.recent_posts.reduce((acc, post) => ({
-        totalReach: acc.totalReach + (post.reach || 0),
-        totalLikes: acc.totalLikes + (post.likes || 0)
-      }), { totalReach: 0, totalLikes: 0 });
-      
+      if (!insights?.recent_posts?.length)
+        return { totalReach: 0, avgLikes: 0 };
+
+      const total = insights.recent_posts.reduce(
+        (acc, post) => ({
+          totalReach: acc.totalReach + (post.reach || 0),
+          totalLikes: acc.totalLikes + (post.likes || 0),
+        }),
+        { totalReach: 0, totalLikes: 0 }
+      );
+
       return {
         totalReach: total.totalReach,
-        avgLikes: Math.round(total.totalLikes / insights.recent_posts.length)
+        avgLikes: Math.round(total.totalLikes / insights.recent_posts.length),
       };
     };
-    
+
     const metrics = calculateMetrics();
 
     const RecentPostCard = ({ post }) => (
@@ -145,13 +154,15 @@ const Overview = () => {
         </div>
         <div className="mt-2">
           <div className="text-sm text-gray-500">
-            Engagement Rate: 
-            {((post.likes + post.comments) / (post.reach || 1) * 100).toFixed(2)}%
+            Engagement Rate:
+            {(((post.likes + post.comments) / (post.reach || 1)) * 100).toFixed(
+              2
+            )}
+            %
           </div>
         </div>
       </Card>
     );
-    // console.log('Rendering Instagram overview with insights:', insights);
 
     return (
       <div className="space-y-6">
@@ -167,7 +178,7 @@ const Overview = () => {
             )}
             <div>
               <h2 className="text-2xl font-bold text-gray-900">
-              @{insights.account.username}
+                @{insights.account.username}
               </h2>
               <p className="text-gray-500">
                 {formatNumber(insights.account?.followers_count)} followers •{" "}
@@ -192,36 +203,38 @@ const Overview = () => {
           </Card>
 
           {/* Total Reach card */}
-<Card className="p-6">
-  <div className="flex items-center">
-    <Eye className="h-8 w-8 text-pink-600" />
-    <div className="ml-4">
-      <p className="text-sm font-medium text-gray-500">Total Reach</p>
-      <p className="mt-1 text-xl font-semibold text-gray-900">
-        {formatNumber(metrics.totalReach)}
-      </p>
-    </div>
-  </div>
-</Card>
+          <Card className="p-6">
+            <div className="flex items-center">
+              <Eye className="h-8 w-8 text-pink-600" />
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-500">Total Reach</p>
+                <p className="mt-1 text-xl font-semibold text-gray-900">
+                  {formatNumber(metrics.totalReach)}
+                </p>
+              </div>
+            </div>
+          </Card>
 
-        {/* Average Likes card */}
-<Card className="p-6">
-  <div className="flex items-center">
-    <Heart className="h-8 w-8 text-pink-600" />
-    <div className="ml-4">
-      <p className="text-sm font-medium text-gray-500">Avg. Likes</p>
-      <p className="mt-1 text-xl font-semibold text-gray-900">
-        {formatNumber(metrics.avgLikes)}
-      </p>
-    </div>
-  </div>
-</Card>
+          {/* Average Likes card */}
+          <Card className="p-6">
+            <div className="flex items-center">
+              <Heart className="h-8 w-8 text-pink-600" />
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-500">Avg. Likes</p>
+                <p className="mt-1 text-xl font-semibold text-gray-900">
+                  {formatNumber(metrics.avgLikes)}
+                </p>
+              </div>
+            </div>
+          </Card>
 
           <Card className="p-6">
             <div className="flex items-center">
               <TrendingUp className="h-8 w-8 text-pink-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">Engagement Rate</p>
+                <p className="text-sm font-medium text-gray-500">
+                  Engagement Rate
+                </p>
                 <p className="mt-1 text-xl font-semibold text-gray-900">
                   {insights.metrics?.engagement_rate || "0"}%
                 </p>
@@ -232,7 +245,9 @@ const Overview = () => {
 
         {/* Recent Posts */}
         <Card className="p-6">
-          <h3 className="text-lg font-medium text-gray-900 mb-4">Recent Posts</h3>
+          <h3 className="text-lg font-medium text-gray-900 mb-4">
+            Recent Posts
+          </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {insights.recent_posts?.slice(0, 6).map((post, index) => (
               <RecentPostCard key={post.id || index} post={post} />
@@ -273,6 +288,7 @@ const Overview = () => {
       </div>
     );
   };
+  
 
   const renderYouTubeOverview = () => {
     if (!insights) return null;
@@ -355,22 +371,27 @@ const Overview = () => {
         {/* Recent Videos */}
         {insights.recentVideos && insights.recentVideos.length > 0 && (
           <Card className="p-6">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">Latest Videos</h3>
+            <h3 className="text-lg font-medium text-gray-900 mb-4">
+              Latest Videos
+            </h3>
             <div className="grid grid-cols-1 gap-6">
               {insights.recentVideos.slice(0, 2).map((video, index) => (
-                <div key={video.id || index} className="bg-white border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                <div
+                  key={video.id || index}
+                  className="bg-white border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+                >
                   <div className="p-4">
                     <div className="flex justify-between items-start space-x-4">
                       {/* Thumbnail and Title Section */}
                       <div className="flex flex-1 space-x-4">
                         {video.thumbnail && (
                           <div className="flex-shrink-0">
-                            <img 
-                              src={video.thumbnail} 
+                            <img
+                              src={video.thumbnail}
                               alt={video.title}
                               className="w-32 h-24 object-cover rounded-md"
                               onError={(e) => {
-                                e.target.src = '/api/placeholder/180/120';
+                                e.target.src = "/api/placeholder/180/120";
                               }}
                             />
                           </div>
@@ -380,7 +401,7 @@ const Overview = () => {
                             {video.title}
                           </h4>
                           <p className="text-sm text-gray-500 line-clamp-2">
-                            {video.description || 'No description'}
+                            {video.description || "No description"}
                           </p>
                         </div>
                       </div>
@@ -410,14 +431,18 @@ const Overview = () => {
                       </div>
                       <div className="flex items-center">
                         <TrendingUp className="h-4 w-4 text-green-500 mr-1" />
-                        {((video.likes + video.comments) / video.views * 100).toFixed(1)}% engagement
+                        {(
+                          ((video.likes + video.comments) / video.views) *
+                          100
+                        ).toFixed(1)}
+                        % engagement
                       </div>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
-            
+
             {/* Link to YouTube Channel */}
             <div className="mt-4 text-center">
               <a
@@ -458,36 +483,38 @@ const Overview = () => {
 
   // Show tutorial only if platform is not connected
 
-  // if (!isConnected) {
-  //   return currentPlatform === 'instagram' ? <InstagramTutorial /> : <YouTubeTutorial />;
-  // }
   if (!isConnected) {
-    return (
-      <div className="flex items-center justify-center h-screen bg-gray-50">
-        <div className="text-center">
-          <AlertCircle className="h-12 w-12 text-red-500 mx-auto" />
-          <h1 className="text-2xl font-bold text-gray-900 mt-4">
-            Please connect to Instagram or YouTube
-          </h1>
-          <p className="text-gray-600 mt-2">
-            To access your insights, please connect your {currentPlatform} account.
-          </p>
-        </div>
-      </div>
-    );
+    return currentPlatform === 'instagram' ? <InstagramTutorial /> : <YouTubeTutorial />;
   }
+
 
   // Show platform overview if connected and we have insights
   if (insights) {
-    return currentPlatform === 'instagram' ? renderInstagramOverview() : renderYouTubeOverview();
+    return currentPlatform === "instagram"
+      ? renderInstagramOverview()
+      : renderYouTubeOverview();
   }
 
-  // Show loading state if connected but insights aren't loaded yet
   return (
-    <div className="flex items-center justify-center min-h-[400px]">
-      <RefreshCw className="w-8 h-8 animate-spin text-indigo-600" />
+    <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+      {loading && <div>Loading...</div>}
+      {error && <div className="text-red-500">{error}</div>}
+
+      {!isConnected ? (
+        <div className="p-4 bg-yellow-100 text-yellow-700">
+          Please connect to Instagram or YouTube to see your insights.
+        </div>
+      ) : (
+        currentPlatform === "instagram" ? renderInstagramOverview() : <YouTubeTutorial />
+      )}
     </div>
   );
+  // Show loading state if connected but insights aren't loaded yet
+  // return (
+  //   <div className="flex items-center justify-center min-h-[400px]">
+  //     <RefreshCw className="w-8 h-8 animate-spin text-indigo-600" />
+  //   </div>
+  // );
 };
 
 export default Overview;

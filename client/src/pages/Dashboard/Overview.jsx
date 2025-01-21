@@ -51,25 +51,35 @@ const Overview = () => {
       }
     };
 
-     // Only fetch insights if platform is connected
-     if (currentPlatform === 'instagram' && platformData?.instagram?.id) {
+    // Only fetch insights if platform is connected
+    if (currentPlatform === 'instagram' && platformData?.instagram?.id) {
       fetchInsights();
     }
   }, [currentPlatform, platformData]);
 
-  // Show platform tutorial if platform is not connected
-  if (currentPlatform === 'instagram' && (!platformData?.instagram || platformData?.instagram?.message === 'Instagram not connected')) {
-    return <InstagramTutorial />;
-  }
+  const isInstagramNotConnected = currentPlatform === 'instagram' && 
+    (!platformData?.instagram || 
+     !platformData?.instagram?.username || 
+     platformData?.instagram?.message === 'Instagram not connected');
 
-  if (currentPlatform === 'youtube' && (!platformData?.youtube || !platformData?.youtube?.connected)) {
-    return <YouTubeTutorial />;
-  }
+     // Check if YouTube is not connected
+  const isYouTubeNotConnected = currentPlatform === 'youtube' && 
+  (!platformData?.youtube || !platformData?.youtube?.connected);
+
+  // Show platform tutorial if platform is not connected
+ if (isInstagramNotConnected) {
+  return <InstagramTutorial />;
+}
+
+if (isYouTubeNotConnected) {
+  return <YouTubeTutorial />;
+}
+
 
 
   const checkConnectionAndFetchData = async () => {
     try {
-      setLoading(true);
+      // setLoading(true);
       setError(null);
 
       if (currentPlatform === 'instagram') {

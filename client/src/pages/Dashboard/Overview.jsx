@@ -67,13 +67,13 @@ const Overview = () => {
           );
           setInsights(channelData);
         }
-      }
+      } 
     } catch (error) {
       // console.error("Error fetching platform data:", error);
       if (error.response?.status === 400) {
         setIsConnected(false);
       } else {
-        setError(error.response?.data?.message || "Failed to load insights");
+        setError(<InstagramTutorial />);
       }
     } finally {
       setLoading(false);
@@ -486,7 +486,6 @@ const Overview = () => {
   if (!isConnected) {
     return currentPlatform === 'instagram' ? <InstagramTutorial /> : <YouTubeTutorial />;
   }
-
 
   // Show platform overview if connected and we have insights
   if (insights) {

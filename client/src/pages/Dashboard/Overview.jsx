@@ -38,6 +38,12 @@ const Overview = () => {
     checkConnectionAndFetchData();
   }, [currentPlatform]);
 
+  // Show tutorial only if platform is not connected
+
+  if (!isConnected) {
+    return currentPlatform === 'instagram' ? <InstagramTutorial /> : <YouTubeTutorial />;
+  }
+
   const checkConnectionAndFetchData = async () => {
     try {
       setLoading(true);
@@ -454,12 +460,6 @@ const Overview = () => {
         </div>
       </div>
     );
-  }
-
-  // Show tutorial only if platform is not connected
-
-  if (!isConnected) {
-    return currentPlatform === 'instagram' ? <InstagramTutorial /> : <YouTubeTutorial />;
   }
 
   // Show platform overview if connected and we have insights

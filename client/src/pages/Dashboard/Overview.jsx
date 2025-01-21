@@ -458,8 +458,23 @@ const Overview = () => {
 
   // Show tutorial only if platform is not connected
 
+  // if (!isConnected) {
+  //   return currentPlatform === 'instagram' ? <InstagramTutorial /> : <YouTubeTutorial />;
+  // }
   if (!isConnected) {
-    return currentPlatform === 'instagram' ? <InstagramTutorial /> : <YouTubeTutorial />;
+    return (
+      <div className="flex items-center justify-center h-screen bg-gray-50">
+        <div className="text-center">
+          <AlertCircle className="h-12 w-12 text-red-500 mx-auto" />
+          <h1 className="text-2xl font-bold text-gray-900 mt-4">
+            Please connect to Instagram or YouTube
+          </h1>
+          <p className="text-gray-600 mt-2">
+            To access your insights, please connect your {currentPlatform} account.
+          </p>
+        </div>
+      </div>
+    );
   }
 
   // Show platform overview if connected and we have insights

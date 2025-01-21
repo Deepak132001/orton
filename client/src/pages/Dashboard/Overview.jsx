@@ -52,28 +52,22 @@ const Overview = () => {
     };
 
     // Only fetch insights if platform is connected
-    if (currentPlatform === 'instagram' && platformData?.instagram?.id) {
+    const isInstagramConnected = platformData?.instagram && !platformData.instagram.message;
+    if (currentPlatform === 'instagram' && isInstagramConnected) {
       fetchInsights();
     }
   }, [currentPlatform, platformData]);
 
-  const isInstagramNotConnected = currentPlatform === 'instagram' && 
-    (!platformData?.instagram || 
-     !platformData?.instagram?.username || 
-     platformData?.instagram?.message === 'Instagram not connected');
+    // Show Instagram tutorial only if explicitly not connected
+    if (currentPlatform === 'instagram' && platformData?.instagram?.message === 'Instagram not connected') {
+      return <InstagramTutorial />;
+    }
+    
+      // Show YouTube tutorial only if explicitly not connected
+  if (currentPlatform === 'youtube' && platformData?.youtube?.message === 'YouTube not connected') {
+    return <YouTubeTutorial />;
+  }
 
-     // Check if YouTube is not connected
-  const isYouTubeNotConnected = currentPlatform === 'youtube' && 
-  (!platformData?.youtube || !platformData?.youtube?.connected);
-
-  // Show platform tutorial if platform is not connected
- if (isInstagramNotConnected) {
-  return <InstagramTutorial />;
-}
-
-if (isYouTubeNotConnected) {
-  return <YouTubeTutorial />;
-}
 
 
 

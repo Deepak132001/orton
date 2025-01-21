@@ -45,11 +45,17 @@ const LandingPage = () => {
       <div className="py-20 bg-gradient-to-r from-indigo-600 to-purple-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl sm:text-5xl font-extrabold text-white mb-6">
-            Your Magic Is Always There.
+            Never Run Out of Content Ideas
           </h1>
-          <p className="text-xl sm:text-2xl text-white opacity-90 mb-8">
-            We're Just the Mirror.
-          </p>
+          <div className="max-w-3xl mx-auto">
+            <p className="text-xl sm:text-2xl text-white opacity-90 mb-4">
+              Generate endless content tailored to your niche. Get AI-powered insights, 
+              optimize posting times, and grow your social media presence effortlessly.
+            </p>
+            <p className="text-xl sm:text-2xl text-white opacity-90 mb-8">
+              Your Magic Is Always There. We're Just the Mirror.
+            </p>
+          </div>
           <Link
             to="/register"
             className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-50"
@@ -57,7 +63,7 @@ const LandingPage = () => {
             Get Started Free
           </Link>
         </div>
-      </div>
+        </div>
 
       {/* Platform Features */}
       <div className="py-16">
@@ -267,7 +273,7 @@ const LandingPage = () => {
           </div>
           <div className="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400">
             <p>&copy; {new Date().getFullYear()} Orton AI. All rights reserved.</p>
-             OrtonAI LLC is a Delaware Corporation | Registration Number: 10065483
+             OrtonAI LLC is a Delaware Corporation
           </div>
         </div>
       </footer>

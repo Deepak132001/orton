@@ -143,7 +143,7 @@ const Footer = () => {
               © {currentYear} Orton AI. All rights reserved.
             </div>
             <div className="mt-4 md:mt-0 text-sm text-gray-500">
-            OrtonAI LLC is a Delaware Corporation | Registration Number: 10065483
+            OrtonAI LLC is a Delaware Corporation
             </div>
             <div className="mt-4 md:mt-0 flex space-x-6">
               <Link to="/terms" className="text-sm text-gray-500 hover:text-gray-900">

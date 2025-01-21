@@ -7,51 +7,63 @@ export const connectInstagramAccount = async (accessToken) => {
 
 
 // export const getInstagramProfile = async () => {
-//   const response = await api.get('/instagram/profile');
-//   return response.data;
+//   try {
+//     const response = await api.get('/instagram/profile');
+//     // Add username to the response
+//     const profile = response.data;
+//     return {
+//       ...profile,
+//       username: profile.username || 'No username' // Add this
+//     };
+//   } catch (error) {
+//     throw error;
+//   }
 // };
 export const getInstagramProfile = async () => {
   try {
     const response = await api.get('/instagram/profile');
-    // Add username to the response
-    const profile = response.data;
-    return {
-      ...profile,
-      username: profile.username || 'No username' // Add this
-    };
+    return response.data;
   } catch (error) {
-    throw error;
+    throw new Error('Instagram not connected');
   }
 };
 
 
 // export const getInstagramInsights = async () => {
-//   const response = await api.get('/instagram/insights');
-//   return response.data;
+//   try {
+//     const response = await api.get('/instagram/insights');
+//     const profile = await getInstagramProfile(); // Get profile to include username
+//     return {
+//       ...response.data,
+//       account: {
+//         ...response.data.account,
+//         username: profile.username // Add username to account object
+//       }
+//     };
+//   } catch (error) {
+//     throw error;
+//   }
 // };
-
 export const getInstagramInsights = async () => {
   try {
     const response = await api.get('/instagram/insights');
-    const profile = await getInstagramProfile(); // Get profile to include username
+    const profile = await getInstagramProfile();
     return {
       ...response.data,
       account: {
         ...response.data.account,
-        username: profile.username // Add username to account object
+        username: profile.username
       }
     };
   } catch (error) {
-    throw error;
+    throw new Error('Instagram not connected');
   }
 };
-
 
 export const disconnectInstagramAccount = async () => {
   const response = await api.post('/instagram/disconnect');
   return response.data;
 };
-
 
 export const getBestPostingTimes = async () => {
   const response = await api.get('/posting/best-times');

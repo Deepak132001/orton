@@ -26,7 +26,7 @@ export const getInstagramProfile = async () => {
   } catch (error) {
     throw new Error('Instagram not connected');
   }
-};
+}  
 
 
 // export const getInstagramInsights = async () => {

@@ -28,15 +28,44 @@ import * as youtubeService from "../../services/youtube.service";
 import { InstagramTutorial, YouTubeTutorial } from '../../components/tutorials/PlatformTutorial';
 
 const Overview = () => {
-  const { currentPlatform } = usePlatform();
+  const { currentPlatform, platformData, loading } = usePlatform();
   const [insights, setInsights] = useState(null);
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
+  const [localLoading, setLocalLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
 
+  // useEffect(() => {
+  //   checkConnectionAndFetchData();
+  // }, [currentPlatform]);
   useEffect(() => {
-    checkConnectionAndFetchData();
-  }, [currentPlatform]);
+    const fetchInsights = async () => {
+      try {
+        setLocalLoading(true);
+        const data = await instagramService.getInstagramInsights();
+        setInsights(data);
+      } catch (err) {
+        setError(err.response?.data?.message || "Failed to load insights");
+      } finally {
+        setLocalLoading(false);
+      }
+    };
+
+     // Only fetch insights if platform is connected
+     if (currentPlatform === 'instagram' && platformData?.instagram?.id) {
+      fetchInsights();
+    }
+  }, [currentPlatform, platformData]);
+
+  // Show platform tutorial if platform is not connected
+  if (currentPlatform === 'instagram' && (!platformData?.instagram || platformData?.instagram?.message === 'Instagram not connected')) {
+    return <InstagramTutorial />;
+  }
+
+  if (currentPlatform === 'youtube' && (!platformData?.youtube || !platformData?.youtube?.connected)) {
+    return <YouTubeTutorial />;
+  }
+
 
   const checkConnectionAndFetchData = async () => {
     try {
@@ -436,7 +465,7 @@ const Overview = () => {
     );
   };
 
-  if (loading) {
+  if (loading || localLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <RefreshCw className="w-8 h-8 animate-spin text-indigo-600" />

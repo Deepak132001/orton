@@ -42,11 +42,15 @@ const ConnectInstagram = () => {
     });
   
     window.FB.getLoginStatus(function(response) {
+      console.log('Login status response:', response);
+      
       if (response.status === 'connected') {
         connectInstagramAccount(response.authResponse.accessToken);
       } else {
         window.FB.login(
           function(loginResponse) {
+            console.log('FB.login response:', loginResponse);
+            
             if (loginResponse.status === 'connected') {
               connectInstagramAccount(loginResponse.authResponse.accessToken);
             } else {
@@ -55,7 +59,7 @@ const ConnectInstagram = () => {
             }
           },
           {
-            scope: 'instagram_basic,instagram_manage_insights',
+            scope: 'instagram_basic,instagram_manage_insights,pages_show_list,pages_read_engagement',
             return_scopes: true,
             enable_profile_selector: true
           }
@@ -63,7 +67,7 @@ const ConnectInstagram = () => {
       }
     });
   };
-  
+
   const connectInstagramAccount = async (accessToken) => {
     setIsConnecting(true);
     try {

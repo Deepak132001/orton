@@ -1,9 +1,21 @@
 import api from './api';
 
+// export const connectInstagramAccount = async (accessToken) => {
+//   const response = await api.post('/instagram/connect', { accessToken });
+//   return response.data;
+// };
 export const connectInstagramAccount = async (accessToken) => {
-  const response = await api.post('/instagram/connect', { accessToken });
-  return response.data;
+  try {
+    console.log('Connecting with token:', accessToken);
+    const response = await api.post('/instagram/connect', { accessToken });
+    console.log('Connection response:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Instagram connection error:', error.response?.data || error);
+    throw error;
+  }
 };
+
 
 
 // export const getInstagramProfile = async () => {

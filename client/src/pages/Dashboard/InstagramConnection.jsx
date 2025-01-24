@@ -172,15 +172,7 @@ const InstagramConnection = () => {
         }
       },
       {
-        scope: [
-          "instagram_basic",
-          "instagram_content_publish",
-          "instagram_manage_insights",
-          "pages_show_list",
-          "pages_read_engagement",
-          "pages_manage_metadata",
-          "business_management",
-          "public_profile",
+        scope: ["instagram_basic",'instagram_manage_insights',"pages_show_list","pages_read_engagement",
         ].join(","),
         return_scopes: true,
       }

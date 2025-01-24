@@ -191,36 +191,35 @@ const InstagramConnection = () => {
       version: 'v18.0'
     });
   
-    window.FB.getLoginStatus(async function(statusResponse) {
+    window.FB.getLoginStatus(function(statusResponse) {
       console.log('Initial FB status:', statusResponse);
   
-      const handleLoginResponse = async (response) => {
+      const handleLoginResponse = function(response) {
         if (response.status === 'connected') {
-          try {
-            // Check permissions after login
-            const permResponse = await new Promise((resolve) => {
-              window.FB.api('/me/permissions', resolve);
-            });
+          // Check permissions
+          window.FB.api('/me/permissions', function(permResponse) {
             console.log('Granted permissions:', permResponse.data);
+            
+            // Get Facebook pages
+            window.FB.api('/me/accounts', function(pagesResponse) {
+              console.log('Facebook pages:', pagesResponse.data);
+              
+              if (!pagesResponse.data || pagesResponse.data.length === 0) {
+                setError('No Facebook pages found. Please create a Facebook page first.');
+                setIsConnecting(false);
+                return;
+              }
   
-            // Get Facebook page access first
-            const pagesResponse = await new Promise((resolve) => {
-              window.FB.api('/me/accounts', resolve);
+              // Connect Instagram
+              instagramService.connectInstagramAccount(response.authResponse.accessToken)
+                .then(() => window.location.reload())
+                .catch(err => {
+                  console.error('Connection error:', err);
+                  setError(err.message || 'Failed to connect Instagram');
+                  setIsConnecting(false);
+                });
             });
-            console.log('Facebook pages:', pagesResponse.data);
-  
-            if (!pagesResponse.data || pagesResponse.data.length === 0) {
-              throw new Error('No Facebook pages found. Please create a Facebook page first.');
-            }
-  
-            // Connect Instagram
-            await instagramService.connectInstagramAccount(response.authResponse.accessToken);
-            window.location.reload();
-          } catch (err) {
-            console.error('Connection error:', err);
-            setError(err.message || 'Failed to connect Instagram');
-            setIsConnecting(false);
-          }
+          });
         } else {
           setError('Facebook login failed');
           setIsConnecting(false);

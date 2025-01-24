@@ -209,8 +209,19 @@ const InstagramConnection = () => {
             });
         }
       }, {
-        scope: 'pages_show_list,pages_read_engagement,instagram_basic,instagram_manage_insights,public_profile',
-        return_scopes: true
+        
+          scope: [
+            "instagram_basic",
+            "instagram_content_publish",
+            "instagram_manage_insights",
+            "pages_show_list",
+            "pages_read_engagement",
+            "pages_manage_metadata",
+            "business_management",
+            "public_profile",
+          ].join(","),
+          return_scopes: true,
+        
       });
     };
  

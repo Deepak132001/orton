@@ -103,12 +103,15 @@ const handleRateLimit = async (error, retryCount = 0) => {
 // src/backend/controllers/instagram.controller.js
 export const connectInstagram = async (req, res) => {
   try {
+    console.log('Starting connection process...');
     const { accessToken } = req.body;
+    
     if (!accessToken) {
       return res.status(400).json({ message: 'Access token required' });
     }
 
     // Get long-lived token
+    console.log('Getting long-lived token...');
     const longLivedTokenResponse = await axios.get(
       `https://graph.facebook.com/v18.0/oauth/access_token`,
       {
@@ -120,58 +123,58 @@ export const connectInstagram = async (req, res) => {
         }
       }
     );
-    const longLivedToken = longLivedTokenResponse.data.access_token;
 
-    // First get Facebook pages
+    const longLivedToken = longLivedTokenResponse.data.access_token;
+    console.log('Long-lived token received');
+
+    // Get Facebook pages first
+    console.log('Fetching Facebook pages...');
     const pagesResponse = await axios.get(
       `https://graph.facebook.com/v18.0/me/accounts`,
       {
-        params: { access_token: longLivedToken }
-      }
-    );
-
-    const pages = pagesResponse.data.data;
-    if (!pages.length) {
-      return res.status(400).json({ message: 'No Facebook pages found' });
-    }
-
-    // Get Instagram business account from the page
-    const pageId = pages[0].id;
-    const pageAccessToken = pages[0].access_token;
-
-    const instagramResponse = await axios.get(
-      `https://graph.facebook.com/v18.0/${pageId}`,
-      {
-        params: {
-          fields: 'instagram_business_account',
-          access_token: pageAccessToken
+        params: { 
+          access_token: longLivedToken,
+          fields: 'id,name,access_token,instagram_business_account'
         }
       }
     );
 
-    const instagramBusinessId = instagramResponse.data?.instagram_business_account?.id;
-    if (!instagramBusinessId) {
-      return res.status(400).json({ message: 'No Instagram Business account found' });
+    const pages = pagesResponse.data.data;
+    console.log(`Found ${pages.length} pages`);
+
+    if (!pages.length) {
+      return res.status(400).json({ message: 'No Facebook pages found' });
     }
 
+    // Find page with Instagram business account
+    const pageWithInstagram = pages.find(page => page.instagram_business_account);
+    if (!pageWithInstagram) {
+      return res.status(400).json({ message: 'No Instagram Business account found on your Facebook pages' });
+    }
+
+    const instagramBusinessId = pageWithInstagram.instagram_business_account.id;
+    console.log('Found Instagram business account:', instagramBusinessId);
+
     // Update user
-    await User.findByIdAndUpdate(
+    const updatedUser = await User.findByIdAndUpdate(
       req.user._id,
       {
         facebookAccessToken: longLivedToken,
-        facebookPageId: pageId,
+        facebookPageId: pageWithInstagram.id,
         instagramBusinessId: instagramBusinessId
       },
       { new: true }
     );
 
+    console.log('User updated successfully');
     res.json({
       message: 'Instagram connected successfully',
       instagramBusinessId,
       success: true
     });
+
   } catch (error) {
-    console.error('Instagram connection error:', error.response?.data);
+    console.error('Connection error:', error.response?.data);
     res.status(500).json({
       message: 'Failed to connect Instagram account',
       error: error.response?.data?.error?.message || error.message

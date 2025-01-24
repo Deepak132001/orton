@@ -171,7 +171,7 @@ const ConnectInstagram = () => {
 
       if (response.status !== 'connected') {
         window.FB.login(handleLoginResponse, {
-          scope: 'instagram_basic,instagram_manage_insights',
+          scope: 'instagram_basic,instagram_manage_insights,pages_show_list',
           return_scopes: true,
           enable_profile_selector: true
         });

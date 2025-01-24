@@ -197,35 +197,35 @@ const ConnectInstagram = () => {
       version: 'v18.0'
     });
   
-    window.FB.getLoginStatus(function(statusResponse) {
-      console.log('FB Status:', statusResponse);
+    // window.FB.getLoginStatus(function(statusResponse) {
+    //   console.log('FB Status:', statusResponse);
       
-      const handleLogin = (response) => {
-        console.log('Login response:', response);
-        if (response.status === 'connected') {
-          instagramService.connectInstagramAccount(response.authResponse.accessToken)
-            .then(() => window.location.reload())
-            .catch(err => {
-              console.error('Connection error:', err);
-              setError(err.response?.data?.message || 'Connection failed');
-              setIsConnecting(false);
-            });
-        } else {
-          setError('Facebook login failed');
-          setIsConnecting(false);
-        }
-      };
+    //   const handleLogin = (response) => {
+    //     console.log('Login response:', response);
+    //     if (response.status === 'connected') {
+    //       instagramService.connectInstagramAccount(response.authResponse.accessToken)
+    //         .then(() => window.location.reload())
+    //         .catch(err => {
+    //           console.error('Connection error:', err);
+    //           setError(err.response?.data?.message || 'Connection failed');
+    //           setIsConnecting(false);
+    //         });
+    //     } else {
+    //       setError('Facebook login failed');
+    //       setIsConnecting(false);
+    //     }
+    //   };
   
-      if (statusResponse.status !== 'connected') {
-        window.FB.login(handleLogin, {
-          scope: 'public_profile,pages_show_list,pages_read_engagement,instagram_basic,instagram_manage_insights',
-          return_scopes: true,
-          enable_profile_selector: true
-        });
-      } else {
-        handleLogin(statusResponse);
-      }
-    });
+    //   if (statusResponse.status !== 'connected') {
+    //     window.FB.login(handleLogin, {
+    //       scope: 'public_profile,pages_show_list,pages_read_engagement,instagram_basic,instagram_manage_insights',
+    //       return_scopes: true,
+    //       enable_profile_selector: true
+    //     });
+    //   } else {
+    //     handleLogin(statusResponse);
+    //   }
+    // });
     window.FB.login((response) => {
       if (response.status === 'connected') {
         // Check granted permissions

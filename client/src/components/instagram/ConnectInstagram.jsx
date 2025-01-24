@@ -226,6 +226,25 @@ const ConnectInstagram = () => {
         handleLogin(statusResponse);
       }
     });
+    window.FB.login((response) => {
+      if (response.status === 'connected') {
+        // Check granted permissions
+        window.FB.api('/me/permissions', (permResponse) => {
+          console.log('Granted permissions:', permResponse.data);
+        });
+        
+        instagramService.connectInstagramAccount(response.authResponse.accessToken)
+          .then(() => window.location.reload())
+          .catch(err => {
+            console.error('Connection error:', err);
+            setError(err.response?.data?.message);
+            setIsConnecting(false);
+          });
+      }
+    }, {
+      scope: 'pages_show_list,pages_read_engagement,instagram_basic,instagram_manage_insights',
+      return_scopes: true
+    });
   };
 
 

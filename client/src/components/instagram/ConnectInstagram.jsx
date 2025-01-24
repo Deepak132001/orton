@@ -8,31 +8,62 @@ const ConnectInstagram = () => {
   const [isConnecting, setIsConnecting] = useState(false);
   const [error, setError] = useState('');
 
+  // const handleInstagramConnect = () => {
+  //   // Facebook SDK initialization
+  //   window.FB.init({
+  //     appId: import.meta.env.VITE_FACEBOOK_APP_ID,
+  //     cookie: true,
+  //     xfbml: true,
+  //     version: 'v18.0'
+  //   });
+
+  //   // Start Facebook Login process
+  //   window.FB.login(
+  //     (response) => {
+  //       if (response.status === 'connected') {
+  //         connectInstagramAccount(response.authResponse.accessToken);
+  //       } else {
+  //         setError('Failed to connect with Facebook');
+  //         setIsConnecting(false);
+  //       }
+  //     },
+  //     {
+  //       scope: 'instagram_basic,instagram_content_publish,instagram_manage_insights,pages_show_list,pages_read_engagement'
+  //     }
+  //   );
+  // };
+
   const handleInstagramConnect = () => {
-    // Facebook SDK initialization
     window.FB.init({
       appId: import.meta.env.VITE_FACEBOOK_APP_ID,
       cookie: true,
       xfbml: true,
       version: 'v18.0'
     });
-
-    // Start Facebook Login process
-    window.FB.login(
-      (response) => {
-        if (response.status === 'connected') {
-          connectInstagramAccount(response.authResponse.accessToken);
-        } else {
-          setError('Failed to connect with Facebook');
-          setIsConnecting(false);
-        }
-      },
-      {
-        scope: 'instagram_basic,instagram_content_publish,instagram_manage_insights,pages_show_list,pages_read_engagement'
+  
+    window.FB.getLoginStatus(function(response) {
+      if (response.status === 'connected') {
+        connectInstagramAccount(response.authResponse.accessToken);
+      } else {
+        window.FB.login(
+          function(loginResponse) {
+            if (loginResponse.status === 'connected') {
+              connectInstagramAccount(loginResponse.authResponse.accessToken);
+            } else {
+              console.error('Facebook login failed:', loginResponse);
+              setError('Failed to connect with Facebook');
+            }
+          },
+          {
+            scope: 'instagram_basic,instagram_manage_insights',
+            return_scopes: true,
+            enable_profile_selector: true
+          }
+        );
       }
-    );
+    });
   };
-
+  
   const connectInstagramAccount = async (accessToken) => {
     setIsConnecting(true);
     try {

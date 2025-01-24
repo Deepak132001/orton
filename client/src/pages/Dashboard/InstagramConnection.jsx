@@ -237,7 +237,7 @@ const InstagramConnection = () => {
             });
         }
       }, {
-        scope: 'pages_show_list,pages_read_engagement,instagram_basic,instagram_manage_insights',
+        scope: 'pages_show_list,pages_read_engagement,instagram_basic,instagram_manage_insights,public_profile',
         return_scopes: true
       });
     };

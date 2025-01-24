@@ -123,97 +123,123 @@ const InstagramConnection = () => {
     }
   };
 
-  const handleInstagramConnect = () => {
-    setStatus((prev) => ({ ...prev, loading: true, error: null }));
+  // const handleInstagramConnect = () => {
+  //   setStatus((prev) => ({ ...prev, loading: true, error: null }));
 
+  //   window.FB.init({
+  //     appId: import.meta.env.VITE_FACEBOOK_APP_ID,
+  //     cookie: true,
+  //     xfbml: true,
+  //     version: "v18.0",
+  //   });
+
+  //   // Regular function for FB.login callback
+  //   window.FB.login(
+  //     function (response) {
+  //       if (response.status === "connected") {
+  //         // Regular promise handling
+  //         instagramService
+  //           .connectInstagramAccount(response.authResponse.accessToken)
+  //           .then((result) => {
+  //             // console.log("Connection result:", result);
+  //             setStatus({
+  //               loading: false,
+  //               connected: true,
+  //               error: null,
+  //               details: result,
+  //             });
+  //             // Show success state briefly before reload
+  //             setTimeout(() => {
+  //               window.location.reload();
+  //             }, 1000);
+  //           })
+  //           .catch((error) => {
+  //             // console.error("Connection error:", error.response?.data);
+  //             setStatus({
+  //               loading: false,
+  //               connected: false,
+  //               error:
+  //                 error.response?.data?.message ||
+  //                 "Failed to connect Instagram account",
+  //               details: error.response?.data?.details,
+  //             });
+  //           });
+  //       } else {
+  //         setStatus({
+  //           loading: false,
+  //           connected: false,
+  //           error: "Facebook login failed",
+  //           details: response,
+  //         });
+  //       }
+  //     },
+  //     {
+  //       scope: ["instagram_basic",'instagram_manage_insights',"pages_show_list","pages_read_engagement",
+  //       ].join(","),
+  //       return_scopes: true,
+  //     }
+  //   );
+  // };
+  const handleInstagramConnect = () => {
+    setIsConnecting(true);
+    setError('');
+  
     window.FB.init({
       appId: import.meta.env.VITE_FACEBOOK_APP_ID,
       cookie: true,
       xfbml: true,
-      version: "v18.0",
+      version: 'v18.0'
     });
-
-    // Regular function for FB.login callback
-    window.FB.login(
-      function (response) {
-        if (response.status === "connected") {
-          // Regular promise handling
-          instagramService
-            .connectInstagramAccount(response.authResponse.accessToken)
-            .then((result) => {
-              // console.log("Connection result:", result);
-              setStatus({
-                loading: false,
-                connected: true,
-                error: null,
-                details: result,
-              });
-              // Show success state briefly before reload
-              setTimeout(() => {
-                window.location.reload();
-              }, 1000);
-            })
-            .catch((error) => {
-              // console.error("Connection error:", error.response?.data);
-              setStatus({
-                loading: false,
-                connected: false,
-                error:
-                  error.response?.data?.message ||
-                  "Failed to connect Instagram account",
-                details: error.response?.data?.details,
-              });
+  
+    window.FB.getLoginStatus(async function(statusResponse) {
+      console.log('Initial FB status:', statusResponse);
+  
+      const handleLoginResponse = async (response) => {
+        if (response.status === 'connected') {
+          try {
+            // Check permissions after login
+            const permResponse = await new Promise((resolve) => {
+              window.FB.api('/me/permissions', resolve);
             });
+            console.log('Granted permissions:', permResponse.data);
+  
+            // Get Facebook page access first
+            const pagesResponse = await new Promise((resolve) => {
+              window.FB.api('/me/accounts', resolve);
+            });
+            console.log('Facebook pages:', pagesResponse.data);
+  
+            if (!pagesResponse.data || pagesResponse.data.length === 0) {
+              throw new Error('No Facebook pages found. Please create a Facebook page first.');
+            }
+  
+            // Connect Instagram
+            await instagramService.connectInstagramAccount(response.authResponse.accessToken);
+            window.location.reload();
+          } catch (err) {
+            console.error('Connection error:', err);
+            setError(err.message || 'Failed to connect Instagram');
+            setIsConnecting(false);
+          }
         } else {
-          setStatus({
-            loading: false,
-            connected: false,
-            error: "Facebook login failed",
-            details: response,
-          });
+          setError('Facebook login failed');
+          setIsConnecting(false);
         }
-      },
-      {
-        scope: ["instagram_basic",'instagram_manage_insights',"pages_show_list","pages_read_engagement",
-        ].join(","),
-        return_scopes: true,
+      };
+  
+      if (statusResponse.status !== 'connected') {
+        window.FB.login(handleLoginResponse, {
+          scope: 'pages_show_list,pages_read_engagement,instagram_basic,instagram_manage_insights',
+          return_scopes: true,
+          enable_profile_selector: true
+        });
+      } else {
+        handleLoginResponse(statusResponse);
       }
-    );
+    });
   };
 
-  // const handleInstagramConnect = () => {
-  //     setIsConnecting(true);
-  //     setError('');
-    
-  //     window.FB.init({
-  //       appId: import.meta.env.VITE_FACEBOOK_APP_ID,
-  //       cookie: true,
-  //       xfbml: true,
-  //       version: 'v18.0'
-  //     });
-    
-  //     window.FB.login((response) => {
-  //       console.log('Login Response:', response);
-  //       if (response.status === 'connected') {
-  //         // Check granted permissions
-  //         window.FB.api('/me/permissions', (permResponse) => {
-  //           console.log('Granted permissions:', permResponse.data);
-  //         });
-          
-  //         instagramService.connectInstagramAccount(response.authResponse.accessToken)
-  //           .then(() => window.location.reload())
-  //           .catch(err => {
-  //             console.error('Connection error:', err);
-  //             setError(err.response?.data?.message);
-  //             setIsConnecting(false);
-  //           });
-  //       }
-  //     }, {
-  //       scope: 'pages_show_list,pages_read_engagement,instagram_basic,instagram_manage_insights,public_profile',
-  //       return_scopes: true
-  //     });
-  //   };
- 
+
   const handleDisconnect = () => {
     // Regular promise handling
     instagramService

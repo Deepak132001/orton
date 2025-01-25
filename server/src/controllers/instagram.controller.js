@@ -30,7 +30,7 @@ export const connectInstagram = async (req, res) => {
     while (!success && retryCount < 3) {
       try {
         const longLivedTokenResponse = await axios.get(
-          `https://graph.facebook.com/v18.0/oauth/access_token`,
+          `https://graph.facebook.com/v21.0/oauth/access_token`,
           {
             params: {
               grant_type: 'fb_exchange_token',
@@ -43,7 +43,7 @@ export const connectInstagram = async (req, res) => {
 
         const longLivedToken = longLivedTokenResponse.data.access_token;
         const pagesResponse = await axios.get(
-          `https://graph.facebook.com/v18.0/me/accounts`,
+          `https://graph.facebook.com/v21.0/me/accounts`,
           {
             params: { access_token: longLivedToken }
           }
@@ -58,7 +58,7 @@ export const connectInstagram = async (req, res) => {
         const pageAccessToken = pages[0].access_token;
 
         const instagramAccountResponse = await axios.get(
-          `https://graph.facebook.com/v18.0/${pageId}`,
+          `https://graph.facebook.com/v21.0/${pageId}`,
           {
             params: {
               fields: 'instagram_business_account',
@@ -115,7 +115,7 @@ export const getProfile = async (req, res) => {
     while (!success && retryCount < 3) {
       try {
         const response = await axios.get(
-          `https://graph.facebook.com/v18.0/${user.instagramBusinessId}`,
+          `https://graph.facebook.com/v21.0/${user.instagramBusinessId}`,
           {
             params: {
               fields: 'id,username,profile_picture_url,followers_count,media_count',
@@ -154,7 +154,7 @@ export const getInsights = async (req, res) => {
     const safelyGetInsights = async (metric, metricType) => {
       try {
         const response = await axios.get(
-          `https://graph.facebook.com/v18.0/${user.instagramBusinessId}/insights`,
+          `https://graph.facebook.com/v21.0/${user.instagramBusinessId}/insights`,
           {
             params: {
               metric: metric,
@@ -174,7 +174,7 @@ export const getInsights = async (req, res) => {
 
     // Get account information
     const accountResponse = await axios.get(
-      `https://graph.facebook.com/v18.0/${user.instagramBusinessId}`,
+      `https://graph.facebook.com/v21.0/${user.instagramBusinessId}`,
       {
         params: {
           fields: 'followers_count,media_count,profile_picture_url',
@@ -191,7 +191,7 @@ export const getInsights = async (req, res) => {
     let recentPosts = [];
     try {
       const mediaResponse = await axios.get(
-        `https://graph.facebook.com/v18.0/${user.instagramBusinessId}/media`,
+        `https://graph.facebook.com/v21.0/${user.instagramBusinessId}/media`,
         {
           params: {
             fields: 'id,caption,like_count,comments_count,timestamp,insights.metric(reach,impressions)',

@@ -16,8 +16,6 @@ export const connectInstagramAccount = async (accessToken) => {
   }
 };
 
-
-
 // export const getInstagramProfile = async () => {
 //   try {
 //     const response = await api.get('/instagram/profile');

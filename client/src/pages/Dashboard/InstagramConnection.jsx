@@ -196,27 +196,22 @@ const InstagramConnection = () => {
   
     window.FB.login((response) => {
       if (response.status === 'connected') {
+        console.log('FB Login response:', response);
         const { accessToken } = response.authResponse;
+  
+        // First check granted permissions
+        window.FB.api('/me/permissions', (permResponse) => {
+          console.log('Granted permissions:', permResponse.data);
+        });
         
-        // Using Promise chain instead of async/await
-        axios.get(`https://graph.facebook.com/v18.0/oauth/access_token`, {
-          params: {
-            grant_type: 'fb_exchange_token',
-            client_id: import.meta.env.VITE_FACEBOOK_APP_ID,
-            client_secret: import.meta.env.VITE_FACEBOOK_APP_SECRET,
-            fb_exchange_token: accessToken
-          }
-        })
-        .then(longLivedTokenResponse => {
-          const longLivedToken = longLivedTokenResponse.data.access_token;
-          return axios.get(`https://graph.facebook.com/v18.0/me/accounts`, {
-            params: { access_token: longLivedToken }
-          });
+        axios.get(`https://graph.facebook.com/v18.0/me/accounts`, {
+          params: { access_token: accessToken }
         })
         .then(pagesResponse => {
+          console.log('Pages response:', pagesResponse.data);
           const pages = pagesResponse.data.data;
           if (!pages.length) {
-            throw new Error('No Facebook pages found. Please create a Facebook page and connect it to your Instagram business account.');
+            throw new Error('No Facebook pages found');
           }
           return instagramService.connectInstagramAccount(accessToken);
         })
@@ -224,22 +219,13 @@ const InstagramConnection = () => {
           window.location.reload();
         })
         .catch(err => {
-          console.error('Connection error:', err);
-          setError(err.response?.data?.message || err.message || 'Failed to connect Instagram account');
+          console.error('Full error details:', err);
+          setError(err.response?.data?.message || err.message);
         });
-      } else {
-        setError('Facebook login failed');
       }
     }, {
-      scope: [
-        'instagram_basic',
-        'instagram_manage_insights', 
-        'pages_show_list',
-        'pages_read_engagement',
-        'public_profile'
-      ].join(','),
-      return_scopes: true,
-      enable_profile_selector: true
+      scope: 'pages_show_list,pages_read_engagement,instagram_basic,instagram_manage_insights',
+      return_scopes: true
     });
   };
 

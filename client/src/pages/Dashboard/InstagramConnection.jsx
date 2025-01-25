@@ -187,48 +187,40 @@ const InstagramConnection = () => {
   //   );
   // };
   const handleInstagramConnect = () => {
-    window.FB.login(async (response) => {
+    window.FB.login((response) => {
       if (response.status === 'connected') {
-        try {
-          const { accessToken } = response.authResponse;
-          
-          // Get pages first
-          const pagesResponse = await axios.get(
-            `https://graph.facebook.com/v18.0/me/accounts`,
-            {
-              params: { access_token: accessToken }
-            }
-          );
-  
+        const { accessToken } = response.authResponse;
+        
+        axios.get(`https://graph.facebook.com/v18.0/me/accounts`, {
+          params: { access_token: accessToken }
+        })
+        .then(pagesResponse => {
           const pages = pagesResponse.data.data;
           if (!pages.length) {
             throw new Error('No Facebook pages found');
           }
-  
-          // Get Instagram business account for the first page
           const pageId = pages[0].id;
           const pageAccessToken = pages[0].access_token;
-  
-          const instagramResponse = await axios.get(
-            `https://graph.facebook.com/v18.0/${pageId}`,
-            {
-              params: {
-                fields: 'instagram_business_account',
-                access_token: pageAccessToken
-              }
+          
+          return axios.get(`https://graph.facebook.com/v18.0/${pageId}`, {
+            params: {
+              fields: 'instagram_business_account',
+              access_token: pageAccessToken
             }
-          );
-  
+          });
+        })
+        .then(instagramResponse => {
           if (!instagramResponse.data?.instagram_business_account) {
             throw new Error('No Instagram business account found');
           }
-  
-          // Now connect with your backend
-          await instagramService.connectInstagramAccount(accessToken);
+          return instagramService.connectInstagramAccount(response.authResponse.accessToken);
+        })
+        .then(() => {
           window.location.reload();
-        } catch (err) {
+        })
+        .catch(err => {
           setError(err.message || 'Failed to connect Instagram account');
-        }
+        });
       }
     }, {
       scope: 'manage_pages,pages_show_list,pages_read_engagement,instagram_basic,instagram_manage_insights,business_management',

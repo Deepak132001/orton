@@ -10,6 +10,7 @@ import {
   LogOut,
   Youtube,
 } from "lucide-react";
+import axios from 'axios';
 import * as instagramService from "../../services/instagram.service";
 
 

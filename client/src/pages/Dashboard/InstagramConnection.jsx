@@ -193,22 +193,73 @@ const InstagramConnection = () => {
   
     const handleLoginResponse = function(response) {
       if (response.status === 'connected') {
-        instagramService.connectInstagramAccount(response.authResponse.accessToken)
-          .then(() => window.location.reload())
-          .catch(err => {
-            console.error('Connection error:', err);
-            setError('Failed to connect Instagram. Make sure you have an Instagram Business account connected to your Facebook page.');
-            setIsConnecting(false);
+        // First get Facebook user info
+        window.FB.api('/me', { fields: 'id,name' }, function(userResponse) {
+          console.log('Facebook user:', userResponse);
+          
+          // Then get pages with Instagram info
+          window.FB.api('/me/accounts', { 
+            fields: 'id,name,instagram_business_account{id,name,username}',
+            access_token: response.authResponse.accessToken
+          }, function(pagesResponse) {
+            console.log('Pages response:', pagesResponse);
+            
+            // Get detailed Instagram account info
+            if (pagesResponse.data && pagesResponse.data.length > 0) {
+              const page = pagesResponse.data[0];
+              if (page.instagram_business_account) {
+                window.FB.api(
+                  `/${page.instagram_business_account.id}`,
+                  { 
+                    fields: 'id,username,account_type',
+                    access_token: response.authResponse.accessToken
+                  },
+                  function(instaResponse) {
+                    console.log('Instagram account:', instaResponse);
+                    
+                    // Only proceed if we confirm it's a business account
+                    if (instaResponse.account_type === 'BUSINESS') {
+                      instagramService.connectInstagramAccount(response.authResponse.accessToken)
+                        .then(() => window.location.reload())
+                        .catch(err => {
+                          console.error('Connection error:', err);
+                          setError(err.response?.data?.message || 'Failed to connect');
+                          setIsConnecting(false);
+                        });
+                    } else {
+                      setError('Please convert your Instagram account to a Business account');
+                      setIsConnecting(false);
+                    }
+                  }
+                );
+              } else {
+                setError('No Instagram Business account connected to your Facebook page');
+                setIsConnecting(false);
+              }
+            } else {
+              setError('No Facebook pages found with connected Instagram accounts');
+              setIsConnecting(false);
+            }
           });
+        });
       } else {
         setError('Facebook login failed');
         setIsConnecting(false);
       }
     };
   
-    window.FB.login(handleLoginResponse, {
-      scope: 'instagram_basic,instagram_manage_insights,pages_show_list',
-      return_scopes: true
+    window.FB.getLoginStatus(function(statusResponse) {
+      console.log('Initial FB status:', statusResponse);
+      
+      if (statusResponse.status !== 'connected') {
+        window.FB.login(handleLoginResponse, {
+          scope: 'instagram_basic,instagram_manage_insights,pages_show_list',
+          return_scopes: true,
+          enable_profile_selector: true
+        });
+      } else {
+        handleLoginResponse(statusResponse);
+      }
     });
   };
 

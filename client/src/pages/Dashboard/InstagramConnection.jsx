@@ -191,44 +191,61 @@ const InstagramConnection = () => {
       version: 'v18.0'
     });
   
+    const handleLoginResponse = function(response) {
+      console.log('Login response:', response);
+      
+      if (response.status === 'connected') {
+        // Check access token
+        const accessToken = response.authResponse.accessToken;
+        console.log('Access token:', accessToken);
+  
+        // Get pages with Instagram info
+        window.FB.api('/me/accounts', {
+          access_token: accessToken,
+          fields: 'id,name,access_token,instagram_business_account'
+        }, function(pagesResponse) {
+          console.log('Full pages response:', pagesResponse);
+          
+          if (pagesResponse.error) {
+            console.error('Pages API error:', pagesResponse.error);
+            setError('Failed to fetch Facebook pages: ' + pagesResponse.error.message);
+            setIsConnecting(false);
+            return;
+          }
+  
+          const pages = pagesResponse.data || [];
+          console.log('Pages found:', pages.length);
+  
+          // Find page with Instagram
+          const pageWithInstagram = pages.find(page => page.instagram_business_account);
+          
+          if (!pageWithInstagram) {
+            setError('No Instagram Business account found. Please connect Instagram to your Facebook page first.');
+            setIsConnecting(false);
+            return;
+          }
+  
+          // Connect using the page's access token
+          instagramService.connectInstagramAccount(pageWithInstagram.access_token)
+            .then(() => window.location.reload())
+            .catch(err => {
+              console.error('Instagram connection error:', err);
+              setError(err.response?.data?.message || 'Failed to connect Instagram');
+              setIsConnecting(false);
+            });
+        });
+      } else {
+        setError('Facebook login failed');
+        setIsConnecting(false);
+      }
+    };
+  
     window.FB.getLoginStatus(function(statusResponse) {
       console.log('Initial FB status:', statusResponse);
-  
-      const handleLoginResponse = function(response) {
-        if (response.status === 'connected') {
-          // Check permissions
-          window.FB.api('/me/permissions', function(permResponse) {
-            console.log('Granted permissions:', permResponse.data);
-            
-            // Get Facebook pages
-            window.FB.api('/me/accounts', function(pagesResponse) {
-              console.log('Facebook pages:', pagesResponse.data);
-              
-              if (!pagesResponse.data || pagesResponse.data.length === 0) {
-                setError('No Facebook pages found. Please create a Facebook page first.');
-                setIsConnecting(false);
-                return;
-              }
-  
-              // Connect Instagram
-              instagramService.connectInstagramAccount(response.authResponse.accessToken)
-                .then(() => window.location.reload())
-                .catch(err => {
-                  console.error('Connection error:', err);
-                  setError(err.message || 'Failed to connect Instagram');
-                  setIsConnecting(false);
-                });
-            });
-          });
-        } else {
-          setError('Facebook login failed');
-          setIsConnecting(false);
-        }
-      };
-  
+      
       if (statusResponse.status !== 'connected') {
         window.FB.login(handleLoginResponse, {
-          scope: 'pages_show_list,pages_read_engagement,instagram_basic,instagram_manage_insights',
+          scope: 'instagram_basic,instagram_manage_insights,pages_show_list',
           return_scopes: true,
           enable_profile_selector: true
         });

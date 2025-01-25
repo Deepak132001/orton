@@ -191,13 +191,13 @@ const InstagramConnection = () => {
           appId: import.meta.env.VITE_FACEBOOK_APP_ID,
           cookie: true,
           xfbml: true,
-          version: "v18.0",
+          version: "v21.0",
         });
     window.FB.login((response) => {
       if (response.status === 'connected') {
         const { accessToken } = response.authResponse;
         
-        axios.get(`https://graph.facebook.com/v18.0/me/accounts`, {
+        axios.get(`https://graph.facebook.com/v21.0/me/accounts`, {
           params: { access_token: accessToken }
         })
         .then(pagesResponse => {
@@ -208,7 +208,7 @@ const InstagramConnection = () => {
           const pageId = pages[0].id;
           const pageAccessToken = pages[0].access_token;
           
-          return axios.get(`https://graph.facebook.com/v18.0/${pageId}`, {
+          return axios.get(`https://graph.facebook.com/v21.0/${pageId}`, {
             params: {
               fields: 'instagram_business_account',
               access_token: pageAccessToken

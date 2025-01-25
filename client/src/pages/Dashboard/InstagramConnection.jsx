@@ -187,6 +187,12 @@ const InstagramConnection = () => {
   //   );
   // };
   const handleInstagramConnect = () => {
+    window.FB.init({
+          appId: import.meta.env.VITE_FACEBOOK_APP_ID,
+          cookie: true,
+          xfbml: true,
+          version: "v18.0",
+        });
     window.FB.login((response) => {
       if (response.status === 'connected') {
         const { accessToken } = response.authResponse;

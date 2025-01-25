@@ -124,115 +124,115 @@ const InstagramConnection = () => {
     }
   };
 
-  // const handleInstagramConnect = () => {
-  //   setStatus((prev) => ({ ...prev, loading: true, error: null }));
-
-  //   window.FB.init({
-  //     appId: import.meta.env.VITE_FACEBOOK_APP_ID,
-  //     cookie: true,
-  //     xfbml: true,
-  //     version: "v18.0",
-  //   });
-
-  //   // Regular function for FB.login callback
-  //   window.FB.login(
-  //     function (response) {
-  //       if (response.status === "connected") {
-  //         // Regular promise handling
-  //         instagramService
-  //           .connectInstagramAccount(response.authResponse.accessToken)
-  //           .then((result) => {
-  //             // console.log("Connection result:", result);
-  //             setStatus({
-  //               loading: false,
-  //               connected: true,
-  //               error: null,
-  //               details: result,
-  //             });
-  //             // Show success state briefly before reload
-  //             setTimeout(() => {
-  //               window.location.reload();
-  //             }, 1000);
-  //           })
-  //           .catch((error) => {
-  //             // console.error("Connection error:", error.response?.data);
-  //             setStatus({
-  //               loading: false,
-  //               connected: false,
-  //               error:
-  //                 error.response?.data?.message ||
-  //                 "Failed to connect Instagram account",
-  //               details: error.response?.data?.details,
-  //             });
-  //           });
-  //       } else {
-  //         setStatus({
-  //           loading: false,
-  //           connected: false,
-  //           error: "Facebook login failed",
-  //           details: response,
-  //         });
-  //       }
-  //     },
-  //     {
-  //       scope: [
-  //         "instagram_basic",
-  //         "instagram_manage_insights",
-  //         "pages_show_list",
-  //         "pages_read_engagement",
-  //         "public_profile",
-  //       ].join(","),
-  //       return_scopes: true,
-  //     }
-  //   );
-  // };
   const handleInstagramConnect = () => {
+    setStatus((prev) => ({ ...prev, loading: true, error: null }));
+
     window.FB.init({
-          appId: import.meta.env.VITE_FACEBOOK_APP_ID,
-          cookie: true,
-          xfbml: true,
-          version: "v21.0",
-        });
-    window.FB.login((response) => {
-      if (response.status === 'connected') {
-        const { accessToken } = response.authResponse;
-        
-        axios.get(`https://graph.facebook.com/v21.0/me/accounts`, {
-          params: { access_token: accessToken }
-        })
-        .then(pagesResponse => {
-          const pages = pagesResponse.data.data;
-          if (!pages.length) {
-            throw new Error('No Facebook pages found');
-          }
-          const pageId = pages[0].id;
-          const pageAccessToken = pages[0].access_token;
-          
-          return axios.get(`https://graph.facebook.com/v21.0/${pageId}`, {
-            params: {
-              fields: 'instagram_business_account',
-              access_token: pageAccessToken
-            }
-          });
-        })
-        .then(instagramResponse => {
-          if (!instagramResponse.data?.instagram_business_account) {
-            throw new Error('No Instagram business account found');
-          }
-          return instagramService.connectInstagramAccount(response.authResponse.accessToken);
-        })
-        .then(() => {
-          window.location.reload();
-        })
-        .catch(err => {
-          setError(err.message || 'Failed to connect Instagram account');
-        });
-      }
-    }, {
-      scope: 'manage_pages,pages_show_list,pages_read_engagement,instagram_basic,instagram_manage_insights,business_management',
-      return_scopes: true
+      appId: import.meta.env.VITE_FACEBOOK_APP_ID,
+      cookie: true,
+      xfbml: true,
+      version: "v18.0",
     });
+
+    // Regular function for FB.login callback
+    window.FB.login(
+      function (response) {
+        if (response.status === "connected") {
+          // Regular promise handling
+          instagramService
+            .connectInstagramAccount(response.authResponse.accessToken)
+            .then((result) => {
+              // console.log("Connection result:", result);
+              setStatus({
+                loading: false,
+                connected: true,
+                error: null,
+                details: result,
+              });
+              // Show success state briefly before reload
+              setTimeout(() => {
+                window.location.reload();
+              }, 1000);
+            })
+            .catch((error) => {
+              // console.error("Connection error:", error.response?.data);
+              setStatus({
+                loading: false,
+                connected: false,
+                error:
+                  error.response?.data?.message ||
+                  "Failed to connect Instagram account",
+                details: error.response?.data?.details,
+              });
+            });
+        } else {
+          setStatus({
+            loading: false,
+            connected: false,
+            error: "Facebook login failed",
+            details: response,
+          });
+        }
+      },
+      {
+        scope: [
+          "instagram_basic",
+          "instagram_manage_insights",
+          "pages_show_list",
+          "pages_read_engagement",
+          "public_profile",
+        ].join(","),
+        return_scopes: true,
+      }
+    );
   };
+  // const handleInstagramConnect = () => {
+  //   window.FB.init({
+  //         appId: import.meta.env.VITE_FACEBOOK_APP_ID,
+  //         cookie: true,
+  //         xfbml: true,
+  //         version: "v21.0",
+  //       });
+  //   window.FB.login((response) => {
+  //     if (response.status === 'connected') {
+  //       const { accessToken } = response.authResponse;
+        
+  //       axios.get(`https://graph.facebook.com/v21.0/me/accounts`, {
+  //         params: { access_token: accessToken }
+  //       })
+  //       .then(pagesResponse => {
+  //         const pages = pagesResponse.data.data;
+  //         if (!pages.length) {
+  //           throw new Error('No Facebook pages found');
+  //         }
+  //         const pageId = pages[0].id;
+  //         const pageAccessToken = pages[0].access_token;
+          
+  //         return axios.get(`https://graph.facebook.com/v21.0/${pageId}`, {
+  //           params: {
+  //             fields: 'instagram_business_account',
+  //             access_token: pageAccessToken
+  //           }
+  //         });
+  //       })
+  //       .then(instagramResponse => {
+  //         if (!instagramResponse.data?.instagram_business_account) {
+  //           throw new Error('No Instagram business account found');
+  //         }
+  //         return instagramService.connectInstagramAccount(response.authResponse.accessToken);
+  //       })
+  //       .then(() => {
+  //         window.location.reload();
+  //       })
+  //       .catch(err => {
+  //         setError(err.message || 'Failed to connect Instagram account');
+  //       });
+  //     }
+  //   }, {
+  //     scope: 'pages_show_list,pages_read_engagement,instagram_basic,instagram_manage_insights,business_management',
+  //     return_scopes: true
+  //   });
+  // };
 
   const handleDisconnect = () => {
     // Regular promise handling

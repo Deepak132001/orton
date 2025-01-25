@@ -193,67 +193,39 @@ const InstagramConnection = () => {
       version: 'v18.0'
     });
   
-    window.FB.login(async (response) => {
+    window.FB.login((response) => {
       if (response.status === 'connected') {
         const { accessToken } = response.authResponse;
         
-        try {
-          // Get long-lived token
-          const longLivedTokenResponse = await axios.get(
-            `https://graph.facebook.com/v18.0/oauth/access_token`,
-            {
-              params: {
-                grant_type: 'fb_exchange_token',
-                client_id: import.meta.env.VITE_FACEBOOK_APP_ID,
-                client_secret: import.meta.env.VITE_FACEBOOK_APP_SECRET,
-                fb_exchange_token: accessToken
-              }
-            }
-          );
-  
+        // Using Promise chain instead of async/await
+        axios.get(`https://graph.facebook.com/v18.0/oauth/access_token`, {
+          params: {
+            grant_type: 'fb_exchange_token',
+            client_id: import.meta.env.VITE_FACEBOOK_APP_ID,
+            client_secret: import.meta.env.VITE_FACEBOOK_APP_SECRET,
+            fb_exchange_token: accessToken
+          }
+        })
+        .then(longLivedTokenResponse => {
           const longLivedToken = longLivedTokenResponse.data.access_token;
-  
-          // Get all pages user has access to
-          const pagesResponse = await axios.get(
-            `https://graph.facebook.com/v18.0/me/accounts`,
-            {
-              params: { access_token: longLivedToken }
-            }
-          );
-  
+          return axios.get(`https://graph.facebook.com/v18.0/me/accounts`, {
+            params: { access_token: longLivedToken }
+          });
+        })
+        .then(pagesResponse => {
           const pages = pagesResponse.data.data;
           if (!pages.length) {
-            setError('No Facebook pages found. Please create a Facebook page and connect it to your Instagram business account.');
-            return;
+            throw new Error('No Facebook pages found. Please create a Facebook page and connect it to your Instagram business account.');
           }
-  
-          // Get first page's Instagram business account
-          const pageId = pages[0].id;
-          const pageAccessToken = pages[0].access_token;
-  
-          const instagramAccountResponse = await axios.get(
-            `https://graph.facebook.com/v18.0/${pageId}`,
-            {
-              params: {
-                fields: 'instagram_business_account{id,name}',
-                access_token: pageAccessToken
-              }
-            }
-          );
-  
-          if (!instagramAccountResponse.data?.instagram_business_account) {
-            setError('No Instagram business account found. Please connect your Instagram account to your Facebook page.');
-            return;
-          }
-  
-          // Connect account through your backend
-          await instagramService.connectInstagramAccount(longLivedToken);
+          return instagramService.connectInstagramAccount(accessToken);
+        })
+        .then(() => {
           window.location.reload();
-  
-        } catch (err) {
+        })
+        .catch(err => {
           console.error('Connection error:', err);
-          setError(err.response?.data?.message || 'Failed to connect Instagram account');
-        }
+          setError(err.response?.data?.message || err.message || 'Failed to connect Instagram account');
+        });
       } else {
         setError('Facebook login failed');
       }

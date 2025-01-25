@@ -196,35 +196,16 @@ const InstagramConnection = () => {
   
     window.FB.login((response) => {
       if (response.status === 'connected') {
-        console.log('FB Login response:', response);
         const { accessToken } = response.authResponse;
-  
-        // First check granted permissions
-        window.FB.api('/me/permissions', (permResponse) => {
-          console.log('Granted permissions:', permResponse.data);
-        });
-        
-        axios.get(`https://graph.facebook.com/v18.0/me/accounts`, {
-          params: { access_token: accessToken }
-        })
-        .then(pagesResponse => {
-          console.log('Pages response:', pagesResponse.data);
-          const pages = pagesResponse.data.data;
-          if (!pages.length) {
-            throw new Error('No Facebook pages found');
-          }
-          return instagramService.connectInstagramAccount(accessToken);
-        })
-        .then(() => {
-          window.location.reload();
-        })
-        .catch(err => {
-          console.error('Full error details:', err);
-          setError(err.response?.data?.message || err.message);
-        });
+        instagramService.connectInstagramAccount(accessToken)
+          .then(() => window.location.reload())
+          .catch(err => {
+            console.error('Connection error:', err);
+            setError(err.response?.data?.message || 'Failed to connect Instagram account');
+          });
       }
     }, {
-      scope: 'pages_show_list,pages_read_engagement,instagram_basic,instagram_manage_insights',
+      scope: 'manage_pages,pages_show_list,pages_read_engagement,instagram_basic,instagram_manage_insights',
       return_scopes: true
     });
   };

@@ -131,7 +131,7 @@ const InstagramConnection = () => {
       appId: import.meta.env.VITE_FACEBOOK_APP_ID,
       cookie: true,
       xfbml: true,
-      version: "v18.0",
+      version: "v21.0",
     });
 
     // Regular function for FB.login callback

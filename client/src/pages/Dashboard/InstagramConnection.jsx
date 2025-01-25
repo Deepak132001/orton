@@ -126,107 +126,65 @@ const InstagramConnection = () => {
 
   const handleInstagramConnect = () => {
     setStatus((prev) => ({ ...prev, loading: true, error: null }));
-    
-      window.FB.init({
-        appId: import.meta.env.VITE_FACEBOOK_APP_ID,
-        cookie: true,
-        xfbml: true,
-        version: 'v21.0'
-      });
-    
-      window.FB.getLoginStatus(function(statusResponse) {
-        console.log('FB Status:', statusResponse);
-        
-        const handleLogin = (response) => {
-          console.log('Login response:', response);
-          if (response.status === 'connected') {
-            instagramService.connectInstagramAccount(response.authResponse.accessToken)
-              .then(() => window.location.reload())
-              .catch(err => {
-                console.error('Connection error:', err);
-                setError(err.response?.data?.message || 'Connection failed');
-                setIsConnecting(false);
+
+    window.FB.init({
+      appId: import.meta.env.VITE_FACEBOOK_APP_ID,
+      cookie: true,
+      xfbml: true,
+      version: "v21.0",
+    });
+
+    // Regular function for FB.login callback
+    window.FB.login(
+      function (response) {
+        if (response.status === "connected") {
+          // Regular promise handling
+          instagramService
+            .connectInstagramAccount(response.authResponse.accessToken)
+            .then((result) => {
+              console.log("Connection result:", result);
+              setStatus({
+                loading: false,
+                connected: true,
+                error: null,
+                details: result,
               });
-          } else {
-            setError('Facebook login failed');
-            setIsConnecting(false);
-          }
-        };
-    
-        if (statusResponse.status !== 'connected') {
-          window.FB.login(handleLogin, {
-            scope: 'pages_show_list,pages_read_engagement,instagram_basic,instagram_manage_insights',
-            return_scopes: true,
-            enable_profile_selector: true
-          });
+              // Show success state briefly before reload
+              setTimeout(() => {
+                window.location.reload();
+              }, 1000);
+            })
+            .catch((error) => {
+              console.error("Connection error:", error.response?.data);
+              setStatus({
+                loading: false,
+                connected: false,
+                error:
+                  error.response?.data?.message ||
+                  "Failed to connect Instagram account",
+                details: error.response?.data?.details,
+              });
+            });
         } else {
-          handleLogin(statusResponse);
+          setStatus({
+            loading: false,
+            connected: false,
+            error: "Facebook login failed",
+            details: response,
+          });
         }
-      });
-      
-    };
-
-  // const handleInstagramConnect = () => {
-  //   setStatus((prev) => ({ ...prev, loading: true, error: null }));
-
-  //   window.FB.init({
-  //     appId: import.meta.env.VITE_FACEBOOK_APP_ID,
-  //     cookie: true,
-  //     xfbml: true,
-  //     version: "v21.0",
-  //   });
-
-  //   // Regular function for FB.login callback
-  //   window.FB.login(
-  //     function (response) {
-  //       if (response.status === "connected") {
-  //         // Regular promise handling
-  //         instagramService
-  //           .connectInstagramAccount(response.authResponse.accessToken)
-  //           .then((result) => {
-  //             console.log("Connection result:", result);
-  //             setStatus({
-  //               loading: false,
-  //               connected: true,
-  //               error: null,
-  //               details: result,
-  //             });
-  //             // Show success state briefly before reload
-  //             setTimeout(() => {
-  //               window.location.reload();
-  //             }, 1000);
-  //           })
-  //           .catch((error) => {
-  //             console.error("Connection error:", error.response?.data);
-  //             setStatus({
-  //               loading: false,
-  //               connected: false,
-  //               error:
-  //                 error.response?.data?.message ||
-  //                 "Failed to connect Instagram account",
-  //               details: error.response?.data?.details,
-  //             });
-  //           });
-  //       } else {
-  //         setStatus({
-  //           loading: false,
-  //           connected: false,
-  //           error: "Facebook login failed",
-  //           details: response,
-  //         });
-  //       }
-  //     },
-  //     {
-  //       scope: [
-  //         "instagram_basic",
-  //         "instagram_manage_insights",
-  //         "pages_show_list",
-  //         "pages_read_engagement",
-  //       ],
-  //       return_scopes: true,
-  //     }
-  //   );
-  // };
+      },
+      {
+        scope: [
+          "instagram_basic",
+          "instagram_manage_insights",
+          "pages_show_list",
+          "pages_read_engagement",
+        ],
+        return_scopes: true,
+      }
+    );
+  };
 
   const handleDisconnect = () => {
     // Regular promise handling

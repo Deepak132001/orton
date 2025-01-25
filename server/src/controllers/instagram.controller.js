@@ -17,94 +17,11 @@ const handleRateLimit = async (error, retryCount = 0) => {
   return false; // Don't retry
 };
 
-// export const connectInstagram = async (req, res) => {
-//   try {
-//     const { accessToken } = req.body;
-//     if (!accessToken) {
-//       return res.status(400).json({ message: 'Instagram not connected' });
-//     }
-
-//     let retryCount = 0;
-//     let success = false;
-
-//     while (!success && retryCount < 3) {
-//       try {
-//         const longLivedTokenResponse = await axios.get(
-//           `https://graph.facebook.com/v21.0/oauth/access_token`,
-//           {
-//             params: {
-//               grant_type: 'fb_exchange_token',
-//               client_id: process.env.FACEBOOK_APP_ID,
-//               client_secret: process.env.FACEBOOK_APP_SECRET,
-//               fb_exchange_token: accessToken
-//             }
-//           }
-//         );
-
-//         const longLivedToken = longLivedTokenResponse.data.access_token;
-//         const pagesResponse = await axios.get(
-//           `https://graph.facebook.com/v21.0/me/accounts`,
-//           {
-//             params: { access_token: longLivedToken }
-//           }
-//         );
-
-//         const pages = pagesResponse.data.data;
-//         if (!pages.length) {
-//           return res.status(400).json({ message: 'Instagram not connected' });
-//         }
-
-//         const pageId = pages[0].id;
-//         const pageAccessToken = pages[0].access_token;
-
-//         const instagramAccountResponse = await axios.get(
-//           `https://graph.facebook.com/v21.0/${pageId}`,
-//           {
-//             params: {
-//               fields: 'instagram_business_account',
-//               access_token: pageAccessToken
-//             }
-//           }
-//         );
-
-//         const instagramBusinessId = instagramAccountResponse.data?.instagram_business_account?.id;
-//         if (!instagramBusinessId) {
-//           return res.status(400).json({ message: 'Instagram not connected' });
-//         }
-
-//         const updatedUser = await User.findByIdAndUpdate(
-//           req.user._id,
-//           {
-//             facebookAccessToken: longLivedToken,
-//             facebookPageId: pageId,
-//             instagramBusinessId: instagramBusinessId
-//           },
-//           { new: true }
-//         );
-
-//         success = true;
-//         res.json({
-//           message: 'Instagram connected successfully',
-//           instagramBusinessId,
-//           success: true
-//         });
-//       } catch (error) {
-//         if (await handleRateLimit(error, retryCount)) {
-//           retryCount++;
-//           continue;
-//         }
-//         throw error;
-//       }
-//     }
-//   } catch (error) {
-//     return res.status(400).json({ message: 'Instagram not connected' });
-//   }
-// };
 export const connectInstagram = async (req, res) => {
   try {
     const { accessToken } = req.body;
     if (!accessToken) {
-      return res.status(400).json({ message: "Access token is missing" });
+      return res.status(400).json({ message: 'Instagram not connected' });
     }
 
     let retryCount = 0;
@@ -112,95 +29,178 @@ export const connectInstagram = async (req, res) => {
 
     while (!success && retryCount < 3) {
       try {
-        // Exchange for long-lived access token
         const longLivedTokenResponse = await axios.get(
           `https://graph.facebook.com/v21.0/oauth/access_token`,
           {
             params: {
-              grant_type: "fb_exchange_token",
+              grant_type: 'fb_exchange_token',
               client_id: process.env.FACEBOOK_APP_ID,
               client_secret: process.env.FACEBOOK_APP_SECRET,
-              fb_exchange_token: accessToken,
-            },
+              fb_exchange_token: accessToken
+            }
           }
         );
 
         const longLivedToken = longLivedTokenResponse.data.access_token;
-
-        // Fetch pages connected to the account
         const pagesResponse = await axios.get(
           `https://graph.facebook.com/v21.0/me/accounts`,
           {
-            params: { access_token: longLivedToken },
+            params: { access_token: longLivedToken }
           }
         );
 
         const pages = pagesResponse.data.data;
         if (!pages.length) {
-          return res.status(400).json({ message: "No Facebook pages found" });
+          return res.status(400).json({ message: 'Instagram not connected' });
         }
 
-        // Find the page with an Instagram business account
-        const pageWithInstagram = pages.find((page) => page.instagram_business_account);
-        if (!pageWithInstagram) {
-          return res.status(400).json({
-            message: "No Instagram business account found on connected pages",
-          });
-        }
+        const pageId = pages[0].id;
+        const pageAccessToken = pages[0].access_token;
 
-        const pageId = pageWithInstagram.id;
-        const pageAccessToken = pageWithInstagram.access_token;
-
-        // Fetch Instagram business account ID
         const instagramAccountResponse = await axios.get(
           `https://graph.facebook.com/v21.0/${pageId}`,
           {
             params: {
-              fields: "instagram_business_account",
-              access_token: pageAccessToken,
-            },
+              fields: 'instagram_business_account',
+              access_token: pageAccessToken
+            }
           }
         );
 
-        const instagramBusinessId =
-          instagramAccountResponse.data?.instagram_business_account?.id;
+        const instagramBusinessId = instagramAccountResponse.data?.instagram_business_account?.id;
         if (!instagramBusinessId) {
-          return res.status(400).json({
-            message: "Selected page does not have an Instagram business account connected",
-          });
+          return res.status(400).json({ message: 'Instagram not connected' });
         }
 
-        // Save to the database
         const updatedUser = await User.findByIdAndUpdate(
           req.user._id,
           {
             facebookAccessToken: longLivedToken,
             facebookPageId: pageId,
-            instagramBusinessId: instagramBusinessId,
+            instagramBusinessId: instagramBusinessId
           },
           { new: true }
         );
 
         success = true;
         res.json({
-          message: "Instagram connected successfully",
+          message: 'Instagram connected successfully',
           instagramBusinessId,
-          success: true,
+          success: true
         });
       } catch (error) {
         if (await handleRateLimit(error, retryCount)) {
           retryCount++;
           continue;
         }
-        console.error("Error connecting Instagram:", error);
         throw error;
       }
     }
   } catch (error) {
-    console.error("Connection error:", error.message);
-    return res.status(400).json({ message: "Failed to connect Instagram account" });
+    return res.status(400).json({ message: 'Instagram not connected' });
   }
 };
+// export const connectInstagram = async (req, res) => {
+//   try {
+//     const { accessToken } = req.body;
+//     if (!accessToken) {
+//       return res.status(400).json({ message: "Access token is missing" });
+//     }
+
+//     let retryCount = 0;
+//     let success = false;
+
+//     while (!success && retryCount < 3) {
+//       try {
+//         // Exchange for long-lived access token
+//         const longLivedTokenResponse = await axios.get(
+//           `https://graph.facebook.com/v21.0/oauth/access_token`,
+//           {
+//             params: {
+//               grant_type: "fb_exchange_token",
+//               client_id: process.env.FACEBOOK_APP_ID,
+//               client_secret: process.env.FACEBOOK_APP_SECRET,
+//               fb_exchange_token: accessToken,
+//             },
+//           }
+//         );
+
+//         const longLivedToken = longLivedTokenResponse.data.access_token;
+
+//         // Fetch pages connected to the account
+//         const pagesResponse = await axios.get(
+//           `https://graph.facebook.com/v21.0/me/accounts`,
+//           {
+//             params: { access_token: longLivedToken },
+//           }
+//         );
+
+//         const pages = pagesResponse.data.data;
+//         if (!pages.length) {
+//           return res.status(400).json({ message: "No Facebook pages found" });
+//         }
+
+//         // Find the page with an Instagram business account
+//         const pageWithInstagram = pages.find((page) => page.instagram_business_account);
+//         if (!pageWithInstagram) {
+//           return res.status(400).json({
+//             message: "No Instagram business account found on connected pages",
+//           });
+//         }
+
+//         const pageId = pageWithInstagram.id;
+//         const pageAccessToken = pageWithInstagram.access_token;
+
+//         // Fetch Instagram business account ID
+//         const instagramAccountResponse = await axios.get(
+//           `https://graph.facebook.com/v21.0/${pageId}`,
+//           {
+//             params: {
+//               fields: "instagram_business_account",
+//               access_token: pageAccessToken,
+//             },
+//           }
+//         );
+
+//         const instagramBusinessId =
+//           instagramAccountResponse.data?.instagram_business_account?.id;
+//         if (!instagramBusinessId) {
+//           return res.status(400).json({
+//             message: "Selected page does not have an Instagram business account connected",
+//           });
+//         }
+
+//         // Save to the database
+//         const updatedUser = await User.findByIdAndUpdate(
+//           req.user._id,
+//           {
+//             facebookAccessToken: longLivedToken,
+//             facebookPageId: pageId,
+//             instagramBusinessId: instagramBusinessId,
+//           },
+//           { new: true }
+//         );
+
+//         success = true;
+//         res.json({
+//           message: "Instagram connected successfully",
+//           instagramBusinessId,
+//           success: true,
+//         });
+//       } catch (error) {
+//         if (await handleRateLimit(error, retryCount)) {
+//           retryCount++;
+//           continue;
+//         }
+//         console.error("Error connecting Instagram:", error);
+//         throw error;
+//       }
+//     }
+//   } catch (error) {
+//     console.error("Connection error:", error.message);
+//     return res.status(400).json({ message: "Failed to connect Instagram account" });
+//   }
+// };
 
 
 export const getProfile = async (req, res) => {

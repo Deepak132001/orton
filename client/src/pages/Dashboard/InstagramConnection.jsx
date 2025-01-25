@@ -142,7 +142,7 @@ const InstagramConnection = () => {
           instagramService
             .connectInstagramAccount(response.authResponse.accessToken)
             .then((result) => {
-              // console.log("Connection result:", result);
+              console.log("Connection result:", result);
               setStatus({
                 loading: false,
                 connected: true,
@@ -155,7 +155,7 @@ const InstagramConnection = () => {
               }, 1000);
             })
             .catch((error) => {
-              // console.error("Connection error:", error.response?.data);
+              console.error("Connection error:", error.response?.data);
               setStatus({
                 loading: false,
                 connected: false,

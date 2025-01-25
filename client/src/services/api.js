@@ -38,25 +38,6 @@ api.interceptors.request.use(
 );
 
 // Response interceptor
-// api.interceptors.response.use(
-//   (response) => {
-//     console.log('Response received:', {
-//       url: response.config.url,
-//       status: response.status,
-//       headers: response.config.headers
-//     });
-//     return response;
-//   },
-//   (error) => {
-//     if (error.response?.status === 401) {
-//       console.log('Unauthorized response - clearing auth state');
-//       localStorage.removeItem('token');
-//       delete api.defaults.headers.common['Authorization'];
-//       window.location.href = '/';
-//     }
-//     return Promise.reject(error);
-//   }
-// );
 api.interceptors.response.use(
   (response) => {
     return response;

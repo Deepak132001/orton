@@ -63,27 +63,6 @@ export const InstagramTutorial = () => (
     <Card className="p-4 sm:p-8">
       <div className="space-y-6 sm:space-y-8">
 
-        {/* Video tutorial */}
-        <div className="mt-6">
-  <h3 className="text-lg font-medium text-gray-900 mb-4">Video Tutorial</h3>
-  <div className="relative aspect-video rounded-lg overflow-hidden">
-    <iframe 
-      className="absolute inset-0 w-full h-full"
-      src="https://www.youtube.com/embed/1iqtvuWUeXw"
-      title="How to Connect Instagram Business Account to Orton AI"
-      frameBorder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowFullScreen
-    />
-  </div>
-  <p className="mt-3 text-sm text-gray-600">
-    This video guide shows you how to:
-    - Create and connect a Facebook Page to Instagram
-    - Connect your Instagram account to OrtonAI
-  </p>
-</div>
-
-
         <TutorialStep
           icon={Instagram}
           title="Connect Your Instagram Business Account"
@@ -100,6 +79,26 @@ export const InstagramTutorial = () => (
           link="/dashboard/instagram-connection"
           linkText="Connect Instagram"
         />
+
+        {/* Video tutorial */}
+        <div className="mt-6">
+  <h3 className="text-lg font-medium text-gray-900 mb-4">Video Tutorial</h3>
+  <p className="mt-3 text-sm text-gray-600">
+    This video guide shows you how to:
+    - Create and connect a Facebook Page to Instagram
+    - Connect your Instagram account to OrtonAI
+  </p>
+  <div className="relative aspect-video rounded-lg overflow-hidden">
+    <iframe 
+      className="absolute inset-0 w-full h-full"
+      src="https://www.youtube.com/embed/1iqtvuWUeXw"
+      title="How to Connect Instagram Business Account to Orton AI"
+      frameBorder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowFullScreen
+    />
+  </div>
+</div>
 
         <TutorialStep
           icon={BarChart}

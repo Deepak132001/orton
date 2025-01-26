@@ -288,7 +288,6 @@ const Overview = () => {
       </div>
     );
   };
-  
 
   const renderYouTubeOverview = () => {
     if (!insights) return null;
@@ -482,7 +481,6 @@ const Overview = () => {
   }
 
   // Show tutorial only if platform is not connected
-
   if (!isConnected) {
     return currentPlatform === 'instagram' ? <InstagramTutorial /> : <YouTubeTutorial />;
   }

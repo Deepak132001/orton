@@ -140,10 +140,7 @@ const Footer = () => {
         <div className="mt-8 pt-8 border-t border-gray-200">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-base text-gray-400">
-              © {currentYear} Orton AI. All rights reserved.
-            </div>
-            <div className="mt-4 md:mt-0 text-sm text-gray-500">
-            OrtonAI LLC is a Delaware Corporation
+              © {currentYear} OrtonAI. All rights reserved.
             </div>
             <div className="mt-4 md:mt-0 flex space-x-6">
               <Link to="/terms" className="text-sm text-gray-500 hover:text-gray-900">

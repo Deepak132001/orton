@@ -14,7 +14,7 @@ const PrivacyPolicy = () => {
               </Link>
               <h1 className="text-2xl font-bold text-gray-900">Privacy Policy</h1>
             </div>
-            <p className="text-sm text-gray-500">Last Updated: January 2024</p>
+            <p className="text-sm text-gray-500">Last Updated: January 2025</p>
           </div>
         </div>
       </header>
@@ -173,7 +173,7 @@ const PrivacyPolicy = () => {
                 </p>
                 <div className="mt-4 bg-gray-50 p-4 rounded-lg">
                   <p className="text-gray-700">Email: contact@ortonai.com</p>
-                  {/* <p className="text-gray-700">Address: [Your Business Address]</p> */}
+                  <p className="text-gray-700">OrtonAI LLC</p>
                 </div>
               </div>
             </div>

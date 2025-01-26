@@ -69,7 +69,7 @@ export const InstagramTutorial = () => (
   <div className="relative aspect-video rounded-lg overflow-hidden">
     <iframe 
       className="absolute inset-0 w-full h-full"
-      src="https://youtu.be/1iqtvuWUeXw"
+      src="https://www.youtube.com/embed/1iqtvuWUeXw"
       title="How to Connect Instagram Business Account to Orton AI"
       frameBorder="0"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

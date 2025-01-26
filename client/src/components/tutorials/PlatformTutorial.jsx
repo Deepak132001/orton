@@ -1,44 +1,58 @@
 // src/components/tutorials/PlatformTutorial.jsx
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { 
-  Instagram, 
+import React from "react";
+import { Link } from "react-router-dom";
+import {
+  Instagram,
   Youtube,
-  Clock, 
-  BarChart, 
+  Clock,
+  BarChart,
   ArrowRight,
   Image,
-  FileText
-} from 'lucide-react';
-import { Card } from '../ui/card';
+  FileText,
+} from "lucide-react";
+import { Card } from "../ui/card";
 
-const TutorialStep = ({ number, title, description, icon: Icon, link, linkText }) => (
+const TutorialStep = ({
+  number,
+  title,
+  description,
+  icon: Icon,
+  link,
+  linkText,
+}) => (
   <div className="relative pb-8 sm:pb-12 last:pb-0">
     <div className="hidden sm:block absolute left-8 top-8 -bottom-4 w-0.5 bg-indigo-100 last:hidden"></div>
-    
+
     <div className="relative flex flex-col sm:flex-row items-center sm:items-start group">
-      <div className={`flex items-center justify-center flex-shrink-0 w-12 h-12 sm:w-16 sm:h-16 rounded-full 
-        ${Icon === Instagram ? 'bg-pink-100 text-pink-600' : 'bg-red-100 text-red-600'} 
+      <div
+        className={`flex items-center justify-center flex-shrink-0 w-12 h-12 sm:w-16 sm:h-16 rounded-full 
+        ${
+          Icon === Instagram
+            ? "bg-pink-100 text-pink-600"
+            : "bg-red-100 text-red-600"
+        } 
         group-hover:bg-opacity-75 transition-colors mb-4 sm:mb-0`}
       >
         {Icon && <Icon className="w-6 h-6 sm:w-8 sm:h-8" />}
       </div>
-      
+
       <div className="sm:ml-6 w-full text-center sm:text-left">
         <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-2">
           {number}. {title}
         </h3>
         <div className="prose text-sm sm:text-base text-gray-600 mb-4">
-          <div className="text-left">
-            {description}
-          </div>
+          <div className="text-left">{description}</div>
         </div>
         {link && (
           <Link
             to={link}
             className={`inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 border border-transparent 
               text-sm font-medium rounded-md text-white 
-              ${Icon === Instagram ? 'bg-pink-600 hover:bg-pink-700' : 'bg-red-600 hover:bg-red-700'} 
+              ${
+                Icon === Instagram
+                  ? "bg-pink-600 hover:bg-pink-700"
+                  : "bg-red-600 hover:bg-red-700"
+              } 
               focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
           >
             {linkText} <ArrowRight className="ml-2 w-4 h-4" />
@@ -62,7 +76,6 @@ export const InstagramTutorial = () => (
 
     <Card className="p-4 sm:p-8">
       <div className="space-y-6 sm:space-y-8">
-
         <TutorialStep
           icon={Instagram}
           title="Connect Your Instagram Business Account"
@@ -82,23 +95,24 @@ export const InstagramTutorial = () => (
 
         {/* Video tutorial */}
         <div className="mt-6">
-  <h3 className="text-lg font-medium text-gray-900 mb-4">Video Tutorial</h3>
-  <p className="mt-3 text-sm text-gray-600">
-    This video guide shows you how to:
-    - Create and connect a Facebook Page to Instagram
-    - Connect your Instagram account to OrtonAI
-  </p>
-  <div className="relative aspect-video rounded-lg overflow-hidden">
-    <iframe 
-      className="absolute inset-0 w-full h-full"
-      src="https://www.youtube.com/embed/1iqtvuWUeXw"
-      title="How to Connect Instagram Business Account to Orton AI"
-      frameBorder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowFullScreen
-    />
-  </div>
-</div>
+          <h3 className="text-lg font-medium text-gray-900 mb-4">
+            Video Tutorial
+          </h3>
+          <p className="mt-3 text-sm text-gray-600">
+            This video guide shows you how to: - Create and connect a Facebook
+            Page to Instagram - Connect your Instagram account to OrtonAI
+          </p>
+          <div className="relative aspect-video rounded-lg overflow-hidden">
+            <iframe
+              className="absolute inset-0 w-full h-full"
+              src="https://www.youtube.com/embed/1iqtvuWUeXw"
+              title="How to Connect Instagram Business Account to Orton AI"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
+        </div>
 
         <TutorialStep
           icon={BarChart}
@@ -266,5 +280,5 @@ export const YouTubeTutorial = () => (
 
 export default {
   InstagramTutorial,
-  YouTubeTutorial
+  YouTubeTutorial,
 };

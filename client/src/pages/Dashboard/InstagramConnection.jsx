@@ -71,7 +71,7 @@ const SetupGuide = () => {
           </h4>
           <div className="space-y-3">
             <a 
-              href="https://www.facebook.com/business/help/898752960195806" 
+              href="https://www.youtube.com/watch?v=1iqtvuWUeXw" 
               target="_blank" 
               rel="noopener noreferrer"
               className="flex items-center text-sm text-indigo-600 hover:text-indigo-500"

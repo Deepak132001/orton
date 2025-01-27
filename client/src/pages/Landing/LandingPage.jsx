@@ -53,7 +53,8 @@ const LandingPage = () => {
               optimize posting times, and grow your social media presence effortlessly.
             </p>
             <p className="text-xl sm:text-2xl text-white opacity-90 mb-8">
-              Your Magic Is Always There. We're Just the Mirror.
+            {/* Your Magic Is Always There. We're the Mirror That Reflects Your Brilliance. */}
+            Your Voice is Enough. We Just Amplify It.
             </p>
           </div>
           <Link
@@ -99,8 +100,9 @@ const LandingPage = () => {
             <div className="bg-white p-6 rounded-lg shadow-lg">
               <div className="flex items-center mb-4">
                 <Youtube className="h-8 w-8 text-red-600" />
-                <h3 className="ml-3 text-xl font-bold text-gray-900">YouTube Growth</h3>
+                <h3 className="ml-3 text-xl font-bold text-gray-900">YouTube (Coming Soon)</h3>
               </div>
+              <p className="text-gray-600 mb-4">We're working hard to bring this feature to you. Stay tuned!</p>
               <ul className="space-y-4">
                 <li className="flex items-start">
                   <Wand2 className="h-5 w-5 text-red-600 mt-1 mr-2" />

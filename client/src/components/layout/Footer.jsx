@@ -31,8 +31,8 @@ const Footer = () => {
               <span className="ml-2 text-xl font-bold text-gray-900">Orton AI</span>
             </Link>
             <p className="mt-4 text-sm text-gray-600">
-            {/* Your Voice is Enough. We Just Amplify It. */}
-            Your Magic Is Always There. We're Just the Mirror.
+            Your Voice is Enough. We Just Amplify It.
+            {/* Your Magic Is Always There. We're the Mirror That Reflects Your Brilliance. */}
             </p>
           </div>
 

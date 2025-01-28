@@ -261,17 +261,21 @@ const LandingPage = () => {
                 </li>
               </ul>
             </div>
-            {/* <div>
-              <h4 className="text-lg font-bold mb-4">Follow Us</h4>
-              <div className="flex space-x-4">
-                <a href="#" className="text-gray-400 hover:text-white">
-                  <Instagram className="h-6 w-6" />
-                </a>
-                <a href="#" className="text-gray-400 hover:text-white">
-                  <Youtube className="h-6 w-6" />
-                </a>
-              </div>
-            </div> */}
+            <div>
+              <h4 className="text-lg font-bold mb-4">Quick Links</h4>
+              <ul className="space-y-2">
+                <li>
+                  <Link to="/register" className="text-gray-400 hover:text-white">
+                    Register
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/login" className="text-gray-400 hover:text-white">
+                    Login
+                  </Link>
+                </li>
+              </ul>
+            </div>
           </div>
           <div className="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400">
             <p>&copy; {new Date().getFullYear()} Orton AI. All rights reserved.</p>

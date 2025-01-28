@@ -255,13 +255,13 @@ const LandingPage = () => {
               <h4 className="text-lg font-bold mb-4">Support</h4>
               <ul className="space-y-2">
                 <li>
-                  <a href="mailto:support@ortonai.com" className="text-gray-400 hover:text-white">
+                  <a href="mailto:contact@ortonai.com" className="text-gray-400 hover:text-white">
                     Contact Us
                   </a>
                 </li>
               </ul>
             </div>
-            <div>
+            {/* <div>
               <h4 className="text-lg font-bold mb-4">Follow Us</h4>
               <div className="flex space-x-4">
                 <a href="#" className="text-gray-400 hover:text-white">
@@ -271,7 +271,7 @@ const LandingPage = () => {
                   <Youtube className="h-6 w-6" />
                 </a>
               </div>
-            </div>
+            </div> */}
           </div>
           <div className="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400">
             <p>&copy; {new Date().getFullYear()} Orton AI. All rights reserved.</p>

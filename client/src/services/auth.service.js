@@ -1,34 +1,12 @@
-
-
-// import api from './api';
-
-// export const login = async (email, password) => {
-//   try {
-//     const response = await api.post('/auth/login', { email, password });
-//     return response.data;
-//   } catch (error) {
-//     throw error.response?.data || error;
-//   }
-// };
-
-// export const register = async (email, password) => {
-//   try {
-//     const response = await api.post('/auth/register', { email, password });
-//     return response.data;
-//   } catch (error) {
-//     throw error.response?.data || error;
-//   }
-// };
-
 // client/src/services/auth.service.js
 import api from './api';
 
 export const login = async (email, password) => {
   try {
-    console.log('Making login request...');
+    // console.log('Making login request...');
     const response = await api.post('/auth/login', { email, password });
     
-    console.log('Login response:', response.data);
+    // console.log('Login response:', response.data);
     const { token, user } = response.data;
     
     if (token) {
@@ -37,13 +15,13 @@ export const login = async (email, password) => {
       // Set token in axios defaults
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       
-      console.log('Token set in localStorage:', localStorage.getItem('token'));
-      console.log('Token set in axios defaults:', api.defaults.headers.common['Authorization']);
+      // console.log('Token set in localStorage:', localStorage.getItem('token'));
+      // console.log('Token set in axios defaults:', api.defaults.headers.common['Authorization']);
     }
 
     return response.data;
   } catch (error) {
-    console.error('Login error:', error);
+    // console.error('Login error:', error);
     throw error.response?.data || error;
   }
 };

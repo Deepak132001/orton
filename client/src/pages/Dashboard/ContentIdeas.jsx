@@ -14,7 +14,7 @@ const formatContentSection = (content) => {
       .filter(line => line.trim().length > 0)
       .map(line => line.trim());
   } catch (error) {
-    console.error('Error formatting content:', error);
+    // console.error('Error formatting content:', error);
     return [];
   }
 };
@@ -40,7 +40,7 @@ const formatCaptions = (caption) => {
 
 const ContentCard = ({ idea, onCopy }) => {
   // Debug log to see what data we're receiving
-  console.log('Received idea:', idea);
+  // console.log('Received idea:', idea);
 
   // Helper function to format content sections
   const formatContentSection = (content) => {

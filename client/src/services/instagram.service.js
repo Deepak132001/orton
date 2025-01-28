@@ -1,5 +1,4 @@
 import api from './api';
-import axios from 'axios'
 
 // export const connectInstagramAccount = async (accessToken) => {
 //   const response = await api.post('/instagram/connect', { accessToken });
@@ -55,56 +54,19 @@ export const getInstagramProfile = async () => {
 //     throw error;
 //   }
 // };
-export const getInstagramInsights = async (userId) => {
+export const getInstagramInsights = async () => {
   try {
-    const user = await User.findById(userId);
-    
-    if (!user.instagramBusinessId || !user.facebookAccessToken) {
-      throw new Error('Instagram not connected');
-    }
-
-    // Get recent media data
-    const mediaResponse = await axios.get(
-      `https://graph.facebook.com/v18.0/${user.instagramBusinessId}/media`,
-      {
-        params: {
-          fields: 'id,caption,like_count,comments_count,timestamp,insights.metric(engagement,impressions,reach)',
-          limit: 30,
-          access_token: user.facebookAccessToken
-        }
-      }
-    );
-
-    // Get account info
-    const accountResponse = await axios.get(
-      `https://graph.facebook.com/v18.0/${user.instagramBusinessId}`,
-      {
-        params: {
-          fields: 'followers_count,media_count,profile_picture_url',
-          access_token: user.facebookAccessToken
-        }
-      }
-    );
-
+    const response = await api.get('/instagram/insights');
+    const profile = await getInstagramProfile();
     return {
+      ...response.data,
       account: {
-        followers_count: accountResponse.data?.followers_count || 0,
-        media_count: accountResponse.data?.media_count || 0,
-        profile_picture_url: accountResponse.data?.profile_picture_url
-      },
-      recent_posts: (mediaResponse.data?.data || []).map(post => ({
-        id: post.id,
-        timestamp: post.timestamp,
-        likes: post.like_count || 0,
-        comments: post.comments_count || 0,
-        caption: post.caption || '',
-        reach: post.insights?.data?.[0]?.values?.[0]?.value || 0,
-        impressions: post.insights?.data?.[1]?.values?.[0]?.value || 0
-      }))
+        ...response.data.account,
+        username: profile.username
+      }
     };
   } catch (error) {
-    console.error('Error fetching Instagram insights:', error);
-    throw error;
+    throw new Error('Instagram not connected');
   }
 };
 

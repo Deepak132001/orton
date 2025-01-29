@@ -21,7 +21,7 @@ const LandingPage = () => {
           <div className="flex justify-between h-16">
             <div className="flex items-center">
               <img src={logo} alt="Orton AI Logo" className="h-8 w-8" />
-              <span className="ml-2 text-xl font-semibold text-gray-900">Orton AI</span>
+              <span className="ml-2 text-l font-semibold text-gray-900">Orton AI</span>
             </div>
             <div className="flex items-center space-x-4">
               <Link
@@ -42,30 +42,259 @@ const LandingPage = () => {
       </nav>
 
       {/* Hero Section */}
-      <div className="py-20 bg-gradient-to-r from-indigo-600 to-purple-600">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-white mb-6">
-            Never Run Out of Content Ideas
-          </h1>
-          <div className="max-w-3xl mx-auto">
-            <p className="text-xl sm:text-2xl text-white opacity-90 mb-4">
-              Generate endless content tailored to your niche. Get AI-powered insights, 
-              optimize posting times, and grow your social media presence effortlessly.
-            </p>
-            <p className="text-xl sm:text-2xl text-white opacity-90 mb-8">
-            {/* Your Magic Is Always There. We're the Mirror That Reflects Your Brilliance. */}
-            Your Voice is Enough. We Just Amplify It.
-            </p>
-          </div>
-          <Link
-            to="/register"
-            className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-50"
-          >
-            Get Started Free
-          </Link>
-        </div>
+      <div className="relative overflow-hidden py-20 bg-gradient-to-r from-indigo-600 to-purple-600">
+        {/* Animated Particles */}
+        <div className="absolute inset-0">
+          {[...Array(20)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-2 h-2 bg-white rounded-full animate-particle"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 5}s`,
+                opacity: Math.random() * 0.5 + 0.1
+              }}
+            />
+          ))}
         </div>
 
+        {/* Floating Background Words with Glowing Effect */}
+        {[
+          'Content', 'Ideas', 'Growth', 'Analytics', 
+          'Engagement', 'Strategy', 'Success', 'Reach'
+        ].map((word, index) => (
+          <div
+            key={word}
+            className="absolute text-white select-none pointer-events-none animate-float-glow"
+            style={{
+              left: `${Math.random() * 80 + 10}%`,
+              top: `${Math.random() * 80 + 10}%`,
+              animationDelay: `${index * 0.5}s`,
+              fontSize: `${Math.random() * 0.5 + 0.8}rem`,
+              opacity: 0.2,
+              filter: 'blur(0.5px)'
+            }}
+          >
+            {word}
+          </div>
+        ))}
+
+        {/* Main Content */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+          <div className="animate-title-reveal overflow-hidden">
+            <h1 className="text-4xl sm:text-5xl font-extrabold text-white mb-6 drop-shadow-2xl">
+              Never Run Out of Content Ideas
+            </h1>
+          </div>
+          
+          <div className="max-w-3xl mx-auto">
+            <div className="animate-content-fade overflow-hidden">
+              <p className="text-xl sm:text-2xl text-white opacity-90 mb-4 drop-shadow-lg">
+                Generate endless content tailored to your niche. Get AI-powered insights, 
+                optimize posting times, and grow your social media presence effortlessly.
+              </p>
+            </div>
+            
+            <div className="overflow-hidden">
+              <p className="text-xl sm:text-2xl text-white opacity-90 mb-8 animate-gradient-text">
+                Your Voice is Enough. We Just Amplify It.
+              </p>
+            </div>
+          </div>
+
+          <div className="animate-button-reveal">
+            <Link
+              to="/register"
+              className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-50 hover:scale-105 hover:shadow-xl transform transition-all duration-300 animate-pulse-subtle"
+            >
+              Get Started Free
+              <span className="ml-2 animate-bounce-subtle">→</span>
+            </Link>
+          </div>
+        </div>
+
+        {/* AI Neural Network Background */}
+        <div className="absolute inset-0 overflow-hidden">
+          {/* Network Nodes */}
+          {[...Array(12)].map((_, i) => (
+            <div key={`node-${i}`} className="absolute">
+              <div
+                className="absolute rounded-full bg-white animate-node-pulse"
+                style={{
+                  width: '4px',
+                  height: '4px',
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  opacity: 0.4,
+                  animationDelay: `${Math.random() * 2}s`
+                }}
+              />
+              {/* Connection Lines */}
+              <div
+                className="absolute animate-line-appear"
+                style={{
+                  width: `${Math.random() * 150 + 50}px`,
+                  height: '1px',
+                  background: 'linear-gradient(90deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.1) 100%)',
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  transform: `rotate(${Math.random() * 360}deg)`,
+                  transformOrigin: 'left center',
+                  animationDelay: `${Math.random() * 2}s`
+                }}
+              />
+            </div>
+          ))}
+          
+          {/* AI Circuit Patterns */}
+          {[...Array(8)].map((_, i) => (
+            <div
+              key={`circuit-${i}`}
+              className="absolute animate-circuit"
+              style={{
+                width: '120px',
+                height: '120px',
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                border: '1px solid rgba(255,255,255,0.1)',
+                borderRadius: '4px',
+                transform: `rotate(${Math.random() * 90}deg)`,
+                animationDelay: `${Math.random() * 3}s`
+              }}
+            >
+              <div className="absolute w-full h-full animate-circuit-pulse">
+                <div className="absolute top-0 left-1/2 w-px h-full bg-gradient-to-b from-transparent via-white to-transparent" style={{ opacity: 0.2 }} />
+                <div className="absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-transparent via-white to-transparent" style={{ opacity: 0.2 }} />
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <style>{`
+          @keyframes particle {
+            0%, 100% { transform: translate(0, 0); opacity: 0; }
+            25% { opacity: 1; }
+            50% { transform: translate(100px, -100px); opacity: 0.5; }
+            75% { opacity: 0.2; }
+          }
+
+          .animate-particle {
+            animation: particle 10s linear infinite;
+          }
+
+          @keyframes float-glow {
+            0%, 100% { transform: translateY(0) translateX(0); filter: blur(0.5px); }
+            25% { transform: translateY(-15px) translateX(15px); filter: blur(1px); }
+            50% { transform: translateY(0) translateX(25px); filter: blur(0.5px); }
+            75% { transform: translateY(15px) translateX(15px); filter: blur(1px); }
+          }
+
+          .animate-float-glow {
+            animation: float-glow 12s ease-in-out infinite;
+          }
+
+          @keyframes title-reveal {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+          }
+
+          .animate-title-reveal {
+            animation: title-reveal 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+          }
+
+          .animate-content-fade {
+            animation: content-fade 1.5s ease-out forwards;
+            animation-delay: 0.3s;
+            opacity: 0;
+          }
+
+          @keyframes content-fade {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+          }
+
+          @keyframes gradient-text {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+          }
+
+          .animate-gradient-text {
+            background: linear-gradient(90deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0.95) 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: gradient-text 5s linear infinite;
+          }
+
+          .animate-button-reveal {
+            animation: button-reveal 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            animation-delay: 0.6s;
+            opacity: 0;
+          }
+
+          @keyframes button-reveal {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+          }
+
+          @keyframes bounce-subtle {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(3px); }
+          }
+
+          .animate-bounce-subtle {
+            animation: bounce-subtle 1s ease-in-out infinite;
+          }
+
+          @keyframes pulse-subtle {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+          }
+
+          .animate-pulse-subtle {
+            animation: pulse-subtle 2s ease-in-out infinite;
+          }
+
+          @keyframes node-pulse {
+            0%, 100% { transform: scale(1); opacity: 0.4; }
+            50% { transform: scale(1.5); opacity: 0.8; }
+          }
+
+          .animate-node-pulse {
+            animation: node-pulse 3s ease-in-out infinite;
+          }
+
+          @keyframes line-appear {
+            0% { opacity: 0; transform: scaleX(0); }
+            50% { opacity: 0.3; transform: scaleX(1); }
+            100% { opacity: 0; transform: scaleX(0); }
+          }
+
+          .animate-line-appear {
+            animation: line-appear 4s ease-in-out infinite;
+          }
+
+          @keyframes circuit {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(-10px, 10px) rotate(2deg); }
+            75% { transform: translate(10px, -10px) rotate(-2deg); }
+          }
+
+          .animate-circuit {
+            animation: circuit 10s ease-in-out infinite;
+          }
+
+          @keyframes circuit-pulse {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 0.3; }
+          }
+
+          .animate-circuit-pulse {
+            animation: circuit-pulse 4s ease-in-out infinite;
+          }
+        `}</style>
+      </div>
       {/* Platform Features */}
       <div className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

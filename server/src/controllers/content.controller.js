@@ -266,7 +266,7 @@ export const generateContent = async (req, res) => {
         }
       ],
       temperature: 0.8,
-      max_tokens: 1000
+      max_tokens: 4000
     });
 
     const ideas = parseContentIdeas(completion.choices[0].message.content);
@@ -315,7 +315,7 @@ export const getContentSuggestions = async (req, res) => {
         }
       ],
       temperature: 0.8,
-      max_tokens: 1000
+      max_tokens: 4000
     });
 
     const ideas = parseContentIdeas(completion.choices[0].message.content);
@@ -363,7 +363,7 @@ export const generateCustomContent = async (req, res) => {
         }
       ],
       temperature: 0.8,
-      max_tokens: 1000
+      max_tokens: 4000
     });
 
     const generatedContent = {

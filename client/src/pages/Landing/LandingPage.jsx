@@ -1,16 +1,16 @@
 //src/pages/Landing/LandingPage.jsx
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { 
-  Instagram, 
-  Youtube, 
-  Target, 
-  BarChart, 
-  Clock, 
+import React from "react";
+import { Link } from "react-router-dom";
+import {
+  Instagram,
+  Youtube,
+  Target,
+  BarChart,
+  Clock,
   Wand2,
-  MessageSquare
-} from 'lucide-react';
-import logo from '../../assets/logo.png';
+  MessageSquare,
+} from "lucide-react";
+import logo from "../../assets/logo.png";
 
 const LandingPage = () => {
   return (
@@ -21,7 +21,9 @@ const LandingPage = () => {
           <div className="flex justify-between h-16">
             <div className="flex items-center">
               <img src={logo} alt="Orton AI Logo" className="h-8 w-8" />
-              <span className="ml-2 text-l font-semibold text-gray-900">Orton AI</span>
+              <span className="ml-2 text-l font-semibold text-gray-900">
+                Orton AI
+              </span>
             </div>
             <div className="flex items-center space-x-4">
               <Link
@@ -53,7 +55,7 @@ const LandingPage = () => {
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
                 animationDelay: `${Math.random() * 5}s`,
-                opacity: Math.random() * 0.5 + 0.1
+                opacity: Math.random() * 0.5 + 0.1,
               }}
             />
           ))}
@@ -61,8 +63,14 @@ const LandingPage = () => {
 
         {/* Floating Background Words with Glowing Effect */}
         {[
-          'Content', 'Ideas', 'Growth', 'Analytics', 
-          'Engagement', 'Strategy', 'Success', 'Reach'
+          "Content",
+          "Ideas",
+          "Growth",
+          "Analytics",
+          "Engagement",
+          "Strategy",
+          "Success",
+          "Reach",
         ].map((word, index) => (
           <div
             key={word}
@@ -73,7 +81,7 @@ const LandingPage = () => {
               animationDelay: `${index * 0.5}s`,
               fontSize: `${Math.random() * 0.5 + 0.8}rem`,
               opacity: 0.2,
-              filter: 'blur(0.5px)'
+              filter: "blur(0.5px)",
             }}
           >
             {word}
@@ -87,18 +95,19 @@ const LandingPage = () => {
               Never Run Out of Content Ideas
             </h1>
           </div>
-          
+
           <div className="max-w-3xl mx-auto">
             <div className="animate-content-fade overflow-hidden">
               <p className="text-xl sm:text-2xl text-white opacity-90 mb-4 drop-shadow-lg">
-                Generate endless content tailored to your niche. Get AI-powered insights, 
-                optimize posting times, and grow your social media presence effortlessly.
+                Generate endless content tailored to your niche. Get AI-powered
+                insights, optimize posting times, and grow your social media
+                presence effortlessly.
               </p>
             </div>
-            
+
             <div className="overflow-hidden">
               <p className="text-xl sm:text-2xl text-white opacity-90 mb-8 animate-gradient-text">
-                Your Voice is Enough. We Just Amplify It.
+                AI-powered friend that grows with you
               </p>
             </div>
           </div>
@@ -122,12 +131,12 @@ const LandingPage = () => {
               <div
                 className="absolute rounded-full bg-white animate-node-pulse"
                 style={{
-                  width: '4px',
-                  height: '4px',
+                  width: "4px",
+                  height: "4px",
                   left: `${Math.random() * 100}%`,
                   top: `${Math.random() * 100}%`,
                   opacity: 0.4,
-                  animationDelay: `${Math.random() * 2}s`
+                  animationDelay: `${Math.random() * 2}s`,
                 }}
               />
               {/* Connection Lines */}
@@ -135,37 +144,44 @@ const LandingPage = () => {
                 className="absolute animate-line-appear"
                 style={{
                   width: `${Math.random() * 150 + 50}px`,
-                  height: '1px',
-                  background: 'linear-gradient(90deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.1) 100%)',
+                  height: "1px",
+                  background:
+                    "linear-gradient(90deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.1) 100%)",
                   left: `${Math.random() * 100}%`,
                   top: `${Math.random() * 100}%`,
                   transform: `rotate(${Math.random() * 360}deg)`,
-                  transformOrigin: 'left center',
-                  animationDelay: `${Math.random() * 2}s`
+                  transformOrigin: "left center",
+                  animationDelay: `${Math.random() * 2}s`,
                 }}
               />
             </div>
           ))}
-          
+
           {/* AI Circuit Patterns */}
           {[...Array(8)].map((_, i) => (
             <div
               key={`circuit-${i}`}
               className="absolute animate-circuit"
               style={{
-                width: '120px',
-                height: '120px',
+                width: "120px",
+                height: "120px",
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
-                border: '1px solid rgba(255,255,255,0.1)',
-                borderRadius: '4px',
+                border: "1px solid rgba(255,255,255,0.1)",
+                borderRadius: "4px",
                 transform: `rotate(${Math.random() * 90}deg)`,
-                animationDelay: `${Math.random() * 3}s`
+                animationDelay: `${Math.random() * 3}s`,
               }}
             >
               <div className="absolute w-full h-full animate-circuit-pulse">
-                <div className="absolute top-0 left-1/2 w-px h-full bg-gradient-to-b from-transparent via-white to-transparent" style={{ opacity: 0.2 }} />
-                <div className="absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-transparent via-white to-transparent" style={{ opacity: 0.2 }} />
+                <div
+                  className="absolute top-0 left-1/2 w-px h-full bg-gradient-to-b from-transparent via-white to-transparent"
+                  style={{ opacity: 0.2 }}
+                />
+                <div
+                  className="absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-transparent via-white to-transparent"
+                  style={{ opacity: 0.2 }}
+                />
               </div>
             </div>
           ))}
@@ -301,22 +317,28 @@ const LandingPage = () => {
           <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
             One Platform, Multiple Channels
           </h2>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Instagram Section */}
             <div className="bg-white p-6 rounded-lg shadow-lg">
               <div className="flex items-center mb-4">
                 <Instagram className="h-8 w-8 text-pink-600" />
-                <h3 className="ml-3 text-xl font-bold text-gray-900">Instagram Management</h3>
+                <h3 className="ml-3 text-xl font-bold text-gray-900">
+                  Instagram Management
+                </h3>
               </div>
               <ul className="space-y-4">
                 <li className="flex items-start">
                   <Target className="h-5 w-5 text-pink-600 mt-1 mr-2" />
-                  <span>Optimize your content strategy with AI-powered insights</span>
+                  <span>
+                    Optimize your content strategy with AI-powered insights
+                  </span>
                 </li>
                 <li className="flex items-start">
                   <Clock className="h-5 w-5 text-pink-600 mt-1 mr-2" />
-                  <span>Find the perfect posting times for maximum engagement</span>
+                  <span>
+                    Find the perfect posting times for maximum engagement
+                  </span>
                 </li>
                 <li className="flex items-start">
                   <BarChart className="h-5 w-5 text-pink-600 mt-1 mr-2" />
@@ -329,9 +351,13 @@ const LandingPage = () => {
             <div className="bg-white p-6 rounded-lg shadow-lg">
               <div className="flex items-center mb-4">
                 <Youtube className="h-8 w-8 text-red-600" />
-                <h3 className="ml-3 text-xl font-bold text-gray-900">YouTube (Coming Soon)</h3>
+                <h3 className="ml-3 text-xl font-bold text-gray-900">
+                  YouTube (Coming Soon)
+                </h3>
               </div>
-              <p className="text-gray-600 mb-4">We're working hard to bring this feature to you. Stay tuned!</p>
+              <p className="text-gray-600 mb-4">
+                We're working hard to bring this feature to you. Stay tuned!
+              </p>
               <ul className="space-y-4">
                 <li className="flex items-start">
                   <Wand2 className="h-5 w-5 text-red-600 mt-1 mr-2" />
@@ -366,7 +392,8 @@ const LandingPage = () => {
               </div>
               <h3 className="text-xl font-bold text-center mb-4">Connect</h3>
               <p className="text-gray-600 text-center">
-                Link your Instagram and YouTube accounts to get started with comprehensive analytics and insights.
+                Link your Instagram and YouTube accounts to get started with
+                comprehensive analytics and insights.
               </p>
             </div>
 
@@ -377,7 +404,8 @@ const LandingPage = () => {
               </div>
               <h3 className="text-xl font-bold text-center mb-4">Analyze</h3>
               <p className="text-gray-600 text-center">
-                Get deep insights into your content performance and audience behavior patterns.
+                Get deep insights into your content performance and audience
+                behavior patterns.
               </p>
             </div>
 
@@ -388,7 +416,8 @@ const LandingPage = () => {
               </div>
               <h3 className="text-xl font-bold text-center mb-4">Grow</h3>
               <p className="text-gray-600 text-center">
-                Use AI-powered tools to create better content and grow your social media presence.
+                Use AI-powered tools to create better content and grow your
+                social media presence.
               </p>
             </div>
           </div>
@@ -407,7 +436,8 @@ const LandingPage = () => {
               <BarChart className="h-8 w-8 text-indigo-600 mb-4" />
               <h3 className="text-xl font-bold mb-2">Smart Analytics</h3>
               <p className="text-gray-600">
-                Get detailed insights into your content performance and audience engagement.
+                Get detailed insights into your content performance and audience
+                engagement.
               </p>
             </div>
 
@@ -415,7 +445,8 @@ const LandingPage = () => {
               <Wand2 className="h-8 w-8 text-indigo-600 mb-4" />
               <h3 className="text-xl font-bold mb-2">AI Content Generation</h3>
               <p className="text-gray-600">
-                Generate engaging content ideas and scripts tailored to your audience.
+                Generate engaging content ideas and scripts tailored to your
+                audience.
               </p>
             </div>
 
@@ -461,15 +492,18 @@ const LandingPage = () => {
             <div>
               <h4 className="text-lg font-bold mb-4">About</h4>
               <p className="text-gray-400">
-                Orton AI helps content creators optimize their social media presence 
-                with AI-powered insights and tools.
+                Orton AI helps content creators optimize their social media
+                presence with AI-powered insights and tools.
               </p>
             </div>
             <div>
               <h4 className="text-lg font-bold mb-4">Legal</h4>
               <ul className="space-y-2">
                 <li>
-                  <Link to="/privacy" className="text-gray-400 hover:text-white">
+                  <Link
+                    to="/privacy"
+                    className="text-gray-400 hover:text-white"
+                  >
                     Privacy Policy
                   </Link>
                 </li>
@@ -484,7 +518,10 @@ const LandingPage = () => {
               <h4 className="text-lg font-bold mb-4">Support</h4>
               <ul className="space-y-2">
                 <li>
-                  <a href="mailto:contact@ortonai.com" className="text-gray-400 hover:text-white">
+                  <a
+                    href="mailto:contact@ortonai.com"
+                    className="text-gray-400 hover:text-white"
+                  >
                     Contact Us
                   </a>
                 </li>
@@ -494,7 +531,10 @@ const LandingPage = () => {
               <h4 className="text-lg font-bold mb-4">Quick Links</h4>
               <ul className="space-y-2">
                 <li>
-                  <Link to="/register" className="text-gray-400 hover:text-white">
+                  <Link
+                    to="/register"
+                    className="text-gray-400 hover:text-white"
+                  >
                     Register
                   </Link>
                 </li>
@@ -507,8 +547,10 @@ const LandingPage = () => {
             </div>
           </div>
           <div className="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400">
-            <p>&copy; {new Date().getFullYear()} Orton AI. All rights reserved.</p>
-             OrtonAI LLC is a Delaware Corporation
+            <p>
+              &copy; {new Date().getFullYear()} Orton AI. All rights reserved.
+            </p>
+            OrtonAI LLC is a Delaware Corporation
           </div>
         </div>
       </footer>

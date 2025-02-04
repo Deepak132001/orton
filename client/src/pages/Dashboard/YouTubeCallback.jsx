@@ -97,43 +97,64 @@ import { usePlatform } from '../../contexts/PlatformContext'; // Add this import
 
 const YouTubeCallback = () => {
   const [status, setStatus] = useState('connecting');
+  const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
   const { switchPlatform } = usePlatform(); // Add this
 
+  // useEffect(() => {
+  //   const handleCallback = async () => {
+  //     try {
+  //       const urlParams = new URLSearchParams(location.search);
+  //       const code = urlParams.get('code');
+        
+  //       if (!code) {
+  //         throw new Error('No authorization code received');
+  //       }
+
+  //       console.log('Processing YouTube callback...');
+  //       const response = await youtubeService.connectYouTubeChannel(code);
+  //       console.log('YouTube connection successful:', response);
+
+  //       setStatus('success');
+        
+  //       // Ensure platform is set to YouTube
+  //       switchPlatform('youtube');
+        
+  //       // Short delay before navigation
+  //       setTimeout(() => {
+  //         navigate('/dashboard/youtube-analytics');
+  //       }, 2000);
+  //     } catch (err) {
+  //       console.error('YouTube connection error:', err);
+  //       setStatus('error');
+  //       setError(err.response?.data?.message || err.message || 'Failed to connect YouTube account');
+  //     }
+  //   };
+
+  //   handleCallback();
+  // }, [location, navigate, switchPlatform]);
   useEffect(() => {
     const handleCallback = async () => {
-      try {
-        const urlParams = new URLSearchParams(location.search);
-        const code = urlParams.get('code');
-        
-        if (!code) {
-          throw new Error('No authorization code received');
+      if (isProcessing) return;
+      setIsProcessing(true);
+ 
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get('code');
+ 
+      if (code) {
+        try {
+          const response = await youtubeService.connectYouTubeChannel(code);
+          navigate('/dashboard/youtube-connection');
+        } catch (error) {
+          setError(error.message);
         }
-
-        console.log('Processing YouTube callback...');
-        const response = await youtubeService.connectYouTubeChannel(code);
-        console.log('YouTube connection successful:', response);
-
-        setStatus('success');
-        
-        // Ensure platform is set to YouTube
-        switchPlatform('youtube');
-        
-        // Short delay before navigation
-        setTimeout(() => {
-          navigate('/dashboard/youtube-analytics');
-        }, 2000);
-      } catch (err) {
-        console.error('YouTube connection error:', err);
-        setStatus('error');
-        setError(err.response?.data?.message || err.message || 'Failed to connect YouTube account');
       }
     };
-
+ 
     handleCallback();
-  }, [location, navigate, switchPlatform]);
+  }, [isProcessing, navigate]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">

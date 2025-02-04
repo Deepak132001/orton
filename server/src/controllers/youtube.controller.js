@@ -25,128 +25,174 @@ const youtube = google.youtube({
 });
 
 // Connect YouTube channel
+// const connectYouTube = async (req, res) => {
+//   try {
+//     console.log('Starting YouTube connection process...'); // Debug log
+//     const { code } = req.body;
+    
+//     if (!code) {
+//       console.log('No authorization code provided'); // Debug log
+//       return res.status(400).json({
+//         message: 'Authorization code is required'
+//       });
+//     }
+
+//     console.log('Environment variables check:', { // Debug log
+//       clientId: !!process.env.YOUTUBE_CLIENT_ID,
+//       clientSecret: !!process.env.YOUTUBE_CLIENT_SECRET,
+//       redirectUri: process.env.YOUTUBE_REDIRECT_URI
+//     });
+
+//     // Exchange code for tokens
+//     console.log('Exchanging code for tokens...'); // Debug log
+//     let tokens;
+//     try {
+//       const { tokens: tokenResponse } = await oauth2Client.getToken(code);
+//       tokens = tokenResponse;
+//       console.log('Tokens received:', { // Debug log
+//         accessTokenReceived: !!tokens.access_token,
+//         refreshTokenReceived: !!tokens.refresh_token,
+//         expiryDate: tokens.expiry_date
+//       });
+//     } catch (tokenError) {
+//       console.error('Token exchange error:', tokenError); // Debug log
+//       return res.status(400).json({
+//         message: 'Failed to exchange authorization code',
+//         error: tokenError.message
+//       });
+//     }
+
+//     // Set credentials
+//     oauth2Client.setCredentials(tokens);
+
+//     // Get channel info
+//     console.log('Fetching channel info...'); // Debug log
+//     const youtube = google.youtube('v3');
+//     let channelResponse;
+//     try {
+//       channelResponse = await youtube.channels.list({
+//         auth: oauth2Client,
+//         part: 'id,snippet,statistics',
+//         mine: true
+//       });
+//       console.log('Channel info received:', { // Debug log
+//         hasItems: !!channelResponse.data.items?.length,
+//         firstItemId: channelResponse.data.items?.[0]?.id
+//       });
+//     } catch (channelError) {
+//       console.error('Channel info error:', channelError); // Debug log
+//       return res.status(500).json({
+//         message: 'Failed to fetch channel information',
+//         error: channelError.message
+//       });
+//     }
+
+//     if (!channelResponse.data.items?.length) {
+//       console.log('No channel found'); // Debug log
+//       return res.status(404).json({
+//         message: 'No YouTube channel found'
+//       });
+//     }
+
+//     const channel = channelResponse.data.items[0];
+
+//     // Save channel information
+//     console.log('Saving channel information...'); // Debug log
+//     let youtubeAccount;
+//     try {
+//       youtubeAccount = await YouTube.findOneAndUpdate(
+//         { userId: req.user._id },
+//         {
+//           channelId: channel.id,
+//           accessToken: tokens.access_token,
+//           refreshToken: tokens.refresh_token,
+//           tokenExpiry: new Date(tokens.expiry_date),
+//           trialStartDate: new Date(),
+//           isSubscribed: false
+//         },
+//         { upsert: true, new: true }
+//       );
+//       console.log('Channel information saved:', { // Debug log
+//         userId: req.user._id,
+//         channelId: channel.id,
+//         accountCreated: !!youtubeAccount
+//       });
+//     } catch (dbError) {
+//       console.error('Database error:', dbError); // Debug log
+//       return res.status(500).json({
+//         message: 'Failed to save channel information',
+//         error: dbError.message
+//       });
+//     }
+
+//     // Return success response
+//     res.json({
+//       message: 'YouTube channel connected successfully',
+//       channel: {
+//         id: channel.id,
+//         title: channel.snippet.title,
+//         subscribers: channel.statistics.subscriberCount,
+//         videos: channel.statistics.videoCount
+//       }
+//     });
+//   } catch (error) {
+//     console.error('YouTube connection error:', {
+//       message: error.message,
+//       stack: error.stack,
+//       details: error.response?.data
+//     });
+    
+//     res.status(500).json({
+//       message: 'Failed to connect YouTube channel',
+//       error: error.message,
+//       details: error.response?.data || {}
+//     });
+//   }
+// };
 const connectYouTube = async (req, res) => {
   try {
-    console.log('Starting YouTube connection process...'); // Debug log
     const { code } = req.body;
     
-    if (!code) {
-      console.log('No authorization code provided'); // Debug log
-      return res.status(400).json({
-        message: 'Authorization code is required'
-      });
-    }
+    const oauth2Client = new google.auth.OAuth2(
+      process.env.YOUTUBE_CLIENT_ID,
+      process.env.YOUTUBE_CLIENT_SECRET,
+      process.env.YOUTUBE_REDIRECT_URI
+    );
 
-    console.log('Environment variables check:', { // Debug log
-      clientId: !!process.env.YOUTUBE_CLIENT_ID,
-      clientSecret: !!process.env.YOUTUBE_CLIENT_SECRET,
-      redirectUri: process.env.YOUTUBE_REDIRECT_URI
-    });
-
-    // Exchange code for tokens
-    console.log('Exchanging code for tokens...'); // Debug log
-    let tokens;
-    try {
-      const { tokens: tokenResponse } = await oauth2Client.getToken(code);
-      tokens = tokenResponse;
-      console.log('Tokens received:', { // Debug log
-        accessTokenReceived: !!tokens.access_token,
-        refreshTokenReceived: !!tokens.refresh_token,
-        expiryDate: tokens.expiry_date
-      });
-    } catch (tokenError) {
-      console.error('Token exchange error:', tokenError); // Debug log
-      return res.status(400).json({
-        message: 'Failed to exchange authorization code',
-        error: tokenError.message
-      });
-    }
-
-    // Set credentials
+    const { tokens } = await oauth2Client.getToken(code);
     oauth2Client.setCredentials(tokens);
 
-    // Get channel info
-    console.log('Fetching channel info...'); // Debug log
     const youtube = google.youtube('v3');
-    let channelResponse;
-    try {
-      channelResponse = await youtube.channels.list({
-        auth: oauth2Client,
-        part: 'id,snippet,statistics',
-        mine: true
-      });
-      console.log('Channel info received:', { // Debug log
-        hasItems: !!channelResponse.data.items?.length,
-        firstItemId: channelResponse.data.items?.[0]?.id
-      });
-    } catch (channelError) {
-      console.error('Channel info error:', channelError); // Debug log
-      return res.status(500).json({
-        message: 'Failed to fetch channel information',
-        error: channelError.message
-      });
-    }
-
-    if (!channelResponse.data.items?.length) {
-      console.log('No channel found'); // Debug log
-      return res.status(404).json({
-        message: 'No YouTube channel found'
-      });
-    }
+    const channelResponse = await youtube.channels.list({
+      auth: oauth2Client,
+      part: 'snippet,statistics',
+      mine: true
+    });
 
     const channel = channelResponse.data.items[0];
 
-    // Save channel information
-    console.log('Saving channel information...'); // Debug log
-    let youtubeAccount;
-    try {
-      youtubeAccount = await YouTube.findOneAndUpdate(
-        { userId: req.user._id },
-        {
-          channelId: channel.id,
-          accessToken: tokens.access_token,
-          refreshToken: tokens.refresh_token,
-          tokenExpiry: new Date(tokens.expiry_date),
-          trialStartDate: new Date(),
-          isSubscribed: false
-        },
-        { upsert: true, new: true }
-      );
-      console.log('Channel information saved:', { // Debug log
-        userId: req.user._id,
+    await YouTube.findOneAndUpdate(
+      { userId: req.user._id },
+      {
         channelId: channel.id,
-        accountCreated: !!youtubeAccount
-      });
-    } catch (dbError) {
-      console.error('Database error:', dbError); // Debug log
-      return res.status(500).json({
-        message: 'Failed to save channel information',
-        error: dbError.message
-      });
-    }
+        accessToken: tokens.access_token,
+        refreshToken: tokens.refresh_token,
+        tokenExpiry: new Date(tokens.expiry_date)
+      },
+      { upsert: true }
+    );
 
-    // Return success response
     res.json({
-      message: 'YouTube channel connected successfully',
+      success: true,
       channel: {
         id: channel.id,
-        title: channel.snippet.title,
-        subscribers: channel.statistics.subscriberCount,
-        videos: channel.statistics.videoCount
+        title: channel.snippet.title
       }
     });
+
   } catch (error) {
-    console.error('YouTube connection error:', {
-      message: error.message,
-      stack: error.stack,
-      details: error.response?.data
-    });
-    
-    res.status(500).json({
-      message: 'Failed to connect YouTube channel',
-      error: error.message,
-      details: error.response?.data || {}
-    });
+    console.error('YouTube connection error:', error);
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -663,30 +709,70 @@ Provide a concise description of the target audience demographics and interests.
 };
 
 // Helper function to analyze channel niche
+// const analyzeChannelNiche = async (channel) => {
+//   try {
+//     const prompt = `Based on this YouTube channel information:
+//     Title: ${channel.snippet.title}
+//     Description: ${channel.snippet.description}
+//     Keywords: ${channel.brandingSettings?.channel?.keywords || ''}
+    
+//     Provide a concise description of the channel's primary niche and content focus.`;
+
+//     const completion = await openai.chat.completions.create({
+//       model: "gpt-4",
+//       messages: [
+//         {
+//           role: "system",
+//           content: "You are a YouTube analytics expert who can identify content niches."
+//         },
+//         {
+//           role: "user",
+//           content: prompt
+//         }
+//       ]
+//     });
+
+//     return completion.choices[0].message.content;
+//   } catch (error) {
+//     console.error('Error analyzing channel niche:', error);
+//     return 'General Content';
+//   }
+// };
 const analyzeChannelNiche = async (channel) => {
   try {
+    // Add null checks
+    if (!channel || !channel.snippet) {
+      console.log('Invalid channel data for niche analysis:', channel);
+      return 'General Content';
+    }
+
     const prompt = `Based on this YouTube channel information:
-    Title: ${channel.snippet.title}
-    Description: ${channel.snippet.description}
+    Title: ${channel.snippet?.title || 'Unknown'}
+    Description: ${channel.snippet?.description || 'No description'}
     Keywords: ${channel.brandingSettings?.channel?.keywords || ''}
     
     Provide a concise description of the channel's primary niche and content focus.`;
 
-    const completion = await openai.chat.completions.create({
-      model: "gpt-4",
-      messages: [
-        {
-          role: "system",
-          content: "You are a YouTube analytics expert who can identify content niches."
-        },
-        {
-          role: "user",
-          content: prompt
-        }
-      ]
-    });
+    try {
+      const completion = await openai.chat.completions.create({
+        model: "gpt-4",
+        messages: [
+          {
+            role: "system",
+            content: "You are a YouTube analytics expert who can identify content niches."
+          },
+          {
+            role: "user",
+            content: prompt
+          }
+        ]
+      });
 
-    return completion.choices[0].message.content;
+      return completion.choices[0].message.content;
+    } catch (error) {
+      console.error('OpenAI API error:', error);
+      return 'Content Creator';
+    }
   } catch (error) {
     console.error('Error analyzing channel niche:', error);
     return 'General Content';
@@ -915,6 +1001,62 @@ async function processNewVideo(videoId, channelId, youtubeAccount) {
   }
 }
 
+// export const getChannelInfo = async (req, res) => {
+//   try {
+//     const { channelId } = req.params;
+//     const youtubeAccount = await YouTube.findOne({ 
+//       userId: req.user._id,
+//       channelId 
+//     });
+
+//     if (!youtubeAccount) {
+//       return res.status(404).json({
+//         message: 'Channel not found'
+//       });
+//     }
+
+//     oauth2Client.setCredentials({
+//       access_token: youtubeAccount.accessToken,
+//       refresh_token: youtubeAccount.refreshToken
+//     });
+
+//     const youtube = google.youtube('v3');
+//     const response = await youtube.channels.list({
+//       auth: oauth2Client,
+//       part: 'snippet,statistics,brandingSettings,contentDetails',
+//       id: channelId
+//     });
+
+//     if (!response.data.items?.length) {
+//       return res.status(404).json({
+//         message: 'Channel not found'
+//       });
+//     }
+
+//     const channel = response.data.items[0];
+//     // Analyze channel content to determine niche
+//     const niche = await analyzeChannelNiche(channel.snippet.description, channel.brandingSettings?.channel?.keywords);
+
+//     res.json({
+//       id: channel.id,
+//       title: channel.snippet.title,
+//       description: channel.snippet.description,
+//       thumbnail: channel.snippet.thumbnails?.high?.url,
+//       subscribers: channel.statistics.subscriberCount,
+//       videos: channel.statistics.videoCount,
+//       views: channel.statistics.viewCount,
+//       niche,
+//       topics: channel.brandingSettings?.channel?.keywords?.split(',').map(k => k.trim()) || [],
+//       joinedAt: channel.snippet.publishedAt
+//     });
+//   } catch (error) {
+//     console.error('Get channel info error:', error);
+//     res.status(500).json({
+//       message: 'Failed to get channel information',
+//       error: error.message
+//     });
+//   }
+// };
 export const getChannelInfo = async (req, res) => {
   try {
     const { channelId } = req.params;
@@ -948,8 +1090,15 @@ export const getChannelInfo = async (req, res) => {
     }
 
     const channel = response.data.items[0];
-    // Analyze channel content to determine niche
-    const niche = await analyzeChannelNiche(channel.snippet.description, channel.brandingSettings?.channel?.keywords);
+    // Add null check here
+    if (!channel.snippet) {
+      return res.status(400).json({
+        message: 'Invalid channel data received'
+      });
+    }
+
+    // Get niche with error handling
+    const niche = await analyzeChannelNiche(channel);
 
     res.json({
       id: channel.id,
@@ -971,6 +1120,7 @@ export const getChannelInfo = async (req, res) => {
     });
   }
 };
+
 
 export const generateContentIdeas = async (req, res) => {
   try {

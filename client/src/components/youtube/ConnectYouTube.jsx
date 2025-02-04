@@ -7,37 +7,56 @@ const ConnectYouTube = () => {
   const [isConnecting, setIsConnecting] = useState(false);
   const [error, setError] = useState('');
 
-  const handleConnect = () => {
-    try {
-      setIsConnecting(true);
-      setError('');
+  // const handleConnect = () => {
+  //   try {
+  //     setIsConnecting(true);
+  //     setError('');
 
-      const clientId = import.meta.env.VITE_YOUTUBE_CLIENT_ID;
-      const redirectUri = import.meta.env.VITE_YOUTUBE_REDIRECT_URI;
+  //     const clientId = import.meta.env.VITE_YOUTUBE_CLIENT_ID;
+  //     const redirectUri = import.meta.env.VITE_YOUTUBE_REDIRECT_URI;
 
-      // Log the redirect URI for debugging
-      console.log('Using redirect URI:', redirectUri);
+  //     // Log the redirect URI for debugging
+  //     console.log('Using redirect URI:', redirectUri);
 
-      // Build OAuth URL
-      const oauthUrl = new URL('https://accounts.google.com/o/oauth2/v2/auth');
-      oauthUrl.searchParams.append('client_id', clientId);
-      oauthUrl.searchParams.append('redirect_uri', redirectUri);
-      oauthUrl.searchParams.append('response_type', 'code');
-      oauthUrl.searchParams.append('scope', 'https://www.googleapis.com/auth/youtube.readonly');
-      oauthUrl.searchParams.append('access_type', 'offline');
-      oauthUrl.searchParams.append('prompt', 'consent');
+  //     // Build OAuth URL
+  //     const oauthUrl = new URL('https://accounts.google.com/o/oauth2/v2/auth');
+  //     oauthUrl.searchParams.append('client_id', clientId);
+  //     oauthUrl.searchParams.append('redirect_uri', redirectUri);
+  //     oauthUrl.searchParams.append('response_type', 'code');
+  //     oauthUrl.searchParams.append('scope', 'https://www.googleapis.com/auth/youtube.readonly');
+  //     oauthUrl.searchParams.append('access_type', 'offline');
+  //     oauthUrl.searchParams.append('prompt', 'consent');
 
-      // Log the complete OAuth URL for debugging
-      console.log('OAuth URL:', oauthUrl.toString());
+  //     // Log the complete OAuth URL for debugging
+  //     console.log('OAuth URL:', oauthUrl.toString());
 
-      // Redirect to OAuth URL
-      window.location.href = oauthUrl.toString();
-    } catch (error) {
-      console.error('Error initiating YouTube connection:', error);
-      setError('Failed to initiate YouTube connection');
-      setIsConnecting(false);
-    }
-  };
+  //     // Redirect to OAuth URL
+  //     window.location.href = oauthUrl.toString();
+  //   } catch (error) {
+  //     console.error('Error initiating YouTube connection:', error);
+  //     setError('Failed to initiate YouTube connection');
+  //     setIsConnecting(false);
+  //   }
+  // };
+// src/components/youtube/ConnectYouTube.jsx
+const handleConnect = () => {
+  const clientId = import.meta.env.VITE_YOUTUBE_CLIENT_ID;
+  const redirectUri = import.meta.env.VITE_YOUTUBE_REDIRECT_URI;
+  
+  const state = Math.random().toString(36).substring(7);
+  localStorage.setItem('youtube_oauth_state', state);
+
+  const oauthUrl = new URL('https://accounts.google.com/o/oauth2/v2/auth');
+  oauthUrl.searchParams.set('client_id', clientId);
+  oauthUrl.searchParams.set('redirect_uri', redirectUri);
+  oauthUrl.searchParams.set('response_type', 'code');
+  oauthUrl.searchParams.set('scope', 'https://www.googleapis.com/auth/youtube.readonly');
+  oauthUrl.searchParams.set('access_type', 'offline');
+  oauthUrl.searchParams.set('state', state);
+  oauthUrl.searchParams.set('prompt', 'consent');
+
+  window.location.href = oauthUrl.toString();
+};
 
   return (
     <Card className="p-6">

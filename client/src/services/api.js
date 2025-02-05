@@ -26,7 +26,7 @@ api.interceptors.request.use(
       config.headers['Authorization'] = `Bearer ${currentToken}`;
       // console.log('Request headers set:', config.headers);
     } else {
-      console.log('No token found for request');
+      // console.log('No token found for request');
     }
     
     return config;

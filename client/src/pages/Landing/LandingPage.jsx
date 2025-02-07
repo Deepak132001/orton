@@ -550,7 +550,6 @@ const LandingPage = () => {
             <p>
               &copy; {new Date().getFullYear()} Orton AI. All rights reserved.
             </p>
-            OrtonAI LLC is a Delaware Corporation
           </div>
         </div>
       </footer>

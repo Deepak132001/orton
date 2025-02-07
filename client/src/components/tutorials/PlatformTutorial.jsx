@@ -80,7 +80,7 @@ export const InstagramTutorial = () => (
           icon={Instagram}
           title="Connect Your Instagram Business Account"
           description={
-            <div className="space-y-2">
+            <div className="flex flex-col items-center sm:items-start">
               <p>First, connect your Instagram account. You'll need:</p>
               <ul className="list-disc pl-5 space-y-1">
                 <li>An Instagram Business or Creator account</li>
@@ -118,7 +118,7 @@ export const InstagramTutorial = () => (
           icon={BarChart}
           title="View Analytics & Insights"
           description={
-            <div className="space-y-2">
+            <div className="flex flex-col items-center sm:items-start">
               <p>After connecting, you can:</p>
               <ul className="list-disc pl-5 space-y-1">
                 <li>Track follower growth</li>
@@ -136,7 +136,7 @@ export const InstagramTutorial = () => (
           icon={Clock}
           title="Find Best Posting Times"
           description={
-            <div className="space-y-2">
+            <div className="flex flex-col items-center sm:items-start">
               <p>Optimize your posting schedule:</p>
               <ul className="list-disc pl-5 space-y-1">
                 <li>See when your audience is most active</li>
@@ -154,7 +154,7 @@ export const InstagramTutorial = () => (
           icon={Image}
           title="Generate Content Ideas"
           description={
-            <div className="space-y-2">
+            <div className="flex flex-col items-center sm:items-start">
               <p>Create engaging content with AI:</p>
               <ul className="list-disc pl-5 space-y-1">
                 <li>Generate post ideas</li>

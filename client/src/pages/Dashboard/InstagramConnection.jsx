@@ -110,10 +110,10 @@ const InstagramConnection = () => {
         details: data,
       });
     } catch (error) {
-      console.log("Connection status error:", {
-        message: error.response?.data?.message,
-        details: error.response?.data?.details,
-      });
+      // console.log("Connection status error:", {
+      //   message: error.response?.data?.message,
+      //   details: error.response?.data?.details,
+      // });
 
       setStatus({
         loading: false,

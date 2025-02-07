@@ -1,14 +1,10 @@
 import api from './api';
 
-// export const connectInstagramAccount = async (accessToken) => {
-//   const response = await api.post('/instagram/connect', { accessToken });
-//   return response.data;
-// };
 export const connectInstagramAccount = async (accessToken) => {
   try {
-    console.log('Connecting with token:', accessToken);
+    // console.log('Connecting with token:', accessToken);
     const response = await api.post('/instagram/connect', { accessToken });
-    console.log('Connection response:', response.data);
+    // console.log('Connection response:', response.data);
     return response.data;
   } catch (error) {
     console.error('Instagram connection error:', error.response?.data || error);
@@ -16,19 +12,6 @@ export const connectInstagramAccount = async (accessToken) => {
   }
 };
 
-// export const getInstagramProfile = async () => {
-//   try {
-//     const response = await api.get('/instagram/profile');
-//     // Add username to the response
-//     const profile = response.data;
-//     return {
-//       ...profile,
-//       username: profile.username || 'No username' // Add this
-//     };
-//   } catch (error) {
-//     throw error;
-//   }
-// };
 export const getInstagramProfile = async () => {
   try {
     const response = await api.get('/instagram/profile');
@@ -38,22 +21,6 @@ export const getInstagramProfile = async () => {
   }
 }  
 
-
-// export const getInstagramInsights = async () => {
-//   try {
-//     const response = await api.get('/instagram/insights');
-//     const profile = await getInstagramProfile(); // Get profile to include username
-//     return {
-//       ...response.data,
-//       account: {
-//         ...response.data.account,
-//         username: profile.username // Add username to account object
-//       }
-//     };
-//   } catch (error) {
-//     throw error;
-//   }
-// };
 export const getInstagramInsights = async () => {
   try {
     const response = await api.get('/instagram/insights');
@@ -104,7 +71,6 @@ export const getTimeAgo = (timestamp) => {
   return `${Math.floor(diffInSeconds / 86400)}d ago`;
 };
 
-// Error handling helper
 export const handleInstagramError = (error) => {
   const defaultMessage = 'An error occurred while processing your request';
   

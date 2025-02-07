@@ -17,6 +17,7 @@
     "axios": "^1.7.9",
     "classnames": "^2.5.1",
     "date-fns": "^4.1.0",
+    "framer-motion": "^12.4.0",
     "googleapis": "^144.0.0",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.469.0",

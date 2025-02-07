@@ -1,4 +1,3 @@
-//src/pages/Dashboard/Overview.jsx
 import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import {
@@ -47,17 +46,14 @@ const Overview = () => {
       setError(null);
 
       if (currentPlatform === "instagram") {
-        // First check if Instagram is connected
         const profile = await instagramService.getInstagramProfile();
         setIsConnected(!!profile);
 
         if (profile) {
-          // Only fetch insights if we have a profile
           const data = await instagramService.getInstagramInsights();
           setInsights(data);
         }
       } else {
-        // Check YouTube connection
         const profile = await youtubeService.getYouTubeProfile();
         setIsConnected(!!profile?.data?.channelId);
 
@@ -67,13 +63,12 @@ const Overview = () => {
           );
           setInsights(channelData);
         }
-      } 
+      }
     } catch (error) {
-      // console.error("Error fetching platform data:", error);
       if (error.response?.status === 400) {
         setIsConnected(false);
       } else {
-        <InstagramTutorial />;
+        setError(error.message);
       }
     } finally {
       setLoading(false);
@@ -99,75 +94,78 @@ const Overview = () => {
     return `${Math.floor(seconds / 86400)}d ago`;
   };
 
+  const calculateMetrics = () => {
+    if (!insights?.recent_posts?.length) return { totalReach: 0, avgLikes: 0 };
+
+    const total = insights.recent_posts.reduce(
+      (acc, post) => ({
+        totalReach: acc.totalReach + (post.reach || 0),
+        totalLikes: acc.totalLikes + (post.likes || 0),
+      }),
+      { totalReach: 0, totalLikes: 0 }
+    );
+
+    return {
+      totalReach: total.totalReach,
+      avgLikes: Math.round(total.totalLikes / insights.recent_posts.length),
+    };
+  };
+
+  const MetricCard = ({ icon: Icon, title, value, color = "cyan" }) => (
+    <Card className="p-6 bg-white border border-gray-200 rounded-lg transform transition-all duration-300 hover:shadow-md">
+      <div className="flex items-center">
+        <div className={`h-8 w-8 text-${color}-500`}>
+          <Icon className="h-full w-full" />
+        </div>
+        <div className="ml-4">
+          <p className="text-sm font-medium text-gray-600">{title}</p>
+          <p className="mt-1 text-xl font-semibold text-gray-900">{value}</p>
+        </div>
+      </div>
+    </Card>
+  );
+
+  const RecentPostCard = ({ post }) => (
+    <Card className="p-4 bg-white border border-gray-200 rounded-lg transform transition-all duration-300 hover:shadow-md">
+      <div className="flex justify-between items-start">
+        <div className="flex-1">
+          <div className="flex items-center space-x-2">
+            <span className="text-sm text-gray-500">
+              {getTimeAgo(post.timestamp)}
+            </span>
+          </div>
+          <p className="mt-2 text-sm text-gray-700">
+            {post.caption || "No caption"}
+          </p>
+        </div>
+      </div>
+      <div className="mt-4 flex justify-between">
+        <div className="flex items-center space-x-4">
+          <div className="flex items-center text-sm text-gray-600">
+            <Heart className="h-4 w-4 text-pink-500 mr-1" />
+            <span>{formatNumber(post.likes)}</span>
+          </div>
+          <div className="flex items-center text-sm text-gray-600">
+            <MessageCircle className="h-4 w-4 text-blue-500 mr-1" />
+            <span>{formatNumber(post.comments)}</span>
+          </div>
+        </div>
+        <div className="flex items-center text-sm text-gray-500">
+          <Eye className="h-4 w-4 text-cyan-500 mr-1" />
+          <span>{formatNumber(post.reach || 0)} reach</span>
+        </div>
+      </div>
+    </Card>
+  );
+
   const renderInstagramOverview = () => {
     if (!insights) return null;
 
-    const calculateMetrics = () => {
-      if (!insights?.recent_posts?.length)
-        return { totalReach: 0, avgLikes: 0 };
-
-      const total = insights.recent_posts.reduce(
-        (acc, post) => ({
-          totalReach: acc.totalReach + (post.reach || 0),
-          totalLikes: acc.totalLikes + (post.likes || 0),
-        }),
-        { totalReach: 0, totalLikes: 0 }
-      );
-
-      return {
-        totalReach: total.totalReach,
-        avgLikes: Math.round(total.totalLikes / insights.recent_posts.length),
-      };
-    };
-
     const metrics = calculateMetrics();
-
-    const RecentPostCard = ({ post }) => (
-      <Card className="p-4 hover:shadow-lg transition-shadow duration-200">
-        <div className="flex justify-between items-start">
-          <div className="flex-1">
-            <div className="flex items-center space-x-2">
-              <span className="text-sm text-gray-500">
-                {getTimeAgo(post.timestamp)}
-              </span>
-            </div>
-            <p className="mt-2 text-sm text-gray-900 line-clamp-3">
-              {post.caption || "No caption"}
-            </p>
-          </div>
-        </div>
-        <div className="mt-4 flex justify-between">
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center text-sm text-gray-500">
-              <Heart className="h-4 w-4 text-pink-500 mr-1" />
-              <span>{formatNumber(post.likes)}</span>
-            </div>
-            <div className="flex items-center text-sm text-gray-500">
-              <MessageCircle className="h-4 w-4 text-blue-500 mr-1" />
-              <span>{formatNumber(post.comments)}</span>
-            </div>
-          </div>
-          <div className="flex items-center text-sm text-gray-500">
-            <Eye className="h-4 w-4 mr-1" />
-            <span>{formatNumber(post.reach || 0)} reach</span>
-          </div>
-        </div>
-        <div className="mt-2">
-          <div className="text-sm text-gray-500">
-            Engagement Rate:
-            {(((post.likes + post.comments) / (post.reach || 1)) * 100).toFixed(
-              2
-            )}
-            %
-          </div>
-        </div>
-      </Card>
-    );
 
     return (
       <div className="space-y-6">
-        {/* Profile Header */}
-        <div className="bg-white rounded-lg shadow p-6">
+        <Card className="p-6 bg-white border border-gray-200 rounded-lg">
           <div className="flex items-center space-x-4">
             {insights.account?.profile_picture_url && (
               <img
@@ -177,7 +175,7 @@ const Overview = () => {
               />
             )}
             <div>
-              <h2 className="text-2xl font-bold text-gray-900">
+              <h2 className="text-xl font-bold text-gray-900">
                 @{insights.account.username}
               </h2>
               <p className="text-gray-500">
@@ -186,68 +184,33 @@ const Overview = () => {
               </p>
             </div>
           </div>
-        </div>
+        </Card>
 
-        {/* Key Metrics */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card className="p-6">
-            <div className="flex items-center">
-              <Users className="h-8 w-8 text-pink-600" />
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">Followers</p>
-                <p className="mt-1 text-xl font-semibold text-gray-900">
-                  {formatNumber(insights.account?.followers_count)}
-                </p>
-              </div>
-            </div>
-          </Card>
-
-          {/* Total Reach card */}
-          <Card className="p-6">
-            <div className="flex items-center">
-              <Eye className="h-8 w-8 text-pink-600" />
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">Total Reach</p>
-                <p className="mt-1 text-xl font-semibold text-gray-900">
-                  {formatNumber(metrics.totalReach)}
-                </p>
-              </div>
-            </div>
-          </Card>
-
-          {/* Average Likes card */}
-          <Card className="p-6">
-            <div className="flex items-center">
-              <Heart className="h-8 w-8 text-pink-600" />
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">Avg. Likes</p>
-                <p className="mt-1 text-xl font-semibold text-gray-900">
-                  {formatNumber(metrics.avgLikes)}
-                </p>
-              </div>
-            </div>
-          </Card>
-
-          <Card className="p-6">
-            <div className="flex items-center">
-              <TrendingUp className="h-8 w-8 text-pink-600" />
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">
-                  Engagement Rate
-                </p>
-                <p className="mt-1 text-xl font-semibold text-gray-900">
-                  {insights.metrics?.engagement_rate || "0"}%
-                </p>
-              </div>
-            </div>
-          </Card>
+          <MetricCard
+            icon={Users}
+            title="Followers"
+            value={formatNumber(insights.account?.followers_count)}
+          />
+          <MetricCard
+            icon={Eye}
+            title="Total Reach"
+            value={formatNumber(metrics.totalReach)}
+          />
+          <MetricCard
+            icon={Heart}
+            title="Avg. Likes"
+            value={formatNumber(metrics.avgLikes)}
+          />
+          <MetricCard
+            icon={TrendingUp}
+            title="Engagement Rate"
+            value={`${insights.metrics?.engagement_rate || "0"}%`}
+          />
         </div>
 
-        {/* Recent Posts */}
-        <Card className="p-6">
-          <h3 className="text-lg font-medium text-gray-900 mb-4">
-            Recent Posts
-          </h3>
+        <Card className="p-6 bg-white border border-gray-200 rounded-lg">
+          <h3 className="text-lg font-medium text-gray-900 mb-4">Recent Posts</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {insights.recent_posts?.slice(0, 6).map((post, index) => (
               <RecentPostCard key={post.id || index} post={post} />
@@ -255,31 +218,37 @@ const Overview = () => {
           </div>
         </Card>
 
-        {/* Engagement Chart */}
-        <Card className="p-6">
+        <Card className="p-6 bg-white border border-gray-200 rounded-lg">
           <h3 className="text-lg font-medium text-gray-900 mb-4">
             Engagement Over Time
           </h3>
           <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={insights?.daily_engagement || []}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis />
-                <Tooltip />
+                <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
+                <XAxis dataKey="date" stroke="#94A3B8" />
+                <YAxis stroke="#94A3B8" />
+                <Tooltip
+                  contentStyle={{
+                    background: "rgba(255, 255, 255, 0.9)",
+                    border: "1px solid #e5e7eb",
+                    borderRadius: "8px",
+                    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                  }}
+                />
                 <Line
                   type="monotone"
                   dataKey="likes"
-                  stroke="#ec4899"
-                  name="Likes"
+                  stroke="#06B6D4"
                   strokeWidth={2}
+                  dot={{ fill: "#06B6D4", strokeWidth: 2 }}
                 />
                 <Line
                   type="monotone"
                   dataKey="comments"
-                  stroke="#818cf8"
-                  name="Comments"
+                  stroke="#3B82F6"
                   strokeWidth={2}
+                  dot={{ fill: "#3B82F6", strokeWidth: 2 }}
                 />
               </LineChart>
             </ResponsiveContainer>
@@ -294,8 +263,7 @@ const Overview = () => {
 
     return (
       <div className="space-y-6">
-        {/* Channel Header */}
-        <div className="bg-white rounded-lg shadow p-6">
+        <Card className="p-6 bg-white border border-gray-200 rounded-lg">
           <div className="flex items-center space-x-4">
             {insights.thumbnail && (
               <img
@@ -314,62 +282,37 @@ const Overview = () => {
               </p>
             </div>
           </div>
-        </div>
+        </Card>
 
-        {/* Key Metrics */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card className="p-6">
-            <div className="flex items-center">
-              <Users className="h-8 w-8 text-red-600" />
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">Subscribers</p>
-                <p className="mt-1 text-xl font-semibold text-gray-900">
-                  {formatNumber(insights.subscribers)}
-                </p>
-              </div>
-            </div>
-          </Card>
-
-          <Card className="p-6">
-            <div className="flex items-center">
-              <Eye className="h-8 w-8 text-red-600" />
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">Views</p>
-                <p className="mt-1 text-xl font-semibold text-gray-900">
-                  {formatNumber(insights.views)}
-                </p>
-              </div>
-            </div>
-          </Card>
-
-          <Card className="p-6">
-            <div className="flex items-center">
-              <Calendar className="h-8 w-8 text-red-600" />
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">Videos</p>
-                <p className="mt-1 text-xl font-semibold text-gray-900">
-                  {formatNumber(insights.videos)}
-                </p>
-              </div>
-            </div>
-          </Card>
-
-          <Card className="p-6">
-            <div className="flex items-center">
-              <TrendingUp className="h-8 w-8 text-red-600" />
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">Avg. Views</p>
-                <p className="mt-1 text-xl font-semibold text-gray-900">
-                  {formatNumber(Math.round(insights.views / insights.videos))}
-                </p>
-              </div>
-            </div>
-          </Card>
+          <MetricCard
+            icon={Users}
+            title="Subscribers"
+            value={formatNumber(insights.subscribers)}
+            color="red"
+          />
+          <MetricCard
+            icon={Eye}
+            title="Views"
+            value={formatNumber(insights.views)}
+            color="red"
+          />
+          <MetricCard
+            icon={Calendar}
+            title="Videos"
+            value={formatNumber(insights.videos)}
+            color="red"
+          />
+          <MetricCard
+            icon={TrendingUp}
+            title="Avg. Views"
+            value={formatNumber(Math.round(insights.views / insights.videos))}
+            color="red"
+          />
         </div>
 
-        {/* Recent Videos */}
         {insights.recentVideos && insights.recentVideos.length > 0 && (
-          <Card className="p-6">
+          <Card className="p-6 bg-white border border-gray-200 rounded-lg">
             <h3 className="text-lg font-medium text-gray-900 mb-4">
               Latest Videos
             </h3>
@@ -381,7 +324,6 @@ const Overview = () => {
                 >
                   <div className="p-4">
                     <div className="flex justify-between items-start space-x-4">
-                      {/* Thumbnail and Title Section */}
                       <div className="flex flex-1 space-x-4">
                         {video.thumbnail && (
                           <div className="flex-shrink-0">
@@ -405,7 +347,6 @@ const Overview = () => {
                         </div>
                       </div>
 
-                      {/* Statistics Section */}
                       <div className="flex-shrink-0 flex flex-col items-end space-y-2">
                         <div className="flex items-center text-sm text-gray-500">
                           <Eye className="h-4 w-4 text-gray-400 mr-1" />
@@ -422,7 +363,6 @@ const Overview = () => {
                       </div>
                     </div>
 
-                    {/* Upload Date and Duration */}
                     <div className="mt-3 flex items-center justify-between text-sm text-gray-500">
                       <div>
                         <Calendar className="h-4 w-4 inline mr-1" />
@@ -442,7 +382,6 @@ const Overview = () => {
               ))}
             </div>
 
-            {/* Link to YouTube Channel */}
             <div className="mt-4 text-center">
               <a
                 href={`https://www.youtube.com/channel/${insights.channelId}`}
@@ -463,41 +402,37 @@ const Overview = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <RefreshCw className="w-8 h-8 animate-spin text-indigo-600" />
+        <RefreshCw className="w-12 h-12 animate-spin text-gray-400" />
       </div>
     );
   }
 
-  // Show error if any
   if (error) {
     return (
       <div className="bg-red-50 border border-red-200 rounded-md p-4">
         <div className="flex">
           <AlertCircle className="h-5 w-5 text-red-400" />
-          <p className="ml-3 text-sm text-red-600">{error}</p>
+          <p className="ml-3 text-sm text-red-400">{error}</p>
         </div>
       </div>
     );
   }
 
-  // Show tutorial only if platform is not connected
   if (!isConnected) {
-    return currentPlatform === 'instagram' ? <InstagramTutorial /> : <YouTubeTutorial />;
+    return currentPlatform === "instagram" ? (
+      <InstagramTutorial />
+    ) : (
+      <YouTubeTutorial />
+    );
   }
 
-  // Show platform overview if connected and we have insights
   if (insights) {
     return currentPlatform === "instagram"
       ? renderInstagramOverview()
       : renderYouTubeOverview();
   }
 
-  // Show loading state if connected but insights aren't loaded yet
-  return (
-    <div className="flex items-center justify-center min-h-[400px]">
-      <RefreshCw className="w-8 h-8 animate-spin text-indigo-600" />
-    </div>
-  );
+  return null;
 };
 
 export default Overview;

@@ -145,7 +145,7 @@ const GrowthRateCalculator = ({ insights }) => {
       </div>
 
       {/* Growth Trend Chart */}
-      <Card className="p-6">
+      <Card className="p-2">
         <h3 className="text-lg font-medium text-gray-900 mb-4">Engagement Growth Trend</h3>
         <div className="h-80">
           <ResponsiveContainer width="100%" height="100%">

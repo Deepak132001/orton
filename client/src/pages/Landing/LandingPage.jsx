@@ -9,36 +9,78 @@ import {
   Clock,
   Wand2,
   MessageSquare,
+  Menu,
 } from "lucide-react";
 import logo from "../../assets/logo.png";
 
 const LandingPage = () => {
+  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+  const NavLink = ({ to, children, className = "" }) => (
+    <Link
+      to={to}
+      className={`relative text-sm font-medium transition-all duration-300 ${className}`}
+    >
+      <span className="relative">
+        {children}
+        <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-indigo-600 transition-all duration-300 group-hover:w-full" />
+      </span>
+    </Link>
+  );
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-slate-50">
       {/* Navigation */}
-      <nav className="bg-white shadow">
+      <nav className="fixed w-full top-0 z-50 bg-white/80 backdrop-blur-md shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
-              <img src={logo} alt="Orton AI Logo" className="h-8 w-8" />
-              <span className="ml-2 text-l font-semibold text-gray-900">
-                Orton AI
-              </span>
-            </div>
-            <div className="flex items-center space-x-4">
-              <Link
-                to="/login"
-                className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900"
-              >
-                Login
+              <Link to="/" className="flex items-center space-x-2 group">
+                <img src={logo} alt="Orton AI Logo" className="h-8 w-8 rounded-lg shadow-md transition-transform duration-300 group-hover:scale-105" />
+                <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600">
+                  Orton AI
+                </span>
               </Link>
+            </div>
+
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center space-x-6">
+              <NavLink to="/login" className="text-slate-600 hover:text-slate-900">
+                Login
+              </NavLink>
               <Link
                 to="/register"
-                className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-md"
+                className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-indigo-700 rounded-lg hover:from-indigo-700 hover:to-indigo-800 transition-all duration-300 hover:shadow-lg transform hover:scale-105"
               >
-                Sign Up
+                Get Started Free
               </Link>
             </div>
+
+            {/* Mobile menu button */}
+            <div className="flex items-center md:hidden">
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors duration-200"
+              >
+                <Menu className="h-6 w-6" />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile menu */}
+        <div className={`md:hidden ${mobileMenuOpen ? 'block' : 'hidden'}`}>
+          <div className="px-4 pt-2 pb-3 space-y-1 bg-white shadow-lg">
+            <Link
+              to="/login"
+              className="block px-3 py-2 text-base font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg"
+            >
+              Login
+            </Link>
+            <Link
+              to="/register"
+              className="block px-3 py-2 text-base font-medium text-white bg-gradient-to-r from-indigo-600 to-indigo-700 rounded-lg hover:from-indigo-700 hover:to-indigo-800"
+            >
+              Get Started Free
+            </Link>
           </div>
         </div>
       </nav>

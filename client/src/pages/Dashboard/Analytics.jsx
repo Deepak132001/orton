@@ -408,7 +408,7 @@ const Analytics = () => {
   const metrics = calculateMetrics(insights);
 
   return (
-    <div className={`space-y-8 p-8 bg-gradient-to-br from-indigo-50 via-white to-purple-50 min-h-screen ${isVisible ? 'opacity-100' : 'opacity-0'} transition-all duration-700`}>
+    <div className={`space-y-8 p-3 bg-gradient-to-br from-indigo-50 via-white to-purple-50 min-h-screen ${isVisible ? 'opacity-100' : 'opacity-0'} transition-all duration-700`}>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 animate-on-scroll">
         <div>
           <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">
@@ -447,7 +447,7 @@ const Analytics = () => {
         ].map((metric, index) => (
           <Card 
             key={metric.title}
-            className={`p-6 group transition-all duration-500 ease-out transform hover:-translate-y-1 bg-white/80 backdrop-blur-sm border border-indigo-100 hover:border-indigo-300 hover:shadow-xl hover:shadow-indigo-100/50 ${
+            className={`p-6 group transition-all duration-500 ease-out transform hover:-translate-y-1 bg-white/80 border border-indigo-100 hover:border-indigo-300 hover:shadow-xl hover:shadow-indigo-100/50 ${
               activeMetric === index ? 'ring-2 ring-indigo-500 ring-offset-2' : ''
             }`}
             style={{ animationDelay: `${index * 100}ms` }}
@@ -499,9 +499,9 @@ const Analytics = () => {
             <h3 className="text-xl font-semibold text-gray-900">
               Top Performing Posts
             </h3>
-            <button className="text-indigo-600 hover:text-indigo-700 font-medium text-sm flex items-center gap-1">
+            {/* <button className="text-indigo-600 hover:text-indigo-700 font-medium text-sm flex items-center gap-1">
               View All <ArrowUpRight className="w-4 h-4" />
-            </button>
+            </button> */}
           </div>
           <div className="grid gap-6">
             {topPosts.map((post, index) => (
@@ -544,9 +544,9 @@ const Analytics = () => {
                   </div>
                   <div className="flex items-center gap-2">
                     <BarChart3 className="w-4 h-4 text-indigo-500" />
-                    <span className="text-sm font-medium text-indigo-600">
+                    {/* <span className="text-sm font-medium text-indigo-600">
                       {((post.likes + post.comments) / insights.account.followers_count * 100).toFixed(1)}% Engagement
-                    </span>
+                    </span> */}
                   </div>
                 </div>
               </div>
@@ -562,7 +562,7 @@ const Analytics = () => {
          <ResponsiveContainer width="100%" height="100%">
             <LineChart
               data={insights?.daily_engagement || []}
-              margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+              margin={{ top: 5, right: 0, left: 0, bottom: 5 }}
             >
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="date" />
@@ -594,7 +594,7 @@ const Analytics = () => {
             Growth Analysis
           </h2>
         </div>
-        <Card className="p-8 bg-white/80 border border-indigo-100 hover:shadow-xl transition-all duration-300">
+        <Card className="p-3 bg-white/80 border border-indigo-100 hover:shadow-xl transition-all duration-300">
           <GrowthRateCalculator insights={insights} />
         </Card>
       </div>

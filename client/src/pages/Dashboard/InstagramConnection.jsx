@@ -367,6 +367,7 @@ import {
   Menu,
 } from "lucide-react";
 import * as instagramService from "../../services/instagram.service";
+import SEO from "../../components/common/SEO";
 
 const SetupGuide = () => {
   const [activeStep, setActiveStep] = useState(0);
@@ -581,6 +582,12 @@ const InstagramConnection = () => {
   }
 
   return (
+    <>
+    <SEO 
+        title="Connect Instagram Account - Orton AI"
+        description="Link your Instagram business account to unlock powerful analytics, engagement insights, and content optimization tools."
+        keywords="Instagram business, social media tools, Instagram analytics, content optimization, Instagram metrics"
+      />
     <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8 p-4 sm:p-6">
       <h1 className="text-2xl sm:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">
         Instagram Connection
@@ -717,6 +724,7 @@ const InstagramConnection = () => {
 
       <SetupGuide />
     </div>
+    </>
   );
 };
 

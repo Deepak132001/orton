@@ -76,14 +76,14 @@ const ContentCard = ({ idea, onCopy, onDelete, contentType }) => {
           {/* Content Details */}
           {sections.mainContent.length > 0 && (
             <div className={`bg-gray-50 rounded-lg p-4 ${isRoast ? 'border border-red-100' : ''}`}>
-              <h4 className="text-lg font-semibold text-gray-900 mb-3">Content Details</h4>
+              <h4 className="text-lg font-bold text-gray-900 mb-3">Content Details</h4>
               <div className="space-y-4">
                 {sections.mainContent.map((point, index) => (
                   <div key={index} className="ml-4">
                     {point.startsWith("•") || point.startsWith("-") ? (
                       <p className="text-gray-700">{point}</p>
                     ) : (
-                      <h5 className="font-medium text-gray-800 mt-3">{point}</h5>
+                      <h5 className="font-semibold text-gray-800 mt-3">{point}</h5>
                     )}
                   </div>
                 ))}
@@ -372,7 +372,6 @@ const ContentIdeas = () => {
       setLoading(false);
     }
   };
-
 
   const handleDelete = async (responseId) => {
     try {

@@ -52,3 +52,30 @@ export const deleteResponse = async (req, res) => {
     });
   }
 };
+
+export const updateResponse = async (req, res) => {
+  try {
+    const { responseId } = req.params;
+    const { content, type } = req.body;
+
+    // Assuming you have a Response model
+    const updatedResponse = await Response.findByIdAndUpdate(
+      responseId,
+      {
+        content,
+        type,
+        updatedAt: new Date()
+      },
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedResponse) {
+      return res.status(404).json({ message: 'Response not found' });
+    }
+
+    res.json(updatedResponse);
+  } catch (error) {
+    console.error('Error updating response:', error);
+    res.status(500).json({ message: 'Failed to update response', error: error.message });
+  }
+};

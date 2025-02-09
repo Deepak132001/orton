@@ -131,27 +131,29 @@ const LandingPage = () => {
         ))}
 
         {/* Main Content */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 mt-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 mt-10">
           <div className="animate-title-reveal overflow-hidden">
-            <h1 className="text-4xl sm:text-5xl font-extrabold text-white mb-6 drop-shadow-2xl">
-              Never Run Out of Content Ideas
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-white mb-6 drop-shadow-2xl">
+              {/* Never Run Out of Content Ideas */}
+              Your AI-Powered Social Media Twin
             </h1>
           </div>
 
           <div className="max-w-3xl mx-auto">
             <div className="animate-content-fade overflow-hidden">
-              <p className="text-xl sm:text-2xl text-white opacity-90 mb-4 drop-shadow-lg">
-                Generate endless content tailored to your niche. Get AI-powered
+              <p className="text-lg sm:text-2xl text-white opacity-90 mb-4 drop-shadow-lg">
+                {/* Generate endless content tailored to your niche. Get AI-powered
                 insights, optimize posting times, and grow your social media
-                presence effortlessly.
+                presence effortlessly. */}
+                Tailored for influencers and business owners—AI-powered insights and niche-specific content ideas to grow your brand and connect with your audience.
               </p>
             </div>
 
-            <div className="overflow-hidden">
+            {/* <div className="overflow-hidden">
               <p className="text-xl sm:text-2xl text-white opacity-90 mb-8 animate-gradient-text">
                 AI-powered friend that grows with you
               </p>
-            </div>
+            </div> */}
           </div>
 
           <div className="animate-button-reveal">

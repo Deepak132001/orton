@@ -413,44 +413,7 @@ Example Output:
    
    Humor Hashtags
    #CoffeeHumor #FunnyPosts #MorningStruggles #CoffeeIsLife
-    `,
-
-    all: `Create versatile content with the following details:
-    1. Title
-   Write a clear, attention-grabbing title with a humorous twist.
-   Example: "How to Survive Monday Without Crying (Hint: It's Impossible)."
-
-2. Caption
-   Create an engaging caption (200-300 characters) that:
-   - Matches the account's professional tone but adds a dash of humor
-   Example: "Mondays are like a bad Tinder date—awkward, exhausting, and you just want it to be over. 😩 #MondayBlues #SurvivalGuide."
-   
-   - Uses relevant emojis
-   - Includes strategic line breaks
-   - Ends with a strong call-to-action and a funny remark
-   Example: "Drop a 😭 if you're also just here for the memes."
-
-3. Content Breakdown
-   
-   Key Message
-   Add a lighthearted joke or relatable statement.
-   Example: "When your coffee's not strong enough, but you still need to get through this day."
-     
-   Visual Suggestions
-   Recommend a funny or quirky visual.
-   Example: "Visual: A cat clinging to a Monday calendar like it's the edge of a cliff."
-
-4. Hashtags
-   List 15-20 relevant hashtags grouped by category:
-   
-   General Hashtags
-   #MondayMood #MondayBlues #SurvivalGuide #CoffeeNeeded #MoodBoost #MondayStruggles #KeepGoing
-   
-   Engagement Hashtags
-   #MondayMemes #DropA😭 #StayStrong #YouGotThis
-   
-   Humor Hashtags
-   #MondayHumor #FunnyPosts #MemesOfTheDay #JustHereForTheMemes`,
+    `
   };
 
   return `${accountContext}
@@ -493,9 +456,58 @@ const getTopEngagingPostType = (posts) => {
 };
 
 // Main function to generate content
+// export const generateContent = async (req, res) => {
+//   try {
+//     const { contentType } = req.body;
+//     console.log("Generating content for type:", contentType);
+
+//     const user = await User.findById(req.user._id);
+//     if (!user.instagramBusinessId || !user.facebookAccessToken) {
+//       return res.status(400).json({
+//         message: "Instagram account not connected",
+//       });
+//     }
+
+//     const prompt = await createDetailedPrompt(contentType, user);
+
+//     const completion = await openai.chat.completions.create({
+//       model: "gpt-4",
+//       messages: [
+//         {
+//           role: "system",
+//           content: `You are an expert Instagram content creator specializing in creating engaging, 
+//                    conversion-focused content with natural-sounding captions that use emojis effectively. 
+//                    Create content that balances professionalism with relatability.`,
+//         },
+//         {
+//           role: "user",
+//           content: prompt,
+//         },
+//       ],
+//       temperature: 0.8,
+//       max_tokens: 4000,
+//     });
+
+//     const ideas = parseContentIdeas(completion.choices[0].message.content);
+
+//     const generatedContent = {
+//       id: Date.now().toString(),
+//       type: contentType,
+//       ideas: ideas,
+//     };
+
+//     res.json(generatedContent);
+//   } catch (error) {
+//     console.error("Content generation error:", error);
+//     res.status(500).json({
+//       message: "Failed to generate content",
+//       error: error.message,
+//     });
+//   }
+// };
 export const generateContent = async (req, res) => {
   try {
-    const { contentType } = req.body;
+    const { contentType, modificationRequest, originalIdea } = req.body;
     console.log("Generating content for type:", contentType);
 
     const user = await User.findById(req.user._id);
@@ -505,7 +517,29 @@ export const generateContent = async (req, res) => {
       });
     }
 
-    const prompt = await createDetailedPrompt(contentType, user);
+    let prompt;
+    
+    if (modificationRequest && originalIdea) {
+      // Handle modification request
+      prompt = `
+        I have an existing social media content idea that needs modification:
+
+        Original Idea:
+        Title: ${originalIdea.title}
+        Content: ${originalIdea.content}
+        Caption: ${originalIdea.caption}
+        Hashtags: ${originalIdea.hashtags.join(', ')}
+
+        Modification Request: ${modificationRequest}
+
+        Please provide an updated version of this content idea that incorporates these changes.
+        Keep the same format with clear Title, Content, Caption, and Hashtags sections.
+        Maintain the professional tone while addressing the requested changes.
+      `;
+    } else {
+      // Handle new content generation
+      prompt = await createDetailedPrompt(contentType, user);
+    }
 
     const completion = await openai.chat.completions.create({
       model: "gpt-4",

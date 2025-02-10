@@ -145,15 +145,15 @@ const LandingPage = () => {
                 {/* Generate endless content tailored to your niche. Get AI-powered
                 insights, optimize posting times, and grow your social media
                 presence effortlessly. */}
-                Tailored for influencers and business owners—AI-powered insights and niche-specific content ideas to grow your brand and connect with your audience.
+                Produce Unlimited Content Perfectly Aligned with Your Niche: Use AI-Generated Insights to Craft Engaging Posts, Schedule at Optimal Times, and Build a Thriving Social Media Presence Without the Guesswork.
               </p>
             </div>
 
-            {/* <div className="overflow-hidden">
+            <div className="overflow-hidden">
               <p className="text-xl sm:text-2xl text-white opacity-90 mb-8 animate-gradient-text">
-                AI-powered friend that grows with you
+                Designed for influencers and business owners.
               </p>
-            </div> */}
+            </div>
           </div>
 
           <div className="animate-button-reveal">

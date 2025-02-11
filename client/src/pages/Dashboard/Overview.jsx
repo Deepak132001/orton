@@ -509,7 +509,7 @@ const Overview = () => {
       if (error.response?.status === 400) {
         setIsConnected(false);
       } else {
-        setError(error.message);
+        <InstagramTutorial />;
       }
     } finally {
       setLoading(false);

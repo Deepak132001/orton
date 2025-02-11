@@ -10,11 +10,37 @@ import {
   Wand2,
   MessageSquare,
   Menu,
+  ChevronRight,
 } from "lucide-react";
 import logo from "../../assets/logo.png";
+import analytics from "../../assets/analytics.png";
+import postingTimes from "../../assets/posting time.png";
+import contentIdeas from "../../assets/Content ideas.png";
 
 const LandingPage = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+  const [isVisible, setIsVisible] = React.useState({});
+
+  React.useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          setIsVisible(prev => ({
+            ...prev,
+            [entry.target.id]: entry.isIntersecting
+          }));
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    document.querySelectorAll('.scroll-animate').forEach((el) => {
+      observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   const NavLink = ({ to, children, className = "" }) => (
     <Link
       to={to}
@@ -355,6 +381,146 @@ const LandingPage = () => {
           }
         `}</style>
       </div>
+
+        {/* New Screenshots Section with Responsive Updates */}
+      <div className="py-12 sm:py-24 bg-white relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-8 sm:mb-16">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4 bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+              See OrtonAI in Action
+            </h2>
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+              Experience how easy it is to manage and grow your social media presence
+            </p>
+          </div>
+
+          {/* Screenshot Sections */}
+          <div className="space-y-12 sm:space-y-24">
+            {/* Analytics Dashboard */}
+            <div id="analytics-section" className="scroll-animate flex flex-col md:flex-row items-center gap-6 sm:gap-8">
+              <div className={`md:w-1/2 transition-all duration-1000 ${isVisible['analytics-section'] ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-full'}`}>
+                <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-indigo-600">
+                  Powerful Analytics Dashboard
+                </h3>
+                <p className="text-sm sm:text-base md:text-lg text-gray-600 mb-4 sm:mb-6">
+                  Get detailed insights into your content performance with our intuitive analytics dashboard. Track engagement, growth, and audience behavior all in one place.
+                </p>
+                <ul className="space-y-2 sm:space-y-4">
+                  <li className="flex items-center text-gray-700 text-sm sm:text-base">
+                    <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 text-indigo-600 mr-2" />
+                    Real-time performance metrics
+                  </li>
+                  <li className="flex items-center text-gray-700 text-sm sm:text-base">
+                    <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 text-indigo-600 mr-2" />
+                    Audience engagement analysis
+                  </li>
+                  <li className="flex items-center text-gray-700 text-sm sm:text-base">
+                    <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 text-indigo-600 mr-2" />
+                    Content performance tracking
+                  </li>
+                </ul>
+              </div>
+              <div className={`md:w-1/2 transition-all duration-1000 ${isVisible['analytics-section'] ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full'}`}>
+                <div className="relative">
+                  <img
+                    src={analytics}
+                    alt="Analytics Dashboard"
+                    className="rounded-lg shadow-2xl w-full"
+                  />
+                  <div className="absolute -bottom-2 sm:-bottom-4 -right-2 sm:-right-4 bg-indigo-600 text-white px-3 sm:px-6 py-1 sm:py-2 rounded-full text-xs sm:text-sm font-medium">
+                    Live Analytics
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Content Generation */}
+            <div id="content-section" className="scroll-animate flex flex-col-reverse md:flex-row items-center gap-6 sm:gap-8">
+              <div className={`md:w-1/2 transition-all duration-1000 ${isVisible['content-section'] ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-full'}`}>
+                <div className="relative">
+                  <img
+                    src={contentIdeas}
+                    alt="Content Generation"
+                    className="rounded-lg shadow-2xl w-full"
+                  />
+                  <div className="absolute -bottom-2 sm:-bottom-4 -left-2 sm:-left-4 bg-purple-600 text-white px-3 sm:px-6 py-1 sm:py-2 rounded-full text-xs sm:text-sm font-medium">
+                    AI-Powered
+                  </div>
+                </div>
+              </div>
+              <div className={`md:w-1/2 transition-all duration-1000 ${isVisible['content-section'] ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full'}`}>
+                <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-purple-600">
+                  AI Content Generation
+                </h3>
+                <p className="text-sm sm:text-base md:text-lg text-gray-600 mb-4 sm:mb-6">
+                  Let AI do the heavy lifting. Generate engaging content ideas, captions, and hashtags tailored to your brand's voice and audience.
+                </p>
+                <ul className="space-y-2 sm:space-y-4">
+                  <li className="flex items-center text-gray-700 text-sm sm:text-base">
+                    <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 text-purple-600 mr-2" />
+                    Smart caption generation
+                  </li>
+                  <li className="flex items-center text-gray-700 text-sm sm:text-base">
+                    <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 text-purple-600 mr-2" />
+                    Trending hashtag suggestions
+                  </li>
+                  <li className="flex items-center text-gray-700 text-sm sm:text-base">
+                    <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 text-purple-600 mr-2" />
+                    Content ideas based on trends
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Scheduling */}
+            <div id="scheduling-section" className="scroll-animate flex flex-col md:flex-row items-center gap-6 sm:gap-8">
+              <div className={`md:w-1/2 transition-all duration-1000 ${isVisible['scheduling-section'] ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-full'}`}>
+                <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-indigo-600">
+                  Smart Scheduling
+                </h3>
+                <p className="text-sm sm:text-base md:text-lg text-gray-600 mb-4 sm:mb-6">
+                  Post at the perfect time, every time. Our AI analyzes your audience's behavior to determine the optimal posting schedule.
+                </p>
+                <ul className="space-y-2 sm:space-y-4">
+                  <li className="flex items-center text-gray-700 text-sm sm:text-base">
+                    <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 text-indigo-600 mr-2" />
+                    Best time recommendations
+                  </li>
+                  <li className="flex items-center text-gray-700 text-sm sm:text-base">
+                    <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 text-indigo-600 mr-2" />
+                    Automated scheduling
+                  </li>
+                  <li className="flex items-center text-gray-700 text-sm sm:text-base">
+                    <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 text-indigo-600 mr-2" />
+                    Cross-platform posting
+                  </li>
+                </ul>
+              </div>
+              <div className={`md:w-1/2 transition-all duration-1000 ${isVisible['scheduling-section'] ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full'}`}>
+                <div className="relative">
+                  <img
+                    src={postingTimes}
+                    alt="Smart Scheduling"
+                    className="rounded-lg shadow-2xl w-full"
+                  />
+                  <div className="absolute -bottom-2 sm:-bottom-4 -right-2 sm:-right-4 bg-indigo-600 text-white px-3 sm:px-6 py-1 sm:py-2 rounded-full text-xs sm:text-sm font-medium">
+                    Smart Calendar
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-1/4 left-0 w-48 sm:w-72 h-48 sm:h-72 bg-indigo-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+          <div className="absolute top-1/3 right-0 w-48 sm:w-72 h-48 sm:h-72 bg-purple-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+          <div className="absolute bottom-1/4 left-1/4 w-48 sm:w-72 h-48 sm:h-72 bg-pink-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+        </div>
+      </div>
+      {/* Keep existing Platform Features and subsequent sections */}
+
       {/* Platform Features */}
       <div className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -422,50 +588,86 @@ const LandingPage = () => {
       </div>
 
       {/* How It Works */}
-      <div className="py-16 bg-gray-100">
+      <div className="py-16 bg-gradient-to-b from-gray-50 to-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
-            How Orton AI Works
-          </h2>
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent inline-block">
+              How Orton AI Works
+            </h2>
+            <div className="mt-4 h-1 w-24 bg-gradient-to-r from-indigo-600 to-purple-600 mx-auto rounded-full"/>
+          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
             {/* Connect */}
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <div className="flex items-center justify-center h-12 w-12 rounded-md bg-indigo-600 text-white mb-4 mx-auto">
-                1
+            <div id="how-it-works-1" className="scroll-animate transform transition-all duration-700 hover:scale-105">
+              <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 relative overflow-hidden group">
+                <div className="absolute inset-0 bg-gradient-to-r from-indigo-600/10 to-purple-600/10 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"/>
+                <div className="flex items-center justify-center h-16 w-16 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-2xl font-bold mb-6 mx-auto transform group-hover:rotate-12 transition-transform duration-300">
+                  1
+                </div>
+                <h3 className="text-xl sm:text-2xl font-bold text-center mb-4 bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Connect</h3>
+                <p className="text-gray-600 text-center text-sm sm:text-base">
+                  Link your Instagram and YouTube accounts to get started with
+                  comprehensive analytics and insights.
+                </p>
               </div>
-              <h3 className="text-xl font-bold text-center mb-4">Connect</h3>
-              <p className="text-gray-600 text-center">
-                Link your Instagram and YouTube accounts to get started with
-                comprehensive analytics and insights.
-              </p>
             </div>
 
             {/* Analyze */}
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <div className="flex items-center justify-center h-12 w-12 rounded-md bg-indigo-600 text-white mb-4 mx-auto">
-                2
+            <div id="how-it-works-2" className="scroll-animate transform transition-all duration-700 hover:scale-105 md:translate-y-8">
+              <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 relative overflow-hidden group">
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 to-pink-600/10 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"/>
+                <div className="flex items-center justify-center h-16 w-16 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 text-white text-2xl font-bold mb-6 mx-auto transform group-hover:rotate-12 transition-transform duration-300">
+                  2
+                </div>
+                <h3 className="text-xl sm:text-2xl font-bold text-center mb-4 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Analyze</h3>
+                <p className="text-gray-600 text-center text-sm sm:text-base">
+                  Get deep insights into your content performance and audience
+                  behavior patterns.
+                </p>
               </div>
-              <h3 className="text-xl font-bold text-center mb-4">Analyze</h3>
-              <p className="text-gray-600 text-center">
-                Get deep insights into your content performance and audience
-                behavior patterns.
-              </p>
             </div>
 
             {/* Grow */}
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <div className="flex items-center justify-center h-12 w-12 rounded-md bg-indigo-600 text-white mb-4 mx-auto">
-                3
+            <div id="how-it-works-3" className="scroll-animate transform transition-all duration-700 hover:scale-105">
+              <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 relative overflow-hidden group">
+                <div className="absolute inset-0 bg-gradient-to-r from-pink-600/10 to-rose-600/10 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"/>
+                <div className="flex items-center justify-center h-16 w-16 rounded-full bg-gradient-to-r from-pink-600 to-rose-600 text-white text-2xl font-bold mb-6 mx-auto transform group-hover:rotate-12 transition-transform duration-300">
+                  3
+                </div>
+                <h3 className="text-xl sm:text-2xl font-bold text-center mb-4 bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent">Grow</h3>
+                <p className="text-gray-600 text-center text-sm sm:text-base">
+                  Use AI-powered tools to create better content and grow your
+                  social media presence.
+                </p>
               </div>
-              <h3 className="text-xl font-bold text-center mb-4">Grow</h3>
-              <p className="text-gray-600 text-center">
-                Use AI-powered tools to create better content and grow your
-                social media presence.
-              </p>
             </div>
+
+            {/* Connecting lines (visible only on md and up) */}
+            <div className="hidden md:block absolute top-1/2 left-1/4 right-1/4 h-0.5 bg-gradient-to-r from-indigo-600 to-rose-600 transform -translate-y-1/2" />
           </div>
         </div>
+
+        {/* Add scroll animation observer */}
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            document.addEventListener('DOMContentLoaded', function() {
+              const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                  if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-16');
+                  }
+                });
+              }, { threshold: 0.1 });
+
+              document.querySelectorAll('.scroll-animate').forEach((el) => {
+                el.classList.add('opacity-0', 'translate-y-16');
+                observer.observe(el);
+              });
+            });
+          `
+        }} />
       </div>
 
       {/* Features */}

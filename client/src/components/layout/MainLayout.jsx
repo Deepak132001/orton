@@ -350,12 +350,12 @@ const MainLayout = ({ children }) => {
       icon: PencilIcon,
       platform: 'instagram',   
     },
-    {
-      name: "Partner Program",
-      href: "/dashboard/refer",
-      icon: Handshake,
-      platform: 'instagram',   
-    }
+    // {
+    //   name: "Partner Program",
+    //   href: "/dashboard/refer",
+    //   icon: Handshake,
+    //   platform: 'instagram',   
+    // }
   ];
 
   // Navigation items for YouTube

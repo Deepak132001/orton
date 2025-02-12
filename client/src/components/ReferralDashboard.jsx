@@ -69,7 +69,7 @@ const PayoutModal = ({
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Available Balance
+              Total
             </label>
             <div className="text-2xl font-bold text-green-600">
               ${availableBalance.toFixed(2)}

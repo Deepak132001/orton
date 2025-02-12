@@ -44,39 +44,42 @@ export const requestPayout = async (req, res) => {
     const { amount, paypalEmail } = req.body;
     const userId = req.user.id;
 
-    // Validate minimum payout amount
+    const user = await User.findById(userId);
+
+    // Calculate available balance properly
+    const totalEarnings = user.referralEarnings || 0;
+    const totalPaidOut = user.totalPaidOut || 0;
+    const pendingPayout = user.pendingPayout || 0;
+    const availableBalance = totalEarnings - totalPaidOut - pendingPayout;
+
+    console.log('Payout Request Debug:', {
+      totalEarnings,
+      totalPaidOut,
+      pendingPayout,
+      availableBalance,
+      requestedAmount: amount
+    });
+
+    // Validate minimum amount
     if (amount < 2) {
       return res.status(400).json({
         message: 'Minimum payout amount is $2'
       });
     }
 
-    const user = await User.findById(userId);
-    const availableBalance = user.referralEarnings - (user.pendingPayout || 0) - (user.totalPaidOut || 0);
-    // Check if user has sufficient balance
+    // Validate available balance
     if (amount > availableBalance) {
       return res.status(400).json({
-        message: 'Insufficient balance for payout'
+        message: `Insufficient balance. Available: $${availableBalance.toFixed(2)}`
       });
     }
 
-    // Check if user has sufficient balance
-    if (user.referralEarnings - (user.pendingPayout || 0) < amount) {
-      return res.status(400).json({
-        message: 'Insufficient balance for payout'
-      });
-    }
-
-    // Update PayPal email
+    // Update PayPal email if provided
     if (paypalEmail) {
       user.paypalEmail = paypalEmail;
     }
 
     // Add payout request to history
-    if (!user.payoutHistory) {
-      user.payoutHistory = [];
-    }
-
     user.payoutHistory.push({
       amount,
       paymentMethod: 'paypal',
@@ -84,13 +87,15 @@ export const requestPayout = async (req, res) => {
       requestDate: new Date()
     });
 
-    user.pendingPayout = (user.pendingPayout || 0) + amount;
+    // Update pending payout
+    user.pendingPayout += amount;
+
     await user.save();
 
     res.status(200).json({
       message: 'Payout request submitted successfully',
       pendingPayout: user.pendingPayout,
-      availableBalance: user.referralEarnings - user.pendingPayout
+      availableBalance: availableBalance - amount
     });
   } catch (error) {
     console.error('Payout request error:', error);
@@ -151,22 +156,31 @@ export const updatePayoutStatus = async (req, res) => {
       return res.status(404).json({ message: 'Payout not found' });
     }
 
-    payout.status = status;
-    payout.processedDate = new Date();
+    // Only process if status is changing
+    if (payout.status !== status) {
+      if (status === 'processed') {
+        // Ensure we don't create negative values
+        if (payout.amount > user.referralEarnings - user.totalPaidOut) {
+          return res.status(400).json({ 
+            message: 'Cannot process payout: amount exceeds available earnings' 
+          });
+        }
+        
+        user.pendingPayout = Math.max(0, user.pendingPayout - payout.amount);
+        user.totalPaidOut += payout.amount;
+      } else if (status === 'failed') {
+        user.pendingPayout = Math.max(0, user.pendingPayout - payout.amount);
+      }
 
-    if (status === 'processed') {
-      // Update all relevant fields
-      user.pendingPayout -= payout.amount;
-      user.totalPaidOut = (user.totalPaidOut || 0) + payout.amount;
-    } else if (status === 'failed') {
-      // Only reduce pending amount
-      user.pendingPayout -= payout.amount;
+      payout.status = status;
+      payout.processedDate = new Date();
     }
 
     await user.save();
 
     res.json({ message: 'Payout status updated' });
   } catch (error) {
+    console.error('Error updating payout status:', error);
     res.status(500).json({ message: 'Error updating payout status' });
   }
 };

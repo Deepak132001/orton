@@ -84,9 +84,9 @@ const PayoutModal = ({
               type="number"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              placeholder="Enter amount (min. $2)"
+              placeholder="Enter amount (min. $10)"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-              min="2"
+              min="10"
               step="0.01"
               required
             />
@@ -334,7 +334,7 @@ const ReferralDashboard = () => {
           </div>
           <button
             onClick={() => setShowPayoutModal(true)}
-            disabled={stats.earnings - (stats.pendingPayout || 0) < 2}
+            disabled={stats.earnings - (stats.pendingPayout || 0) < 10}
             className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 
                 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >

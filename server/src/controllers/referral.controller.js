@@ -61,9 +61,9 @@ export const requestPayout = async (req, res) => {
     });
 
     // Validate minimum amount
-    if (amount < 2) {
+    if (amount < 10) {
       return res.status(400).json({
-        message: 'Minimum payout amount is $2'
+        message: 'Minimum payout amount is $10'
       });
     }
 

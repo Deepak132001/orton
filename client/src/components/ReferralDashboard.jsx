@@ -191,7 +191,7 @@ const ReferralDashboard = () => {
         </h3>
         <p className="text-yellow-700 mt-1">
           For referral rewards to be valid, referred users must connect their
-          Instagram Business Account to Orton AI.
+          Instagram Account to OrtonAI.
         </p>
       </div>
       {/* Stats Cards */}
@@ -330,6 +330,9 @@ const ReferralDashboard = () => {
             )}
             <p className="text-sm text-gray-500">
               Total paid out: ${stats.totalPaidOut.toFixed(2)}
+            </p>
+            <p className="text-sm text-gray-500">
+            Minimum payment Request $10
             </p>
           </div>
           <button

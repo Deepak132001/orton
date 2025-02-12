@@ -17,6 +17,7 @@ import { initializeNotificationJobs } from './services/notification.service.js';
 import { authenticate } from './middleware/auth.middleware.js';
 import youtubeRoutes from './routes/youtube.routes.js';
 import responseRoutes from './routes/response.routes.js';
+import referralRoutes from './routes/referral.routes.js';
 
 import { errorHandler } from './middleware/error.middleware.js';
 
@@ -116,6 +117,7 @@ app.use('/api/content',authenticate, contentRoutes);
 app.use('/api/notifications',authenticate, notificationRoutes);
 app.use('/api/youtube',authenticate, youtubeRoutes);
 app.use('/api/responses', responseRoutes);
+app.use('/api/referral', referralRoutes);
 
 // Error handling middleware
 app.use(errorHandler);

@@ -14,6 +14,7 @@ import YouTubeAnalytics from "./YouTubeAnalytics";
 import YouTubePostingTimes from "./YouTubePostingTimes";
 import { usePlatform } from "../../contexts/PlatformContext";
 import SEO from "../../components/common/SEO";
+import ReferralDashboard from "../../components/ReferralDashboard";
 
 const Dashboard = () => {
   const { currentPlatform, platformData, loading } = usePlatform();
@@ -90,6 +91,7 @@ const Dashboard = () => {
           />
           <Route path="/youtube-scripts" element={<YouTubeScripts />} />
           <Route path="/youtube-callback" element={<YouTubeCallback />} />
+          <Route path="/refer" element={<ReferralDashboard />} />
         </Routes>
       </MainLayout>
     </>

@@ -296,7 +296,7 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import Footer from "./Footer";
-import { Instagram, Youtube, ChevronDown, PencilIcon, ImageIcon, MessageSquare, Menu, X } from "lucide-react";
+import { Instagram, Youtube, ChevronDown, PencilIcon, ImageIcon, MessageSquare, Menu, X, Handshake } from "lucide-react";
 import NotificationCenter from "../notifications/NotificationCenter";
 import PlatformSwitcher from "../common/PlatformSwitcher";
 import logo from "../../assets/logo.png";
@@ -348,6 +348,12 @@ const MainLayout = ({ children }) => {
       name: "Content Creation",
       href: "/dashboard/content-ideas",
       icon: PencilIcon,
+      platform: 'instagram',   
+    },
+    {
+      name: "Partner Program",
+      href: "/dashboard/refer",
+      icon: Handshake,
       platform: 'instagram',   
     }
   ];

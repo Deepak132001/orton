@@ -16,6 +16,7 @@ import useAuth from "./hooks/useAuth";
 import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy";
 import TermsAndConditions from "./pages/PrivacyPolicy/TermsAndCondition";
 import DataDeletion from "./pages/PrivacyPolicy/DataDeletion";
+import AdminLoginPayout from './components/auth/AdminLoginPayout';
 import { ResponseProvider } from "./contexts/ResponseContext";
 import { Helmet } from "react-helmet";
 
@@ -89,6 +90,15 @@ function App() {
                   element={
                     <PrivateRoute>
                       <Dashboard />
+                    </PrivateRoute>
+                  }
+                />
+                {/* Protected route admin for payout */}
+                <Route
+                  path="/admin/payouts"
+                  element={
+                    <PrivateRoute>
+                      <AdminLoginPayout />
                     </PrivateRoute>
                   }
                 />

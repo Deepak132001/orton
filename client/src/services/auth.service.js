@@ -26,9 +26,9 @@ export const login = async (email, password) => {
   }
 };
 
-export const register = async (email, password) => {
+export const register = async (email, password, referralCode = null) => {
   try {
-    const response = await api.post('/auth/register', { email, password });
+    const response = await api.post('/auth/register', { email, password, referralCode  });
     
     const { token, user } = response.data;
     if (token) {

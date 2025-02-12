@@ -1,19 +1,25 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Loader, Eye, EyeOff } from 'lucide-react';
 import useAuth from '../../hooks/useAuth';
 import * as authService from '../../services/auth.service';
 
 const RegisterForm = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { register } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  // Get referral code from URL
+  const referralCode = new URLSearchParams(location.search).get('ref');
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     confirmPassword: '',
+    referralCode: referralCode || '' // Initialize with referral code from URL
   });
   const [error, setError] = useState('');
 
@@ -33,7 +39,7 @@ const RegisterForm = () => {
     }
     setIsLoading(true);
     try {
-      const { token, user } = await authService.register(formData.email, formData.password);
+      const { token, user } = await authService.register(formData.email, formData.password, formData.referralCode);
       register(user, token);
       navigate('/dashboard');
     } catch (err) {

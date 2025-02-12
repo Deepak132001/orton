@@ -2,6 +2,7 @@
 
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
+import { randomBytes } from 'crypto';
 
 // Create the schema
 const userSchema = new mongoose.Schema({
@@ -22,7 +23,57 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Password is required'],
     minlength: [6, 'Password must be at least 6 characters long']
+  },// Referral System Fields
+  referralCode: {
+    type: String,
+    unique: true,
+    sparse: true
   },
+  referredBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    default: null
+  },
+  referralEarnings: {
+    type: Number,
+    default: 0
+  },
+  referralCount: {
+    type: Number,
+    default: 0
+  },
+  paypalEmail: {
+    type: String,
+    sparse: true,
+    trim: true
+  },
+  pendingPayout: {
+    type: Number,
+    default: 0
+  },
+  payoutHistory: [{
+    amount: Number,
+    status: {
+      type: String,
+      enum: ['pending', 'processed', 'failed'],
+      default: 'pending'
+    },
+    paymentMethod: {
+      type: String,
+      enum: ['paypal'],
+      default: 'paypal'
+    },
+    requestDate: {
+      type: Date,
+      default: Date.now
+    },
+    processedDate: Date
+  }],
+  isAdmin: {
+    type: Boolean,
+    default: false
+  },
+  // Your existing fields,
   instagramBusinessId: {
     type: String,
     sparse: true,
@@ -35,11 +86,60 @@ const userSchema = new mongoose.Schema({
   facebookPageId: {
     type: String,
     default: null
+  },
+  totalPaidOut: {
+    type: Number,
+    default: 0
   }
 }, {
   timestamps: true,
   versionKey: false // Disable the version key
 });
+
+// Generate unique referral code
+userSchema.pre('save', async function(next) {
+  if (this.isNew && !this.referralCode) {
+    const generateCode = () => {
+      return randomBytes(4).toString('hex').toUpperCase();
+    };
+    
+    let code = generateCode();
+    let isUnique = false;
+    
+    while (!isUnique) {
+      const existingUser = await this.constructor.findOne({ referralCode: code });
+      if (!existingUser) {
+        isUnique = true;
+      } else {
+        code = generateCode();
+      }
+    }
+    
+    this.referralCode = code;
+  }
+  next();
+});
+
+// Method to process referral reward
+userSchema.methods.processReferralReward = async function() {
+  // console.log('Processing reward for user:', this._id);
+  // console.log('Current earnings:', this.referralEarnings);
+  // console.log('Current referral count:', this.referralCount);
+  
+  this.referralEarnings = (this.referralEarnings || 0) + 2;
+  this.referralCount = (this.referralCount || 0) + 1;
+  
+  // console.log('New earnings:', this.referralEarnings);
+  // console.log('New referral count:', this.referralCount);
+  
+  const savedUser = await this.save();
+  // console.log('Saved user data:', {
+  //   earnings: savedUser.referralEarnings,
+  //   count: savedUser.referralCount
+  // });
+  
+  return savedUser;
+};;
 
 // Remove old indexes
 userSchema.pre('save', async function(next) {

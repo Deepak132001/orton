@@ -225,16 +225,23 @@ const createDetailedPrompt = async (contentType, user) => {
   //       4. Hashtags: List 15-20 relevant hashtags grouped strategically`,
   //   };
   const prompts = {
-    roast: `Generate a savage, no-mercy roast for the user based on their profile.  
-- Expose their laziness, delusions, or lack of effort.  
-- Use sarcasm, wit, and brutal honesty—no sugarcoating.  
-- End with a **cold reality check** that leaves them with no excuses.  
-- Bonus: Add a funny twist or a pun to lighten the mood.
+//     roast: `Generate a savage, no-mercy roast for the user based on their profile.  
+// - Expose their laziness, delusions, or lack of effort.  
+// - Use sarcasm, wit, and brutal honesty—no sugarcoating.  
+// - End with a **cold reality check** that leaves them with no excuses.  
+// - Bonus: Add a funny twist or a pun to lighten the mood.
 
-Example Output:  
+// Example Output:  
 
-"Oh, look who decided to take a break from doing absolutely nothing to show up here. You talk about 'grinding' but spend more time watching motivational reels than actually working. Your ‘big plans’ are just screenshots in your phone, collecting digital dust while you scroll mindlessly, convincing yourself that you’re ‘researching.’ You say you want success, but the only thing you’ve mastered is procrastination and blaming ‘bad luck’ for your own lack of discipline. Reality check: **No one is coming to save you. No one cares about your dreams until you make them real. Either put in the work or stay exactly where you are—stuck, broke, and watching others win.** Your move. P.S. Your to-do list is starting to look like a historical document—ancient and untouched."`,
+// "Oh, look who decided to take a break from doing absolutely nothing to show up here. You talk about 'grinding' but spend more time watching motivational reels than actually working. Your ‘big plans’ are just screenshots in your phone, collecting digital dust while you scroll mindlessly, convincing yourself that you’re ‘researching.’ You say you want success, but the only thing you’ve mastered is procrastination and blaming ‘bad luck’ for your own lack of discipline. Reality check: **No one is coming to save you. No one cares about your dreams until you make them real. Either put in the work or stay exactly where you are—stuck, broke, and watching others win.** Your move. P.S. Your to-do list is starting to look like a historical document—ancient and untouched."`,
+    roast: `Generate a savage, no-mercy roast for the user based on their profile.
+  - Expose their laziness, delusions, or lack of effort.
+  - Use sarcasm, wit, and brutal honesty—no sugarcoating.
+  - End with a **cold reality check** that leaves them with no excuses.
 
+  Example Output:
+
+  "Oh, look who decided to take a break from doing absolutely nothing to show up here. You talk about 'grinding' but spend more time watching motivational reels than actually working. Your ‘big plans’ are just screenshots in your phone, collecting digital dust while you scroll mindlessly, convincing yourself that you’re ‘researching.’ You say you want success, but the only thing you’ve mastered is procrastination and blaming ‘bad luck’ for your own lack of discipline. Reality check: **No one is coming to save you. No one cares about your dreams until you make them real. Either put in the work or stay exactly where you are—stuck, broke, and watching others win.** Your move."`,
     carousel: `1. Title: Write a catchy, attention-grabbing title with humor.
      Example: "5 Ways to Adult Without Crying (Spoiler: You'll Still Cry)."
 

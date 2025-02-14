@@ -83,12 +83,6 @@ import { User } from '../models/user.model.js';
 // };
 export const register = async (req, res, next) => {
   try {
-    console.log('Registration request received:', {
-      email: req.body.email,
-      hasPassword: !!req.body.password,
-      referralCode: req.body.referralCode // Log the referral code
-    });
-
     const { email, password, referralCode } = req.body;
 
     // Validate input
@@ -102,22 +96,32 @@ export const register = async (req, res, next) => {
     const existingUser = await User.findOne({ email: email.toLowerCase() });
     if (existingUser) {
       return res.status(400).json({
-        message: 'User already exists with this email'
+        message: 'This email is already registered'
       });
     }
 
-    // Find referrer if referral code exists
     let referrer = null;
+    // Only check referral-related things if a referral code is provided
     if (referralCode) {
-      // console.log('Looking for referrer with code:', referralCode);
+      // Get settings for referral limit check
+      const settings = await Settings.getInstance();
+      if (settings.currentReferralCount >= settings.referralLimit) {
+        return res.status(400).json({
+          message: 'Referral program is currently full'
+        });
+      }
+
+      // Find referrer
       referrer = await User.findOne({ referralCode });
-      // console.log('Referrer found:', referrer ? referrer._id : 'none');
-      
       if (!referrer) {
         return res.status(400).json({
           message: 'Invalid referral code'
         });
       }
+
+      // Increment the counter when a new referral registers
+      settings.currentReferralCount += 1;
+      await settings.save();
     }
 
     // Create new user
@@ -128,18 +132,10 @@ export const register = async (req, res, next) => {
     });
 
     await user.save();
-    // console.log('User created successfully:', user._id);
 
     // Process referral reward if there was a valid referrer
     if (referrer) {
-      // console.log('Processing referral reward for:', referrer._id);
-      // console.log('Before reward - earnings:', referrer.referralEarnings, 'count:', referrer.referralCount);
-      
       await referrer.processReferralReward();
-      
-      // Fetch updated referrer data
-      const updatedReferrer = await User.findById(referrer._id);
-      // console.log('After reward - earnings:', updatedReferrer.referralEarnings, 'count:', updatedReferrer.referralCount);
     }
 
     // Generate JWT token
@@ -154,12 +150,17 @@ export const register = async (req, res, next) => {
       token,
       user: {
         id: user._id,
-        email: user.email,
-        referralCode: user.referralCode
+        email: user.email
       }
     });
   } catch (error) {
-    // console.error('Registration error:', error);
+    console.error('Registration error:', error);
+    // Handle mongoose duplicate key error
+    if (error.code === 11000) {
+      return res.status(400).json({
+        message: 'This email is already registered'
+      });
+    }
     next(error);
   }
 };

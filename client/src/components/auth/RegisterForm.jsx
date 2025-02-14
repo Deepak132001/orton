@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Loader, Eye, EyeOff } from 'lucide-react';
-import useAuth from '../../hooks/useAuth';
-import * as authService from '../../services/auth.service';
+import { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Loader, Eye, EyeOff } from "lucide-react";
+import useAuth from "../../hooks/useAuth";
+import * as authService from "../../services/auth.service";
 
 const RegisterForm = () => {
   const navigate = useNavigate();
@@ -13,15 +13,15 @@ const RegisterForm = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // Get referral code from URL
-  const referralCode = new URLSearchParams(location.search).get('ref');
+  const referralCode = new URLSearchParams(location.search).get("ref");
 
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    confirmPassword: '',
-    referralCode: referralCode || '' // Initialize with referral code from URL
+    email: "",
+    password: "",
+    confirmPassword: "",
+    referralCode: referralCode || "", // Initialize with referral code from URL
   });
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     setFormData({
@@ -32,18 +32,31 @@ const RegisterForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
     if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
+      setError("Passwords do not match");
       return;
     }
     setIsLoading(true);
     try {
-      const { token, user } = await authService.register(formData.email, formData.password, formData.referralCode);
+      const { token, user } = await authService.register(
+        formData.email,
+        formData.password,
+        formData.referralCode
+      );
       register(user, token);
-      navigate('/dashboard');
+      navigate("/dashboard");
     } catch (err) {
-      setError(err.response?.data?.message || 'An error occurred');
+      // Check for specific error messages
+      if (err.response?.data?.message?.includes("already exists")) {
+        setError(
+          "This email is already registered. Please try logging in instead."
+        );
+      } else {
+        setError(
+          err.response?.data?.message || "This email is already registered. Please try logging in instead."
+        );
+      }
     } finally {
       setIsLoading(false);
     }

@@ -111,12 +111,16 @@ const Analytics = () => {
       (sum, post) => sum + (post.impressions || 0),
       0
     );
+    const engagementRate = (
+      (totalEngagement / (insights.recent_posts.length * insights.account.followers_count)) *
+      100
+    ).toFixed(2);
 
     return {
       reach: totalReach,
       engagement: totalEngagement,
       impressions: totalImpressions,
-      engagementRate: ((totalEngagement / totalReach) * 100).toFixed(2),
+      engagementRate,
     };
   };
 

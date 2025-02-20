@@ -68,27 +68,6 @@ const ContentCard = ({
 
   const isRoast = contentType === "roast";
 
-  // const handleModification = async (e) => {
-  //   e.preventDefault();
-  //   if (!message.trim()) return;
-
-  //   setIsModifying(true);
-  //   try {
-  //     const response = await contentService.generateCustomContent(
-  //       message,
-  //       idea
-  //     );
-  //     if (response.ideas && response.ideas.length > 0) {
-  //       onIdeaUpdate(responseId, ideaIndex, response.ideas[0]);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error modifying idea:", error);
-  //     alert("Failed to modify idea. Please try again.");
-  //   } finally {
-  //     setIsModifying(false);
-  //     setMessage("");
-  //   }
-  // };
   const handleModification = async (e) => {
     e.preventDefault();
     if (!message.trim()) return;
@@ -316,30 +295,6 @@ const ContentCard = ({
         />
       )}
         {/* Modification Chat Section */}
-        {/* <div className="mt-4 border-t pt-4">
-          <form onSubmit={handleModification} className="flex gap-2">
-            <input
-              type="text"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              placeholder="What would you like to modify about this idea?"
-              className="flex-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              disabled={isModifying}
-            />
-            <button
-              type="submit"
-              disabled={isModifying || !message.trim()}
-              className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-            >
-              {isModifying ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <Send className="h-4 w-4" />
-              )}
-              <span className="hidden sm:inline">Modify</span>
-            </button>
-          </form>
-        </div> */}
         <div className="mt-4 border-t pt-4">
         <form onSubmit={handleModification} className="flex gap-2">
           <input

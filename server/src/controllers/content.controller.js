@@ -113,6 +113,8 @@ const parseContentIdeas = (content) => {
 const createDetailedPrompt = async (contentType, user) => {
   const profileData = await getInstagramProfile(user);
   const recentPosts = await getRecentPosts(user);
+  const reelDurations = [15, 30, 45, 60, 90];  
+  const reelTime = reelDurations[Math.floor(Math.random() * reelDurations.length)];  
 
   // Analyze recent posts for style and engagement
   const postAnalysis =
@@ -225,15 +227,6 @@ const createDetailedPrompt = async (contentType, user) => {
   //       4. Hashtags: List 15-20 relevant hashtags grouped strategically`,
   //   };
   const prompts = {
-//     roast: `Generate a savage, no-mercy roast for the user based on their profile.  
-// - Expose their laziness, delusions, or lack of effort.  
-// - Use sarcasm, wit, and brutal honesty—no sugarcoating.  
-// - End with a **cold reality check** that leaves them with no excuses.  
-// - Bonus: Add a funny twist or a pun to lighten the mood.
-
-// Example Output:  
-
-// "Oh, look who decided to take a break from doing absolutely nothing to show up here. You talk about 'grinding' but spend more time watching motivational reels than actually working. Your ‘big plans’ are just screenshots in your phone, collecting digital dust while you scroll mindlessly, convincing yourself that you’re ‘researching.’ You say you want success, but the only thing you’ve mastered is procrastination and blaming ‘bad luck’ for your own lack of discipline. Reality check: **No one is coming to save you. No one cares about your dreams until you make them real. Either put in the work or stay exactly where you are—stuck, broke, and watching others win.** Your move. P.S. Your to-do list is starting to look like a historical document—ancient and untouched."`,
     roast: `Generate a savage, no-mercy roast for the user based on their profile.
   - Expose their laziness, delusions, or lack of effort.
   - Use sarcasm, wit, and brutal honesty—no sugarcoating.
@@ -279,49 +272,96 @@ const createDetailedPrompt = async (contentType, user) => {
      - Branded hashtags: #FakeItTillYouMakeIt #AdultingFails #SurvivingAdulting
      - Engagement hashtags: #SwipeRight #TagYourFriends #AdultingSucks #RelatableContent #LifeInTheChaos`,
 
-    reel: `1. Title: Write a catchy, attention-grabbing title with humor.  
-     Example: "When You Try to Be Productive but Netflix Says 'Not Today.'"
+  //   reel: `1. Title: Write a catchy, attention-grabbing title with humor.  
+  //    Example: "When You Try to Be Productive but Netflix Says 'Not Today.'"
   
-  2. Caption: Write a 200-300 character caption that includes:
-     - Humor mixed with the account's tone. Example: "Me: I'll just watch one episode. Also me: 8 hours later Why is the sun coming up? 🌅 #ProcrastinationPro #NetflixAndChill."
-     - Strategic line breaks for readability.  
-     - Relevant emojis for tone.  
-     - Strong call-to-action with humor at the end. Example: "Tag your favorite procrastination buddy below. Let's suffer together. 😂"
+  // 2. Caption: Write a 200-300 character caption that includes:
+  //    - Humor mixed with the account's tone. Example: "Me: I'll just watch one episode. Also me: 8 hours later Why is the sun coming up? 🌅 #ProcrastinationPro #NetflixAndChill."
+  //    - Strategic line breaks for readability.  
+  //    - Relevant emojis for tone.  
+  //    - Strong call-to-action with humor at the end. Example: "Tag your favorite procrastination buddy below. Let's suffer together. 😂"
 
-  3. Content Breakdown (Script with Timestamps):
-     - 0:00-0:03 - Hook: Open with a funny or unexpected statement that grabs attention immediately. Example: "POV: You said you'd start your diet tomorrow… 3 years ago."
-        - Visuals: Show a quick shot of you looking at your phone with a disgusted face as you scroll through an old "diet plan" app.  
-        - Text Overlay/Voiceover: Text: "POV: 3 years later… still not dieting." 
+  // 3. Content Breakdown (Script with Timestamps):
+  //    - 0:00-0:03 - Hook: Open with a funny or unexpected statement that grabs attention immediately. Example: "POV: You said you'd start your diet tomorrow… 3 years ago."
+  //       - Visuals: Show a quick shot of you looking at your phone with a disgusted face as you scroll through an old "diet plan" app.  
+  //       - Text Overlay/Voiceover: Text: "POV: 3 years later… still not dieting." 
         
-     - 0:04-0:15 - Introduce the main problem with humor: Build on the initial hook with a humorous elaboration.  
-        - Visuals: Show your messy workspace with snacks everywhere, a laptop open with a YouTube video paused mid-play.  
-        - Text Overlay/Voiceover: Voiceover: "When you realize 'tomorrow' is just a myth, and the snacks are your true soulmate." 
-        - Transition: Quick fade-out of the workspace scene to you opening a fridge.  
+  //    - 0:04-0:15 - Introduce the main problem with humor: Build on the initial hook with a humorous elaboration.  
+  //       - Visuals: Show your messy workspace with snacks everywhere, a laptop open with a YouTube video paused mid-play.  
+  //       - Text Overlay/Voiceover: Voiceover: "When you realize 'tomorrow' is just a myth, and the snacks are your true soulmate." 
+  //       - Transition: Quick fade-out of the workspace scene to you opening a fridge.  
 
-     - 0:16-0:45 - Build the story: Present a humorous step-by-step on how you "start" being productive (but fail).  
-        - Visuals: You opening your laptop and just staring at it, looking confused.  
-        - Text Overlay/Voiceover: Text: "Step 1: Open your laptop… Step 2: Just stare at it for 20 minutes…"  
-        - Voiceover: "Step 3: Snack break. Because why do work when you can have pizza?" 
-        - Transition: Quick cut to a close-up of you with a slice of pizza.  
-        - Visual Cue: Zoom-in on the pizza slice with exaggerated slow-motion for comedic effect.  
+  //    - 0:16-0:45 - Build the story: Present a humorous step-by-step on how you "start" being productive (but fail).  
+  //       - Visuals: You opening your laptop and just staring at it, looking confused.  
+  //       - Text Overlay/Voiceover: Text: "Step 1: Open your laptop… Step 2: Just stare at it for 20 minutes…"  
+  //       - Voiceover: "Step 3: Snack break. Because why do work when you can have pizza?" 
+  //       - Transition: Quick cut to a close-up of you with a slice of pizza.  
+  //       - Visual Cue: Zoom-in on the pizza slice with exaggerated slow-motion for comedic effect.  
 
-     - 0:46-0:75 - Add the twist: Introduce a funny twist or punchline.  
-        - Visuals: Show you eating the pizza, feeling victorious.  
-        - Text Overlay/Voiceover: Voiceover: "Plot twist: The pizza was the goal all along."
-        - Transition: Dramatic zoom-out with a slow-motion shot of you eating the pizza.  
-        - Visual Cue: Add a quick flash of 'Success!' text in bold, animated font.  
+  //    - 0:46-0:75 - Add the twist: Introduce a funny twist or punchline.  
+  //       - Visuals: Show you eating the pizza, feeling victorious.  
+  //       - Text Overlay/Voiceover: Voiceover: "Plot twist: The pizza was the goal all along."
+  //       - Transition: Dramatic zoom-out with a slow-motion shot of you eating the pizza.  
+  //       - Visual Cue: Add a quick flash of 'Success!' text in bold, animated font.  
 
-     - 0:76-0:90 - End with a Call-to-Action: Finish strong with humor and a relatable comment.  
-        - Visuals: Show a group of empty snack wrappers and you lying on the couch in an exaggerated relaxed position.  
-        - Text Overlay/Voiceover: Text: "Productivity? More like snackivity."  
-        - Voiceover: "Drop a 🍕 if you're also here for the snacks, not the productivity."  
-        - Transition: Fade out with you laying down, snacking, and a text overlay saying "Call it a day."  
+  //    - 0:76-0:90 - End with a Call-to-Action: Finish strong with humor and a relatable comment.  
+  //       - Visuals: Show a group of empty snack wrappers and you lying on the couch in an exaggerated relaxed position.  
+  //       - Text Overlay/Voiceover: Text: "Productivity? More like snackivity."  
+  //       - Voiceover: "Drop a 🍕 if you're also here for the snacks, not the productivity."  
+  //       - Transition: Fade out with you laying down, snacking, and a text overlay saying "Call it a day."  
 
-  4. Hashtags: Include 10-15 relevant hashtags, grouped by:
-     - Reel-specific: #reels #instareels #funnyreels #reelsdaily #humorreels
-     - Niche-specific: #ProductivityFails #ProcrastinationGoals #LazyDays #DietWho #SnackLife #NapKing
-     - Trending hashtags: #NetflixAndChill #ProcrastinationPro #SnackAttack
-     - Engagement hashtags: #TagYourBuddy #YouToo #LazyVibes`,
+  // 4. Hashtags: Include 10-15 relevant hashtags, grouped by:
+  //    - Reel-specific: #reels #instareels #funnyreels #reelsdaily #humorreels
+  //    - Niche-specific: #ProductivityFails #ProcrastinationGoals #LazyDays #DietWho #SnackLife #NapKing
+  //    - Trending hashtags: #NetflixAndChill #ProcrastinationPro #SnackAttack
+  //    - Engagement hashtags: #TagYourBuddy #YouToo #LazyVibes`,
+  
+  
+  reel: `1. Title: Write a catchy, attention-grabbing title with humor.  
+       Example: "When You Try to Be Productive but Netflix Says 'Not Today.'"  
+  
+    2. Caption: Write a 200-300 character caption that includes:  
+       - Humor mixed with the account's tone. Example: "Me: I'll just watch one episode. Also me: 8 hours later Why is the sun coming up? 🌅 #ProcrastinationPro #NetflixAndChill."  
+       - Strategic line breaks for readability.  
+       - Relevant emojis for tone.  
+       - Strong call-to-action with humor at the end. Example: "Tag your favorite procrastination buddy below. Let's suffer together. 😂"  
+  
+    3. Content Breakdown (Script with Timestamps):  
+  
+       - 0:00-0:03 - Hook: Open with a funny or unexpected statement that grabs attention immediately.  
+          - Visuals: Show a quick shot of you looking at your phone with a disgusted face as you scroll through an old "diet plan" app.  
+          - Text Overlay/Voiceover: Text: "POV: 3 years later… still not dieting."  
+  
+       - 0:04-${Math.min(0.2 * reelTime, 15).toFixed(2)} - Introduce the main problem with humor: Build on the initial hook with a humorous elaboration.  
+          - Visuals: Show your messy workspace with snacks everywhere, a laptop open with a YouTube video paused mid-play.  
+          - Text Overlay/Voiceover: Voiceover: "When you realize 'tomorrow' is just a myth, and the snacks are your true soulmate."  
+          - Transition: Quick fade-out of the workspace scene to you opening a fridge.  
+  
+       - ${Math.min(0.2 * reelTime, 15).toFixed(2)}-${Math.min(0.5 * reelTime, 45).toFixed(2)} - Build the story: Present a humorous step-by-step on how you "start" being productive (but fail).  
+          - Visuals: You opening your laptop and just staring at it, looking confused.  
+          - Text Overlay/Voiceover: Text: "Step 1: Open your laptop… Step 2: Just stare at it for 20 minutes…"  
+          - Voiceover: "Step 3: Snack break. Because why do work when you can have pizza?"  
+          - Transition: Quick cut to a close-up of you with a slice of pizza.  
+          - Visual Cue: Zoom-in on the pizza slice with exaggerated slow-motion for comedic effect.  
+  
+       - ${Math.min(0.5 * reelTime, 45).toFixed(2)}-${Math.min(0.85 * reelTime, 75).toFixed(2)} - Add the twist: Introduce a funny twist or punchline.  
+          - Visuals: Show you eating the pizza, feeling victorious.  
+          - Text Overlay/Voiceover: Voiceover: "Plot twist: The pizza was the goal all along."  
+          - Transition: Dramatic zoom-out with a slow-motion shot of you eating the pizza.  
+          - Visual Cue: Add a quick flash of 'Success!' text in bold, animated font.  
+  
+       - ${Math.min(0.85 * reelTime, 75).toFixed(2)}-${reelTime} - End with a Call-to-Action: Finish strong with humor and a relatable comment.  
+          - Visuals: Show a group of empty snack wrappers and you lying on the couch in an exaggerated relaxed position.  
+          - Text Overlay/Voiceover: Text: "Productivity? More like snackivity."  
+          - Voiceover: "Drop a 🍕 if you're also here for the snacks, not the productivity."  
+          - Transition: Fade out with you laying down, snacking, and a text overlay saying "Call it a day."  
+  
+    4. Hashtags: Include 10-15 relevant hashtags, grouped by:  
+       - Reel-specific: #reels #instareels #funnyreels #reelsdaily #humorreels  
+       - Niche-specific: #ProductivityFails #ProcrastinationGoals #LazyDays #DietWho #SnackLife #NapKing  
+       - Trending hashtags: #NetflixAndChill #ProcrastinationPro #SnackAttack  
+       - Engagement hashtags: #TagYourBuddy #YouToo #LazyVibes`,
+  
 
     story: `Create a story sequence with the following details:
     1. Title

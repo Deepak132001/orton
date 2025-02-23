@@ -112,7 +112,7 @@ const LandingPage = () => {
       </nav>
 
       {/* Hero Section */}
-      <div className="relative overflow-hidden py-20 bg-gradient-to-r from-indigo-600 to-purple-600">
+      <div className="relative overflow-hidden py-28 bg-gradient-to-r from-indigo-600 to-purple-600">
         {/* Animated Particles */}
         <div className="absolute inset-0">
           {[...Array(20)].map((_, i) => (
@@ -161,7 +161,7 @@ const LandingPage = () => {
           <div className="animate-title-reveal overflow-hidden">
             <h1 className="text-3xl sm:text-4xl font-extrabold text-white mb-6 drop-shadow-2xl">
               {/* Never Run Out of Content Ideas */}
-              Your AI-Powered Social Media Twin
+              YOUR SOCIAL TWIN
             </h1>
           </div>
 
@@ -171,13 +171,13 @@ const LandingPage = () => {
                 {/* Generate endless content tailored to your niche. Get AI-powered
                 insights, optimize posting times, and grow your social media
                 presence effortlessly. */}
-                Produce Unlimited Content Perfectly Aligned with Your Niche: Use AI-Generated Insights to Craft Engaging Posts, Schedule at Optimal Times, and Build a Thriving Social Media Presence Without the Guesswork.
+                AI THAT LEARNS YOUR STYLE, VOICE, AND NICHE TO CREATE AUTHENTIC SOCIAL MEDIA CONTENT.
               </p>
             </div>
 
             <div className="overflow-hidden">
               <p className="text-xl sm:text-2xl text-white opacity-90 mb-8 animate-gradient-text">
-                Designed for influencers and business owners.
+                FREE - NO CREDIT CARD REQUIRED
               </p>
             </div>
           </div>
@@ -730,7 +730,6 @@ const LandingPage = () => {
           </div>
         </div>
       </div>
-
       
 
       {/* Footer */}

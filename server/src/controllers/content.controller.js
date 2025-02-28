@@ -707,7 +707,6 @@ const analyzeUserStyle = (recentPosts) => {
     return "Style: Neutral, no captions to analyze; default to engaging tone.";
   }
 
-  // Analyze style attributes
   const wordCount = captions.join(" ").split(/\s+/).length;
   const avgLength = wordCount / captions.length;
   const emojiCount = (captions.join().match(/[\p{Emoji}]/gu) || []).length;
@@ -723,7 +722,6 @@ const analyzeUserStyle = (recentPosts) => {
     captions.join().toLowerCase().includes(w)
   );
 
-  // Determine tone
   let tone = "neutral";
   if (sarcasticWords) tone = "sarcastic";
   else if (casualWords) tone = "casual";
@@ -731,7 +729,6 @@ const analyzeUserStyle = (recentPosts) => {
   else if (usesQuestions) tone = "engaging";
   else if (emojiCount > captions.length) tone = "playful";
 
-  // Common emojis
   const emojis = captions.join().match(/[\p{Emoji}]/gu) || [];
   const emojiFreq = emojis.reduce((acc, e) => {
     acc[e] = (acc[e] || 0) + 1;
@@ -798,59 +795,179 @@ const createDetailedPrompt = async (contentType, user) => {
 
   const prompts = {
     roast: `
+    ${accountContext}
     Generate a savage, no-mercy roast for the user based on their profile and style.
-    - Match their tone and phrasing: ${styleAnalysis}.
-    - Expose their laziness, delusions, or lack of effort with sarcasm, wit, and brutal honesty—no sugarcoating.
-    - End with a **cold reality check** in their voice.
+    - Match their tone, phrasing, and emoji use: ${styleAnalysis}.
+    - Expose their laziness, delusions, or lack of effort.
+    - Use sarcasm, wit, and brutal honesty—no sugarcoating.
+    - End with a **cold reality check** that leaves them with no excuses, written in their voice.
 
-    Example Output (adjusted to style):
-    "Oh wow, you actually showed up—guess miracles do happen when you’re not napping. You’re ‘hustling’ harder at excuses than anything real. Reality check: **Dreams don’t work unless you do, genius.**"`,
+    Example Output (adjusted to user's style):
+    "Oh, look who crawled outta bed—@${profileData.username}, huh? You’re ‘grinding’ so hard I can hear the snooze button crying. Those big dreams? Just captions you forgot to post. Reality check: **No one’s clapping for your naps, champ. Wake up or stay basic.**"`,
     carousel: `
-    1. Title: Write a catchy, attention-grabbing title with humor in the user's style: ${styleAnalysis}.
-    2. Caption: Write a 200-300 character caption that:
-       - Matches the user's tone and phrasing: ${styleAnalysis}.
-       - Uses their typical emojis and structure.
-       - Ends with a funny call-to-action in their voice.
+    ${accountContext}
+    1. Title: Write a catchy, attention-grabbing title with humor that matches the user's style: ${styleAnalysis}.
+       Example: "5 Ways to Adult Without Crying (Spoiler: You'll Still Cry)."
+
+    2. Caption: Write a 200-300 character caption that includes:
+       - Humor that matches the user's tone and phrasing: ${styleAnalysis}.
+       - Strategic line breaks for readability.
+       - Relevant emojis from their top usage (${styleAnalysis}).
+       - A strong call-to-action with a funny remark at the end in their voice.
+
     3. Content Breakdown:
-       - Adapt all slide text to reflect the user's style: ${styleAnalysis}.
-       [rest of carousel structure as per original prompt...]
-    4. Hashtags: Include 10-15 relevant hashtags tailored to their niche and style.`,
+       - Slide 1 - Introduction & Hook:
+          - Visuals: A fun, colorful image of someone drowning in paperwork or a cup of coffee spilled over a laptop.
+          - Text Overlay: "Welcome to the chaos—written in your style: ${styleAnalysis}."
+
+       - Slide 2 - Step 1: Wake Up Like a Responsible Adult:
+          - Visuals: Show a person trying to wake up early but hitting snooze on their alarm for the 8th time.
+          - Text Overlay: "Step 1: Wake up... or not. Match user style: ${styleAnalysis}."
+
+       - Slide 3 - Step 2: Pretend to Have Your Life Together:
+          - Visuals: Show someone walking out of the house in a suit but with mismatched socks or spilling coffee on their shirt.
+          - Text Overlay: "Step 2: Fake it till you make it, in your tone: ${styleAnalysis}."
+
+       - Slide 4 - Step 3: Budgeting (But You're Just Here for the Memes):
+          - Visuals: Show a person frantically looking at their bank statement while eating fast food.
+          - Text Overlay: "Step 3: Budget? Nah, memes. Style: ${styleAnalysis}."
+
+       - Slide 5 - Step 4: Finally Adulting (Kind Of):
+          - Visuals: Show someone finally making it through their day, exhausted but somewhat successful, sitting down with a glass of wine.
+          - Text Overlay: "Step 4: Survived... sorta. CTA in your voice: ${styleAnalysis}."
+          - Call to Action: "Swipe right—or flop harder. Your call, styled like you."
+
+    4. Hashtags: Include 10-15 relevant hashtags, grouped by:
+       - Industry-specific: #business #entrepreneurship #productivityhacks #adulting101 #lifehacks
+       - Trending in your niche: #adultingfails #memesdaily #workhumor #adulthoodstruggles #funnycontent
+       - Branded hashtags: #FakeItTillYouMakeIt #AdultingFails #SurvivingAdulting
+       - Engagement hashtags: #SwipeRight #TagYourFriends #AdultingSucks #RelatableContent #LifeInTheChaos
+       - Tailor some to reflect user style based on ${styleAnalysis}.`,
     reel: `
-    1. Title: Write a catchy, attention-grabbing title with humor in the user's style: ${styleAnalysis}.
-    2. Caption: Write a 200-300 character caption that:
-       - Matches the user's tone and phrasing: ${styleAnalysis}.
-       - Uses their typical emojis and structure.
-       - Ends with a call-to-action in their voice.
+    ${accountContext}
+    1. Title: Write a catchy, attention-grabbing title with humor that matches the user's style: ${styleAnalysis}.
+       Example: "When You Try to Be Productive but Netflix Says 'Not Today.'"
+
+    2. Caption: Write a 200-300 character caption that includes:
+       - Humor mixed with the user's tone and phrasing: ${styleAnalysis}.
+       - Strategic line breaks for readability.
+       - Relevant emojis from their top usage (${styleAnalysis}).
+       - Strong call-to-action with humor at the end, written in their voice.
+
     3. Content Breakdown (Script with Timestamps):
-       - Adapt all voiceovers and text overlays to sound like the user based on: ${styleAnalysis}.
-       [rest of reel structure as per original prompt...]
-    4. Hashtags: Include 10-15 relevant hashtags tailored to their niche and style.`,
+       - 0:00-0:03 - Hook: Open with a funny or unexpected statement that grabs attention immediately, styled like the user: ${styleAnalysis}.
+          - Visuals: Show a quick shot of you looking at your phone with a disgusted face as you scroll through an old "diet plan" app.
+          - Text Overlay/Voiceover: Text: "POV: You’re still a mess, per your style."
+
+       - 0:04-${Math.min(0.2 * reelTime, 15).toFixed(2)} - Introduce the main problem with humor: Build on the hook with a humorous elaboration in their tone: ${styleAnalysis}.
+          - Visuals: Show your messy workspace with snacks everywhere, a laptop open with a YouTube video paused mid-play.
+          - Text Overlay/Voiceover: Voiceover: "When you say ‘tomorrow’ but mean never, styled your way."
+          - Transition: Quick fade-out of the workspace scene to you opening a fridge.
+
+       - ${Math.min(0.2 * reelTime, 15).toFixed(2)}-${Math.min(0.5 * reelTime, 45).toFixed(2)} - Build the story: Present a humorous step-by-step on how you "start" being productive (but fail), in their style: ${styleAnalysis}.
+          - Visuals: You opening your laptop and just staring at it, looking confused.
+          - Text Overlay/Voiceover: Text: "Step 1: Stare. Step 2: Snack. Your vibe."
+          - Voiceover: "Step 3: Why work when snacks exist? Per your tone."
+          - Transition: Quick cut to a close-up of you with a slice of pizza.
+          - Visual Cue: Zoom-in on the pizza slice with exaggerated slow-motion for comedic effect.
+
+       - ${Math.min(0.5 * reelTime, 45).toFixed(2)}-${Math.min(0.85 * reelTime, 75).toFixed(2)} - Add the twist: Introduce a funny twist or punchline in their style: ${styleAnalysis}.
+          - Visuals: Show you eating the pizza, feeling victorious.
+          - Text Overlay/Voiceover: Voiceover: "Plot twist: Pizza’s the real MVP, your way."
+          - Transition: Dramatic zoom-out with a slow-motion shot of you eating the pizza.
+          - Visual Cue: Add a quick flash of 'Success!' text in bold, animated font.
+
+       - ${Math.min(0.85 * reelTime, 75).toFixed(2)}-${reelTime} - End with a Call-to-Action: Finish strong with humor and a relatable comment in their voice: ${styleAnalysis}.
+          - Visuals: Show a group of empty snack wrappers and you lying on the couch in an exaggerated relaxed position.
+          - Text Overlay/Voiceover: Text: "Productivity? Nope, snackivity—your style."
+          - Voiceover: "Drop your fave emoji if you’re team snacks, per your vibe."
+          - Transition: Fade out with you laying down, snacking, and a text overlay saying "Call it a day."
+
+    4. Hashtags: Include 10-15 relevant hashtags, grouped by:
+       - Reel-specific: #reels #instareels #funnyreels #reelsdaily #humorreels
+       - Niche-specific: #ProductivityFails #ProcrastinationGoals #LazyDays #DietWho #SnackLife #NapKing
+       - Trending hashtags: #NetflixAndChill #ProcrastinationPro #SnackAttack
+       - Engagement hashtags: #TagYourBuddy #YouToo #LazyVibes
+       - Tailor some to reflect user style based on ${styleAnalysis}.`,
     story: `
-    Create a story sequence matching the user's style: ${styleAnalysis}.
-    1. Title: Write an attention-grabbing, humorous title in their tone.
-    2. Caption: Write a 200-300 character caption reflecting their phrasing and emojis.
+    ${accountContext}
+    Create a story sequence with the following details, matching the user's style: ${styleAnalysis}:
+    1. Title: Write an attention-grabbing and humorous title in their tone and phrasing.
+       Example: "When Life Gives You Lemons… You Probably Forgot to Pay the Bills."
+
+    2. Caption: Write a 200-300 character caption that includes:
+       - Concise and impactful wording in their style: ${styleAnalysis}.
+       - Relevant emojis from their top usage (${styleAnalysis}).
+       - A call to engage the audience, written in their voice.
+       - A funny or playful remark/question at the end.
+
     3. Content Breakdown:
-       - Adapt all text overlays and prompts to their style: ${styleAnalysis}.
-       [rest of story structure as per original prompt...]
-    4. Hashtags: Include 5-10 relevant hashtags matching their niche and tone.`,
+       - Opening Hook (Story 1):
+          - Visual: Show a picture of a person staring at a phone or looking confused.
+          - Text Overlay: "POV: You’re lost in life, styled your way: ${styleAnalysis}."
+          - CTA: Add a little arrow pointing to the next slide: "Next, your vibe continues."
+
+       - Story Frame Sequence:
+          - Story 2 - Frame 1 (Poll):
+             - Visual: A shot of someone dramatically facepalming or rolling their eyes.
+             - Text Overlay: "Winning or faking it? Your tone: ${styleAnalysis}."
+             - Poll Options: "Winning at Life" vs. "Faking It"
+             - Engagement Prompt: "Vote now, show us your style!"
+
+          - Story 3 - Frame 2 (Interactive Question):
+             - Visual: A funny image of a stressed person with a mountain of coffee cups or a phone buzzing with endless notifications.
+             - Text Overlay: "Your life hack? Spill it, per ${styleAnalysis}."
+             - Question Sticker: "Drop your best hack below!"
+
+          - Story 4 - Frame 3 (Would You Rather Poll):
+             - Visual: A split screen image: one side shows a giant duck and the other shows a hundred tiny horses.
+             - Text Overlay: "Big duck or tiny horses? Your call: ${styleAnalysis}."
+             - Poll Options: "Horse-Sized Duck" vs. "100 Duck-Sized Horses"
+             - Engagement Prompt: "Pick one, you weirdo—in your voice."
+
+          - Story 5 - Final Frame (CTA):
+             - Visual: A relaxing image of someone unwinding after a crazy day (like lying on the couch with snacks).
+             - Text Overlay: "Share your fail, styled like you: ${styleAnalysis}."
+             - CTA: "Tap to spill—what’s your worst flop?"
+
+    4. Hashtags: Include 5-10 relevant hashtags, grouped by:
+       - Trending humor-related: #AdultingStruggles #LifeFails #ProcrastinationProblems #FunnyMemes #RelatableContent
+       - Interactive: #PollTime #VoteNow #InteractiveStories #QuestionOfTheDay
+       - Engagement: #ShareYourStory #TellUsYourFail #SwipeUpToShare
+       - Tailor some to reflect user style based on ${styleAnalysis}.`,
     single: `
-    Create a single post matching the user's style: ${styleAnalysis}.
-    1. Title: Write a clear, attention-grabbing title with a humorous twist in their tone.
-    2. Caption: Write a 200-300 character caption that:
-       - Matches their phrasing and emoji use: ${styleAnalysis}.
-       - Ends with a call-to-action in their voice.
+    ${accountContext}
+    Create a single post with the following details, matching the user's style: ${styleAnalysis}:
+    1. Title: Write a clear, attention-grabbing title with a humorous twist in their tone and phrasing.
+       Example: "Why Coffee is the Only Reason I Function Before Noon."
+
+    2. Caption: Create an engaging caption (200-300 characters) that:
+       - Matches the user's tone and phrasing: ${styleAnalysis}.
+       - Uses relevant emojis from their top usage (${styleAnalysis}).
+       - Includes strategic line breaks.
+       - Ends with a strong call-to-action and a funny remark in their voice.
+
     3. Content Breakdown:
-       - Adapt key message and engagement triggers to their style.
-       [rest of single structure as per original prompt...]
-    4. Hashtags: Include 10-15 relevant hashtags tailored to their niche and style.`,
+       - Visual Description: Suggest a funny or quirky visual that fits their niche.
+          Example: "A mug that says 'But First, Coffee' with a face that says 'But Actually, Always Coffee.'"
+       - Key Message: Include a light-hearted joke or pun in their style: ${styleAnalysis}.
+          Example: "Coffee in hand, world domination in mind—or at least noon."
+       - Engagement Triggers: Add a funny question or comment to spark engagement, in their voice: ${styleAnalysis}.
+          Example: "What’s your coffee order? Mine’s ‘keep me alive.’"
+
+    4. Hashtags: List 10-15 relevant hashtags grouped by category:
+       - General Hashtags: #CoffeeLover #MorningRitual #CaffeineAddict #SurvivalMode #CoffeeObsessed #CoffeeFirst #AdultingStruggles
+       - Engagement Hashtags: #TagYourCoffeeBuddy #CoffeeTime #CaffeineFix
+       - Humor Hashtags: #CoffeeHumor #FunnyPosts #MorningStruggles #CoffeeIsLife
+       - Tailor some to reflect user style based on ${styleAnalysis}.`
   };
 
-  return `${accountContext}
+  return `
+  ${prompts[contentType] || prompts.all}
 
-${prompts[contentType] || prompts.all}
-
-Format each section clearly with "Title:", "Caption:", "Content:", and "Hashtags:".
-Ensure the content aligns with the account's professional image while mimicking the user's unique writing style from ${styleAnalysis}.`;
+  Format each section clearly with "Title:", "Caption:", "Content:", and "Hashtags:".
+  Ensure the content aligns with the account's professional image while maintaining engagement and mimicking the user's unique writing style from ${styleAnalysis}.
+  `;
 };
 
 // Helper function to parse the generated content (unchanged)
